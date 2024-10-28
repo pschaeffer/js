@@ -46,11 +46,9 @@ const HDLmConfigConstants =
     "entriesDatabaseCompanyPrefix":        "",
     "entriesDatabaseContentSuffix":        "java",
     "entriesDatabaseInternetMethodSsl":    "https",
-    "entriesDatabasePassword":             "Headlamp0",
     "entriesDatabaseTableNameProd":        "main_9",
     "entriesDatabaseTableNameTest":        "test_1",
     "entriesDatabaseUseCache":             "false",
-    "entriesDatabaseUserid":               "admin",
     "fetchInternetMethodNoSsl":            "http",
     "fixWebSockets":                       "true",
     "logFileName":                         "info.log",
@@ -199,12 +197,6 @@ const HDLmConfigFields =
       "subtype":     "editableprotocollist"
     },
     {
-      "description": "Entries Database Password",
-      "source":      "entriesDatabasePassword",
-      "fieldtype":   "iotext",
-      "subtype":     "password"
-    },
-    {
       "description": "Entries Database Table Name",
       "source":      "entriesDatabaseTableName",
       "fieldtype":   "iotext",
@@ -216,13 +208,6 @@ const HDLmConfigFields =
       "fieldtype":   "checkbox",
       "subtype":     "checkbox"
     },
-    {
-      "description": "Entries Database Userid",
-      "source":      "entriesDatabaseUserid",
-      "fieldtype":   "iotext",
-      "subtype":     "userid"
-    },    
-
     {
       "description": "Fix Web Sockets",
       "source":      "fixWebSockets",

@@ -201,10 +201,6 @@ class HDLmConfigInfo {
   static getentriesDatabaseInternetMethodSsl() {
     return HDLmConfig.getValue('entriesDatabaseInternetMethodSsl');
   }
-  /* Return the configuration password */
-  static getEntriesDatabasePassword() {
-    return HDLmConfig.getValue('entriesDatabasePassword');
-  }
   /* Get the table name that contains the modifications. This is the
      table that has all of the rules as separate rows. This value 
      might not be actually right if we are running against a test 
@@ -220,10 +216,6 @@ class HDLmConfigInfo {
   /* Return the database use cache value */
   static getEntriesDatabaseUseCache() {
     return HDLmConfig.getValue('entriesDatabaseUseCache');
-  }
-  /* Return the configuration userid */
-  static getEntriesDatabaseUserid() {
-    return HDLmConfig.getValue('entriesDatabaseUserid');
   }
   /* Return the Internet method used by a local fetch */
   static getFetchInternetMethodNoSsl() {
