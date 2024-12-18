@@ -34,9 +34,9 @@ class HDLmBuildRules {
     /* console.log('In HDLmBuildRules.beforeUnloadDone'); */
     /* console.log(event); */
     /* The line below has been commented out. This line is used
-        to present a dialog box to the user. The dialog box is
-        prevent the browser from closing. We don't want to prevent
-        the browser from closing. */
+       to present a dialog box to the user. The dialog box is
+       prevent the browser from closing. We don't want to prevent
+       the browser from closing. */
     /* event.preventDefault(); */
     HDLmBuildRules.beforeUnloadResolveFunction('The browser was closed');
   }
@@ -497,8 +497,10 @@ class HDLmBuildRules {
     if (windowlocationPathName.toLowerCase() == '/buildrules') 
       buildRules = true; 
     /* Check if the user wants to build rules under the debbuger */
+    /*
     if (windowlocationPathName.endsWith('index.html'))
       buildRules = true;
+    */
     /* Check if we really want to build rules */
     if (!buildRules)
       return;    

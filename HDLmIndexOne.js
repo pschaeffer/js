@@ -12,7 +12,7 @@
    a rule editor. No instances of this class can ever be created. */
 class HDLmIndexOne {
   /* Handle overall initialization */
-  static handleInitialization() {
+  static handleInitialization() {  
     /* console.log('In HDLmIndexOne.handleInitialization'); */
     /* console.log(window); */
     /* This routine may been invoked to edit rules or it may have 
@@ -23,10 +23,8 @@ class HDLmIndexOne {
     if (windowlocationPathName == '/') 
       editRules = true; 
     /* Check if the user wants to edit rules under the debbuger */
-    /*
     if (windowlocationPathName.endsWith('index.html'))
       editRules = true;
-    */
     /* Check if we really want to edit rules */
     if (!editRules)
       return; 
@@ -50,28 +48,31 @@ class HDLmIndexOne {
       return HDLmDefines.getDefines();
     }, function (error) {
       HDLmError.buildError('Error', 'Authentication failure', 14, error);
-      /* Handle the Promise used to obtain defines information */
+    /* Handle the Promise used to obtain defines information */
     }).then(function (responseText) {
       HDLmDefines.addDefines(responseText);
       /* Get the Promise used to obtain the configuration information */
       return HDLmConfig.getConfig();
     }, function (error) {
       HDLmError.buildError('Error', 'Defines failure', 14, error);
-      /* Handle the Promise used to obtain configuration information */
+    /* Handle the Promise used to obtain configuration information */
     }).then(function (responseText) {
       HDLmConfig.addConfig(responseText);
+      /*
+      HDLmConfig.getConfigMissing();  
+      */
       /* Get the Promise used to obtain the state information */
       return HDLmState.getState();
     }, function (error) {
       HDLmError.buildError('Error', 'Configuration failure', 14, error);
-      /* Handle the Promise used to obtain state information */
+    /* Handle the Promise used to obtain state information */
     }).then(function (responseText) {
       HDLmState.addState(responseText);
       /* Get the Promise used to load the CSS styles information */
       return HDLmHtml.getCSSStyles();
     }, function (error) {
       HDLmError.buildError('Error', 'State failure', 14, error);
-      /* Handle the Promise used to obtain CSS styles information */
+    /* Handle the Promise used to obtain CSS styles information */
     }).then(function (responseText) {
       /* console.log(responseText); */
       HDLmHtml.addCSSStyles(responseText);
@@ -157,14 +158,14 @@ class HDLmIndexOne {
         });
       }
       /* If we are not running under the debugger, we need to display
-         the user name, password, and verificiation code, UI. */
+         the user name, password, and verification code, UI. */
       else {
         authenticationPromise = HDLmSecurity.getAuthentication();
       }
       return authenticationPromise;
     }, function (error) {
       HDLmError.buildError('Error', 'CSS styles failure', 14, error);
-      /* Handle the Promise used for authentication */
+    /* Handle the Promise used for authentication */
     }).then(function (responseText) {
       /* Remove the current contents of the web page. This call cleans up
          anything left in the UI from the authentication process. */
@@ -260,7 +261,7 @@ class HDLmIndexOne {
 
          In at least one important case, we aren't really going
          to build and run an editor. We may want to build and
-         run the pass-through display mechanism. */
+         run the pass-through display mechanism. */         
       /* HDLmGlobals.activeEditorType = HDLmEditorTypes.simple; */
       /* HDLmGlobals.activeEditorType = HDLmEditorTypes.popup; */
       /* HDLmGlobals.activeEditorType = HDLmEditorTypes.proxy; */
@@ -285,7 +286,7 @@ class HDLmIndexOne {
     }, function (error) {
       /* console.log('In HDLmIndexOne.handleInitialization error after get modifications'); */
       HDLmError.buildError('Error', 'Authentication failure', 14, error);
-      /* Handle the Promise used to load the modifications */
+    /* Handle the Promise used to load the modifications */
     }).then(function (responseText) {
       /* console.log('In HDLmIndexOne.handleInitialization then after get modifications'); */
       /* console.log(responseText); */

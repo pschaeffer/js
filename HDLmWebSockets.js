@@ -11,6 +11,49 @@
    However, it does contain code for creating and using web
    sockets. */ 
 class HDLmWebSockets {
+  /* This method sends a get configuration request to the server. The
+     get configuration request retrieves the configuration settings
+     for the current application. */
+  static getConfigRequest(configNames) {
+    /* console.log('In HDLmWebSockets.getConfigRequest'); */
+    /* Create a promise that we can settle later */
+    let newPromise = new Promise(function (resolve, reject) {
+      /* Build a configuration object with a set of configuration
+         names */      
+      let  configObj = {};
+      configObj['configNames'] = configNames;
+      /* Build a message with the required information */
+      let requestType = 'getConfigValues';
+      let jsonStr = JSON.stringify(configObj); 
+      jsonStr = HDLmUtility.updateJsonStr(jsonStr, 'HDLmRequestType', requestType);   
+      HDLmWebSockets.contentSendValue.push(jsonStr);
+      /* Build the callback function that will be used to handle the
+         WebSocket message that is returned by the caller. Note that
+         this routine is a closure and get important values from the
+         environment where it is defined. */
+      let messageCallback = (event) => {
+        /* Provide an exception handler for the entire callback */
+        try {
+          let currentWebSocket = event.target;
+          /* Close the WebSocket, if need be */
+          if (currentWebSocket != null) {
+            currentWebSocket.close();
+          }
+          /* Pass the WebSocket message to the appropriate handler */
+          /* console.log(event.data); */
+          /* console.log(typeof event.data); */
+          resolve(event.data);
+        }
+        catch (errorObj) {
+          let errorText = HDLmError.reportError(errorObj, 'messageCallback');
+          reject(errorText);
+        }
+      };
+      /* Open a connnection to another process */
+      HDLmWebSockets.openWebSocketConnection(messageCallback);
+    });
+    return newPromise;
+  } 
   /* This routine returns a promise that yields either  
      a set of image choices or an error. The promise is 
      thenable. */
@@ -198,7 +241,8 @@ class HDLmWebSockets {
        web socket open so that we can get and use the reply. */
     if (messageObj.hasOwnProperty('HDLmRequestType')) {
       let messageRequestType = messageObj['HDLmRequestType'];
-      if (messageRequestType.startsWith('getImage')       == false &&
+      if (messageRequestType.startsWith('getConfig')      == false &&
+          messageRequestType.startsWith('getImage')       == false &&
           messageRequestType.startsWith('getMod')         == false &&
           messageRequestType.startsWith('getText')        == false &&
           messageRequestType.startsWith('storeTreeNodes') == false) {
@@ -342,7 +386,7 @@ class HDLmWebSockets {
     let tempPosStr = JSON.stringify(tempPos);
     /* Open a connnection to another process */
     HDLmWebSockets.sendCurrentRequest(tempPosStr, 'deleteTreeNode');
-  }
+  }  
   /* This method sends a store tree nodes request to the server. The 
      store tree node request stores zero or more trees node. The tree
      node are either added or updated. */

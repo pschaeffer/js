@@ -13,15 +13,15 @@
    code has another copy of these values. */
 const HDLmConfigConstants =
   { "applicationJsonType":                 "application/json",
-    "awsCognitoAcceptEncoding":            "identity",
-    "awsCognitoApiGetUser":                "AWSCognitoIdentityProviderService.GetUser",
-    "awsCognitoApiInitiateAuth":           "AWSCognitoIdentityProviderService.InitiateAuth",
-    "awsCognitoApiRespondToAuthChallenge": "AWSCognitoIdentityProviderService.RespondToAuthChallenge",
-    "awsCognitoContentType":               "application/x-amz-json-1.1",
-    "awsCognitoHost":                      "cognito-idp.us-east-2.amazonaws.com",
+    "AWSCognitoAcceptEncoding":            "identity",
+    "AWSCognitoApiGetUser":                "AWSCognitoIdentityProviderService.GetUser",
+    "AWSCognitoApiInitiateAuth":           "AWSCognitoIdentityProviderService.InitiateAuth",
+    "AWSCognitoApiRespondToAuthChallenge": "AWSCognitoIdentityProviderService.RespondToAuthChallenge",
+    "AWSCognitoContentType":               "application/x-amz-json-1.1",
+    "AWSCognitoHost":                      "cognito-idp.us-east-2.amazonaws.com",
     /* The user agent value below is not accurate (at all). However, AWS Cognito
        demands a user agent value and the value below actually works. */
-    "awsCognitoUserAgent":                 "Boto3/1.26.83 Python/3.9.13 Windows/10 Botocore/1.29.83",
+    "AWSCognitoUserAgent":                 "Boto3/1.26.83 Python/3.9.13 Windows/10 Botocore/1.29.83",
     "buildAcceptEncoding":                 "gzip, deflate, br, zstd",
     "buildUserAgent":                      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
     "clustersMaxCount":                    "10",
@@ -38,11 +38,11 @@ const HDLmConfigConstants =
     "entriesBridgeInsertUrl":              "/io/bucket/insert/",
     "entriesBridgeInternetMethodSsl":      "https",
     "entriesBridgePartialPath":            "io/bucket",
-    "entriesBridgePassword":               "headlamp",
+    "entriesBridgePassword":               "",
     "entriesBridgeReadUrl":                "/io/bucket/search/",
     "entriesBridgeUpdateUrl":              "/io/bucket/update/",
     "entriesBridgeUseCache":               "false",
-    "entriesBridgeUserid":                 "admin",
+    "entriesBridgeUserid":                 "",
     "entriesDatabaseCompanyPrefix":        "",
     "entriesDatabaseContentSuffix":        "java",
     "entriesDatabaseInternetMethodSsl":    "https",
@@ -85,7 +85,9 @@ const HDLmConfigConstants =
   };
 /* The following JSON data struture defines all of the fields that
    can be configured. For each field, the JSON structure gives the
-   field description, the field source, and the field type. */
+   field description, the field source, and the field type. This
+   set of information has not been kept up-to-date and new configuration
+   field may have been added that are not described below. */
 const HDLmConfigFields =
   [
     {
@@ -341,15 +343,15 @@ class HDLmConfig {
   static addConfig(jsonStr) {
     /* Create a local configuration object from the JSON provided
        by the caller */
-    let localConfigInfo = JSON.parse(jsonStr);
+    let localConfigValues = JSON.parse(jsonStr);
     /* Create the configuration object, if it does not already exist */
-    if (typeof HDLmConfigInfo.configInfo == 'undefined')
-      HDLmConfigInfo.configInfo = {};
+    if (typeof HDLmConfig.HDLmConfigValues == 'undefined')
+      HDLmConfig.HDLmConfigValues = {};
     /* Extract all of the keys from the local configuration object */
-    let localConfigInfoKeys = Object.keys(localConfigInfo);
+    let localConfigValuesKeys = Object.keys(localConfigValues);
     /* Use the keys to build the configuration object */
-    for (const key of localConfigInfoKeys)
-      HDLmConfigInfo.configInfo[key] = localConfigInfo[key];
+    for (const key of localConfigValuesKeys)
+      HDLmConfig.HDLmConfigValues[key] = localConfigValues[key];
   }
   /* This routine adds any missing fields to a configuration object.
      A configuration object in this case means a modification object
@@ -400,6 +402,55 @@ class HDLmConfig {
       resolve(resolveValue);
     })
     return configPromise;
+  }
+  /* This routine builds a list of missing configuration values
+     and gets them from the server. The configuration values are
+     returned to the caller as an array of configuration objects. */ 
+  static getConfigMissing() {
+    /* Build the list of missing configuration names */
+    let configNames = ["entriesBridgePassword", "entriesBridgeUserid"]; 
+    let configCallback = (overallConfigObjs) => {
+      let configObjsList = overallConfigObjs.configsList;
+      /* Process each configuration object */
+      for (let configObj of configObjsList)  {
+        let configName = configObj["configName"];
+        let configValue = configObj["configValue"];
+        HDLmConfig.HDLmConfigValues[configName] = configValue;
+      }
+    }
+    /* Get the missing configuration values from the server */
+    HDLmConfig.getConfigRequest(configNames, configCallback);
+  }
+  /* This routine takes a list of configuration names and returns
+     a list of configuration values. The configuration values are
+     returned to the caller as an array of configuration objects. 
+     Each object has one configuration name and one configuration
+     value. */
+  static getConfigRequest(configNames, configCallback) {
+    /* Make sure that the set of configuration names passed 
+       by the caller is an array */
+    if (!Array.isArray(configNames)) {
+      let errorText = `Configuration names passed to getConfigRequest method are not an array`;
+      HDLmAssert(false, errorText);
+    }   
+    if (typeof (configNames) != 'object') {
+      let errorText = `Configuration names passed to getConfigRequest method are not an object`;
+      HDLmAssert(false, errorText);
+    }
+    /* Make sure that the callback function is a function */
+    if (typeof(configCallback) != 'function') {
+      let errorText = `Configuration callback function passed to getConfigRequest method is not a function`;
+      HDLmAssert(false, errorText);
+    }
+    /* Build the required Promise for return to the caller */
+    let newPromise = HDLmWebSockets.getConfigRequest(configNames);
+    newPromise.then(function (response) {
+      let configObjs = JSON.parse(response);     
+      configCallback(configObjs);  
+    }, function (error) {
+      HDLmError.buildError('Error', 'Get configuration values failure', 52, error);
+    });
+    return;
   }
   /* Get the list of configuration types supported by this code. The
      list of types is returned to the caller as an array. Note that
@@ -478,13 +529,13 @@ class HDLmConfig {
 		/* Check if the config name passed by the caller is valid
 		   or not. We need to cause an assert if the config name
 		   passed by the caller is unknown. */
-    if (!HDLmConfigConstants.hasOwnProperty(configName)) {
+    if (!HDLmConfig.HDLmConfigValues.hasOwnProperty(configName)) {
       let errorText = `Invalid config Name (${configName}) passed to getNumber`;
       HDLmAssert(false, errorText);
     }
 		/* Get the value from the object and check if the value is a number. This 
 		   method can only be used to obtain values that are actually numbers. */
-    let rv = HDLmConfigConstants[configName];
+    let rv = HDLmConfig.HDLmConfigValues[configName];
     if ((typeof rv) != 'number') {
       let errorText = `Value of config Name (${configName}) is not a number`;
       HDLmAssert(false, errorText);
@@ -503,13 +554,13 @@ class HDLmConfig {
 		/* Check if the config name passed by the caller is valid
 		   or not. We need to cause an assert if the config name
 		   passed by the caller is unknown. */
-    if (!HDLmConfigConstants.hasOwnProperty(configName)) {
+    if (!HDLmConfig.HDLmConfigValues.hasOwnProperty(configName)) {
       let errorText = `Invalid config Name (${configName}) passed to getString`;
       HDLmAssert(false, errorText);
     }
 		/* Get the value from the object and check if the value is a string. This 
 		   method can only be used to obtain values that are actually strings. */
-    let rv = HDLmConfigConstants[configName];
+    let rv = HDLmConfig.HDLmConfigValues[configName];
     if ((typeof rv) != 'string') {
       let errorText = `Value of config Name (${configName}) is not a string`;
       HDLmAssert(false, errorText);
@@ -527,13 +578,28 @@ class HDLmConfig {
 		/* Check if the configuration name passed by the caller is valid
 		   or not. We need to cause an assert if the configuration name
 		   passed by the caller is unknown. */
-    if (!HDLmConfigConstants.hasOwnProperty(configName)) {
+    if (!HDLmConfig.HDLmConfigValues.hasOwnProperty(configName)) {
       let errorText = `Invalid configuration Name (${configName}) passed to getValue`;
       HDLmAssert(false, errorText);
     }
+    /* Check if some of the configuration value are missing. If some 
+       of the configuration values are missing, then request the missing 
+       configuration values are requested from the server. Essentially
+       we use a side-effect of this call to get the missing values from
+       the server. */
+    /* console.log(configName); */
+    if (HDLmConfig.missingConfigRequested) {
+      HDLmConfig.missingConfigRequested = false;
+      HDLmConfig.getConfigMissing();
+    }
 		/* Get the value from the object */
-    let rv = HDLmConfigConstants[configName];
+    let rv = HDLmConfig.HDLmConfigValues[configName];
     return rv;
+  }
+  /* This static method handles configuration initialization. 
+     Some secret values are obtained from the AWS Secrets Manager. */
+  static handleInitialization() {
+    /* console.log('In HDLmConfig.handleInitialization'); */        
   }
   /* Set a configuration value to a new value. The configuration
      name is the name of the configuration value to set. The 
@@ -548,17 +614,22 @@ class HDLmConfig {
       HDLmAssert(false, errorText);
     }
     /* Check if the configuration name passed by the caller is valid
-        or not. We need to cause an assert if the configuration name
-        passed by the caller is unknown. */
-    if (!HDLmConfigConstants.hasOwnProperty(configName)) {
+       or not. We need to cause an assert if the configuration name
+       passed by the caller is unknown. */
+    if (!HDLmConfig.HDLmConfigValues.hasOwnProperty(configName)) {
       let errorText = `Invalid configuration Name (${configName}) passed to setValue`;
       HDLmAssert(false, errorText);
     }
     /* Set the configuration value */
-    HDLmConfigConstants[configName] = configValue;
+    HDLmConfig.HDLmConfigValues[configName] = configValue;
   }  
 }
+/* Run the initialization function */
+HDLmConfig.handleInitialization();
 /* The field below eventually references an object with all of the 
    configuration data. This field is initially set to null to show
    that it has not been set. */
 HDLmConfig.HDLmConfigInfoData = null;
+/* The field below is used to make sure that the missing configuration
+   values are only requested once */
+HDLmConfig.missingConfigRequested = true;
