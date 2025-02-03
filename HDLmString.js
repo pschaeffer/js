@@ -78,6 +78,26 @@ class HDLmString {
   static compareCaseInsensitive(firstStr, secondStr) {
     return firstStr.localeCompare(secondStr, undefined, { sensitivity: 'accent' }) === 0;
   }
+  /* This routine escapes double quotes in a string, if the double
+     quotes are not already escaped. The caller provides the input
+     string and the output string is returned. */
+  static escapeDoubleQuotes(inStr) { 
+    let outStr = '';
+    let ch;
+    let inStrLength = inStr.length;
+    /* Process all of the character in the input string */
+    for (let i = 0; i < inStrLength; i++) {  
+      /* Get the current character */
+      ch = inStr.charAt(i);   
+      /* Check for a double quote character that is not already escaped */
+      if (ch == '"' &&
+          (i == 0 || 
+           inStr.charAt(i - 1) != '\\')) 
+        outStr += '\\'; 
+      outStr += ch;
+    }  
+    return outStr;
+  }
   /* Get a string from an array. The caller provides the array and
      a separator value. The separator value is added to the output 
      string before all values other than the first. */

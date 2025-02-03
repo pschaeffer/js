@@ -286,6 +286,7 @@ class HDLmWebSockets {
     newWebTarget = newWebTargetScheme + '://' + newWebTargetSite + ':' +
       newWebTargetPort + '/' + newWebTargetPathValue + '/';
     const newWebSocket = new WebSocket(newWebTarget);
+    /* console.log(newWebSocket); */
     /* The statement below establishes the message (receive) routine
        for this WebSocket. The message routine does the actual work
        of receiving a message. The caller can provide a specific
@@ -338,16 +339,36 @@ class HDLmWebSockets {
     jsonStr = HDLmUtility.updateJsonStr(jsonStr, 'HDLmCopyElements', valueStrJsonFalse);
     jsonStr = HDLmUtility.updateJsonStr(jsonStr, 'HDLmUrlValue', window.location.href);
     HDLmWebSockets.contentSendValue.push(jsonStr);
-    /* Check the request type and take the appropriate action */
-    if (requestType != 'storeTreeNodes') {
+    /* Take the appropriate action */
+    HDLmWebSockets.contentSendValue.push(jsonStr);
+    let webSocketsMessageCallbackNull = null;
+    HDLmWebSockets.openWebSocketConnection(webSocketsMessageCallbackNull);
+    return;  
+  }
+  /* This method sends a delete tree node request to the server. 
+     The delete tree node request deletes one tree node. */
+  static sendDeleteTreeNodeRequest(treePos) {
+    /* Create a temporary tree node */
+    let tempPos = {};
+    /* Add the node path to the temporary tree node */
+    tempPos.nodePath = treePos.nodePath;
+    /* Convert the temporary node into a string */
+    let tempPosStr = JSON.stringify(tempPos);
+    /* Open a connnection to another process */
+    HDLmWebSockets.sendCurrentRequest(tempPosStr, 'deleteTreeNode');
+  }  
+  /* This method sends a store tree nodes request to the server. The 
+     store tree node request stores zero or more trees nodes. The tree
+     node are either added or updated. */
+  static sendStoreTreeNodesRequest(treeNodesStr) {
+    /* console.log('In HDLmWebSockets.sendStoreTreeNodesRequest', treeNodesStr); */
+    /* Create a promise that we can settle later */
+    let newPromise = new Promise(function (resolve, reject) {
+      /* Build a message with the required information */
+      let requestType = 'storeTreeNodes';
+      let jsonStr = treeNodesStr; 
+      jsonStr = HDLmUtility.updateJsonStr(jsonStr, 'HDLmRequestType', requestType);   
       HDLmWebSockets.contentSendValue.push(jsonStr);
-      let webSocketsMessageCallbackNull = null;
-      HDLmWebSockets.openWebSocketConnection(webSocketsMessageCallbackNull);
-      return;
-    }
-    /* Open a connnection to another process. Create a promise 
-       that we can settled later. */
-    newPromise = new Promise(function (resolve, reject) {
       /* Build the callback function that will be used to handle the
          WebSocket message that is returned by the caller. Note that
          this routine is a closure and get important values from the
@@ -373,29 +394,6 @@ class HDLmWebSockets {
       /* Open a connnection to another process */
       HDLmWebSockets.openWebSocketConnection(messageCallback);
     });
-    return newPromise;
-  }
-  /* This method sends a delete tree node request to the server. 
-     The delete tree node request deletes one tree node. */
-  static sendDeleteTreeNodeRequest(treePos) {
-    /* Create a temporary tree node */
-    let tempPos = {};
-    /* Add the node path to the temporary tree node */
-    tempPos.nodePath = treePos.nodePath;
-    /* Convert the temporary node into a string */
-    let tempPosStr = JSON.stringify(tempPos);
-    /* Open a connnection to another process */
-    HDLmWebSockets.sendCurrentRequest(tempPosStr, 'deleteTreeNode');
-  }  
-  /* This method sends a store tree nodes request to the server. The 
-     store tree node request stores zero or more trees nodes. The tree
-     node are either added or updated. */
-  static sendStoreTreeNodesRequest(treeNodesStr) {
-    /* console.log('In HDLmWebSockets.sendStoreTreeNodesRequest', treeNodesStr); */
-    /* Open a connnection to another process */
-    let newPromise = HDLmWebSockets.sendCurrentRequest(treeNodesStr,
-                                                       'storeTreeNodes');
-    /* console.log(newPromise); */
     return newPromise;
   }
   /* This method sends an update tree node request to the server. The 

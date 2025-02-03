@@ -160,6 +160,11 @@ class HDLmBuildRules {
     */
     /* Check if the script is valid JavaScript */
     scriptValid = HDLmHtml.checkJavaScriptCode(scriptStr);
+    /* scriptValid = false; */
+    /* Check if the script is valid JavaScript. If the script is not
+       valid JavaScript, then we can't do anything. */
+    if (!scriptValid)  
+      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];
     /* At this point we want to work on the 'style' insertions. The first 
        step is too remove any 'style' tags and/or new line characters. */
     styleStr = styleStr.replace(/^<style>(\n)*/g, "");  
@@ -191,9 +196,14 @@ class HDLmBuildRules {
       /* Add the style script to the styles script string */
       stylesStr += styleScript;
     }
-    /* Check if the script build to add style information 
+    /* Check if the script built to add style information 
        is valid JavaScript */
     stylesValid = HDLmHtml.checkJavaScriptCode(stylesStr);
+    /* Check if the script built to add style information
+       is valid JavaScript. If the script is not valid 
+       JavaScript, then we can't do anything. */
+    if (!stylesValid)  
+      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr]; 
     /* Check if the both the script string and the style string 
        are valid JavaScript. If both are valid, then the overall 
        JavaScript is valid. */
@@ -201,6 +211,10 @@ class HDLmBuildRules {
       overallStr = scriptStr + stylesStr;
       overallValid = true;
     }
+    /* Either the script string or the style string is not valid 
+       JavaScript */
+    else 
+      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];    
     /* Build a URL object from the URL string */
     let urlObj = new URL(urlStr);
     /* Get some information from the URL object */
@@ -234,7 +248,11 @@ class HDLmBuildRules {
       let nodeString = parentNodePath.toString();
       console.log('In HDLmBuildRules.constructTreeNode', nodeString);
       HDLmError.buildError('Error', 'Locate', 9, nodeString);
-      return null;
+      /* This routine used to just return 'null' (without the quotes)
+         to the caller. However, the caller expects a list with two
+         values. */
+      /* return null; */
+      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];  
     }    
     /* The URL string is modified (possibly) to remove the suffix.
        We don't want the suffix (and the period before the suffix)
@@ -254,6 +272,7 @@ class HDLmBuildRules {
     newModName = HDLmMenus.buildModificationName(parentTreeNode, 
                                                  tempWhyValue,
                                                  ruleType);  
+    /* console.log('New mod name = ' + newModName); */
     /* Build the tooltip for the rule */
     let longNameStr = HDLmMod.getModificationLongName(ruleType);
     let tooltipStr = HDLmString.ucFirst(longNameStr);
@@ -292,7 +311,7 @@ class HDLmBuildRules {
     treeNodeObj.type = nodeType
     treeNodeObj.nodePath = newRuleNodePath;
     /* Return the new tree node object to the caller */
-    return [treeNodeObj, overallValid];
+    return [treeNodeObj, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];
   }
   /* Build the UI used to get the web page URL. The 
      web page URL is provided by the user. */
@@ -467,11 +486,14 @@ class HDLmBuildRules {
   static handleInitialization() {
     /* console.log('In HDLmBuildRules.handleInitialization'); */
     /* console.log(window.location); */
+    /* console.log(window.location.pathname); */  
     /* This routine may been invoked to build rules or it may have 
        been invoked for some other reason. Check if the path shows 
        that what the user really wants is to build rules. */
     let buildRules = false;
     let windowlocationPathName = window.location.pathname;
+    /* Under the debugger, we get somethink like */
+    console.log('window.location.pathname - ' + window.location.pathname);
     /* const str = "Hello\x20World"; */
     /* console.log("Hello\x20\x22\x20World"); */
     /* l6et rv = HDLmString.getCompleteWords('The quick brown fox', 3); */
@@ -566,7 +588,7 @@ class HDLmBuildRules {
         case HDLmBuildRulesStageTypes.getModifications: {
           /* console.log('In HDLmBuildRules.handleInitialization before get modifications'); */         
           let getModificationsPromise = HDLmWebSockets.getModifications();
-          /* console.log('In HDLmBuildRules.handleInitialization after get modifications'); */
+          /* console.log('In HDLmBuildRules.handleInitialization after get modifications', getModificationsPromise); */
           getModificationsPromise.then(function (responseText) {
             /* console.log(responseText); */
             /* Convert the JSON string passed to this routine 
@@ -576,6 +598,7 @@ class HDLmBuildRules {
             stage = HDLmBuildRulesStageTypes.setTestModeOn;
             HDLmBuildRules.nextStage(stage, '');          
           }, function (error) {
+            /* console.log(error); */
             let errorText = '';
             errorText = HDLmError.buildError('Error', 'Get modification failure', 52, error);
             HDLmUtility.setErrorText(errorText);
@@ -584,6 +607,7 @@ class HDLmBuildRules {
             /* break */
           });      
           /* Terminate the next stage loop and terminate the switch */
+          /* console.log('Here'); */
           nextStageLoop = false;
           break; 
         }
@@ -881,9 +905,33 @@ class HDLmBuildRules {
              later. */
           HDLmBuildRules.suggestionText = varNext.suggestionText;
           HDLmBuildRules.webPageUrl = varNext.webPageUrl;
-          /* Build some rules for the current web page */
-          HDLmBuildRules.webpageImproverRunServices(HDLmBuildRules.suggestionText,
-                                                    HDLmBuildRules.webPageUrl);
+          /* Build some rules for the current web page. This is actually
+             an async routine, which means that invoking it, produces a 
+             promise. */
+          let webpageImproverPromise = HDLmBuildRules.webpageImproverRunServices(HDLmBuildRules.suggestionText,
+                                                                                 HDLmBuildRules.webPageUrl);
+          /* Try to wait on the promise. If the promise is resolved 
+             without an error, then we have the rules. If the promise
+             is rejected, then we have an error. */
+          webpageImproverPromise.then(function(webpageImproverRv) {
+            /* console.log(webpageImproverRv); */
+            /* Check if the return value show that no problems were
+               encountered. */ 
+            if (webpageImproverRv == true) {
+              /* Run the next stage */                
+              stage = HDLmBuildRulesStageTypes.buildWebPageRules;
+              HDLmBuildRules.nextStage(stage, '');
+            }  
+            else {
+              /* console.log(webpageImproverRv); */
+              stage = HDLmBuildRulesStageTypes.waitForUrlInput;
+              HDLmBuildRules.nextStage(stage, '');
+            }             
+          }, function(webpageImproverError) {
+            console.log(webpageImproverError); 
+            stage = HDLmBuildRulesStageTypes.waitForUrlInput;
+            HDLmBuildRules.nextStage(stage, '');
+          });
           /* Terminate the next stage loop and terminate the switch */
           nextStageLoop = false;
           break;
@@ -1396,7 +1444,7 @@ class HDLmBuildRules {
       if (!serviceData.hasOwnProperty('webpage')) {
         let errorText = serviceData;
         HDLmUtility.setErrorText(errorText);
-        return;
+        return false;
       }
       /* Get some values from the JSON object */
       HDLmBuildRules.webpageImproverWebpage = serviceData.webpage;  
@@ -1421,7 +1469,7 @@ class HDLmBuildRules {
       if (!serviceData.hasOwnProperty('improvements')) {
         let errorText = 'No improvements were found';
         HDLmUtility.setErrorText(errorText);
-        return;
+        return false;
       }
       /* Get some values from the JSON object */
       HDLmBuildRules.webpageImproverImprovements = serviceData.improvements;  
@@ -1471,18 +1519,36 @@ class HDLmBuildRules {
                                                              improvementWhy, 
                                                              markupObj);
         let treeNodeObj = constructList[0];
-        let scriptValid = constructList[1];
+        let overallValid = constructList[1];
+        let scriptValid = constructList[2];
+        let stylesValid = constructList[3];
+        let scriptStr = constructList[4];
+        let stylesStr = constructList[5];
+        /* console.log('Information from constructTreeNode()', treeNodeObj, improvementWhy, markupObj, HDLmBuildRules.webPageUrl); */
+        /* console.log(overallValid, scriptValid, stylesValid); */
+        /* console.log(scriptStr); */
+        /* console.log(stylesStr); */
         /* Check if the script value is valid */
-        if (scriptValid) {
+        if (overallValid) {
           HDLmTree.storeTreeNode(treeNodeObj);
           /* Convert the tree node object to a string */
           let treeNodeStr = JSON.stringify(treeNodeObj);
           HDLmBuildRules.webpageImproverRules.push(treeNodeStr);
         }
+        /* Some type of error was detected. Report the error 
+           and continue processing. */
+        else {
+          console.log('Information from constructTreeNode()', treeNodeObj, improvementWhy, markupObj, HDLmBuildRules.webPageUrl);
+          console.log(overallValid, scriptValid, stylesValid);
+          console.log(scriptStr);
+          console.log(stylesStr);
+          let errorText = 'The generated script or style value(s) is/are not valid';
+          HDLmUtility.setErrorText(errorText); 
+          return false
+        }
       }
-      /* Run the next stage */                
-      serviceStage = HDLmBuildRulesStageTypes.buildWebPageRules;
-      HDLmBuildRules.nextStage(serviceStage, '');
+      /* Return to the caller */
+      return true;
     } 
     /* Handle some sort of error condition */
     catch (error) {
@@ -1490,6 +1556,7 @@ class HDLmBuildRules {
       let errorText = '';
       errorText = HDLmError.buildError('Error', 'Get Webpage-Improver Error', 52, error);
       HDLmUtility.setErrorText(errorText);
+      return false;
     }
   }
 } 
