@@ -1,5 +1,5 @@
 ﻿/**
- * HDLmWebSockets short summary.
+ * HDLmWebSockets shortt summary.
  *
  * HDLmWebSockets description.
  *
@@ -285,6 +285,7 @@ class HDLmWebSockets {
     newWebTargetPathValue = 'HDLmWebSocketServer';
     newWebTarget = newWebTargetScheme + '://' + newWebTargetSite + ':' +
       newWebTargetPort + '/' + newWebTargetPathValue + '/';
+    /* console.log('In HDLmWebSockets.openWebSocketConnection', newWebTarget); */
     const newWebSocket = new WebSocket(newWebTarget);
     /* console.log(newWebSocket); */
     /* The statement below establishes the message (receive) routine

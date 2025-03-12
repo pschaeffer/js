@@ -81,7 +81,7 @@ const HDLmConfigConstants =
     "webpageImproverMarkupPath":           "markup",
     "webpageImproverSessionPath":          "session",
     "webpageImproverWebpagePath":          "webpage",
-    "webpageImproverPort":                 "5001",
+    "webpageImproverPort":                 "5005",
   };
 /* The following JSON data struture defines all of the fields that
    can be configured. For each field, the JSON structure gives the

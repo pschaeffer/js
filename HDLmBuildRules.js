@@ -661,6 +661,7 @@ class HDLmBuildRules {
                is webpage-improver processing. */
             else {
               stage = HDLmBuildRulesStageTypes.webpageImproverServices;
+              /* console.log('About to invoke nextState - ', responseObj); */
               HDLmBuildRules.nextStage(stage, responseObj);
             }
           }, function (error) {
@@ -1363,7 +1364,9 @@ class HDLmBuildRules {
     urlStr += ':';
     urlStr += HDLmConfigInfo.getWebpageImproverPort();
     urlStr += '/';
-    urlStr += servicePath  
+    urlStr += servicePath;
+    console.log('urlStr is ' + urlStr); 
+    console.log('JSON is ' + serviceJson);
     /* Send the URL to the service */
     webPromise = fetch(urlStr, {  
                                   "method": "POST",
@@ -1414,8 +1417,8 @@ class HDLmBuildRules {
       servicePath = HDLmConfigInfo.getWebpageImproverLlmPath();
       /* Invoke the LLM service */
       servicePromise = HDLmBuildRules.webpageImproverInvokeService(servicePath, 
-                                                                  serviceHeaders,
-                                                                  serviceJson);
+                                                                   serviceHeaders,
+                                                                   serviceJson);
       /* Wait for the LLM service to complete */
       serviceResponse = await servicePromise;
       /* Convert the response to a JSON object */
