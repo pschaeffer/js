@@ -1,5 +1,5 @@
 ﻿/**
- * HDLmWebSockets shortt summary.
+ * HDLmWebSockets short summary.
  *
  * HDLmWebSockets description.
  *
