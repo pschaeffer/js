@@ -535,7 +535,10 @@ class HDLmMenus {
      the new modification name anywhere. However, it (the new name)
      is returned to the caller. The returned name may or may not be 
      unqiue. The name may or may not already be in use. */
-  static buildModificationBase(newUrlValueStr, newDetailsType) {
+  static buildModificationBase(newUrlValueStr, 
+                               newDetailsType, 
+                               quoteChars = "'", 
+                               ignoreSomeSingleQuotes = false) {
     let defaultShortModName = HDLmDefines.getString('HDLMSHORTMODNAME');
     let newModName;
     let newPathString;
@@ -560,7 +563,7 @@ class HDLmMenus {
     /* Use the modification type to help build the modification name */
     newModName += ' ' + newDetailsType;
     /* Change the first character of each word to uppercase */
-    newModName = HDLmString.ucFirstSentence(newModName);
+    newModName = HDLmString.ucFirstSentence(newModName, quoteChars, ignoreSomeSingleQuotes);
     return newModName;
   }
   /* The next method builds a new modification name using a set of 
@@ -574,14 +577,19 @@ class HDLmMenus {
   static buildModificationName(parentTreeNode,  
                                newUrlValueStr, 
                                newDetailsType,
-                               removeTails = false) {
+                               removeTails = false,
+                               quoteChars = "'", 
+                               ignoreSomeSingleQuotes = false) {
     /* console.log('In HDLmMenus.buildModificationName'); */
     /* console.log(parentTreeNode); */
     /* console.log(newUrlValueStr); */
     /* console.log(newDetailsType); */
     /* Get the initial new modification name. This name may be altered
        by adding a suffix below. */
-    let newModName = HDLmMenus.buildModificationBase(newUrlValueStr, newDetailsType);
+    let newModName = HDLmMenus.buildModificationBase(newUrlValueStr, 
+                                                     newDetailsType,
+                                                     quoteChars,
+                                                     ignoreSomeSingleQuotes);
     /* console.log(newModName); */
     /* Adjust the modification name (by adding a numeric suffix in parenthesis), if
        need be */
@@ -5033,7 +5041,7 @@ class HDLmMenus {
     return null;
   }
   /* This method sets the pass-through value of the current tree node to
-     a valud passed by the caller. Of course, various types of error 
+     a value passed by the caller. Of course, various types of error 
      checking is done as well. */
   static setPassThruStatus(currentTreeNode, currentTreeType, passThru) {
     /* Check if the node type is acceptable for the current editor type */

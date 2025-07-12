@@ -609,6 +609,12 @@ const HDLmPassInfoData =
           "subtype":     "extra"
         },
         {
+          "description": "Probability",
+          "source":      "probability",
+          "fieldtype":   "float",
+          "subtype":     "probability"
+        },
+        {
           "description": "Use Mode",
           "source":      "usemode",
           "fieldtype":   "usemode",

@@ -322,8 +322,15 @@ class HDLmString {
      operator token. 
 
      Note that an identifier can contain numeric digits in it. This is part
-     of the definition of an identifier in JavaScript. */
-  static getTokens(inStr, quoteChars = "'") {
+     of the definition of an identifier in JavaScript. 
+     
+     This code supports one very special case. In some cases, a single 
+     quote is not used to delimit a string, but is actually an apostrophe.
+     The English language uses apostrophes in contractions (e.g. "don't")   
+     and possessives (for example "John's" without the double quotes) and 
+     plural forms. In these cases, the apostrophe is not used to delimit 
+     a string. The apostrophe is treated as part of the identifier. */
+  static getTokens(inStr, quoteChars = "'", ignoreSomeSingleQuotes = false) {
     /* Make sure the first argument passed by the caller is a string */
     if (typeof inStr != 'string') {
       let errorText = `Input value passed to getTokens is not a string`;
@@ -345,6 +352,7 @@ class HDLmString {
     let rv = [];
     let obj;
     let pos = 0;
+    let unmatchedQuotes = false;
     /* Process each character in the input string */
     while (pos < inLen) {
       /* Get the current character */
@@ -358,11 +366,206 @@ class HDLmString {
         obj.pos = pos;
         obj.value = ch;
         pos++;
-        /* Append all alphanumeric characters after the first one */
+        /* Append all alphanumeric characters after the first one. In some
+           cases single quotes (apostrophes) are considerd to be alphanumber
+           character. See below.  */
         while (pos < inLen) {
           /* Get the next character */
           ch = inStr.charAt(pos);
-          if (!HDLmString.isAlphaNumeric(ch))
+          /* In some cases, we must force single quote characters to be
+             treated as alphanumeric characters. This is done to support
+             contractions, possessive forms, and plural forms. 
+             
+             The problem is that English uses the single quote character
+             in two ways. Single quotes are used as a string delimiter 
+             and as an apostrophe. If single quote is used as an apostrophe
+             then it must be treated as alphanumber character. 
+             
+             We don't support escape characters. In some cases, single quote
+             characters are escaped. For example, if a single quote is used
+             inside a string delimited by single quotes, then it must be 
+             escaped. The escape character should be checked for in some
+             cases. 
+             
+             In some cases, all upper case is used. This might include
+             the trailing 's' (without the quotes). This case should be
+             checked for and properly supported. 
+             
+             In some cases, numbers should be converted to identifiers.
+             For example, the string "1960's" (without the double quotes)
+             should be treated as one identifier with six characters. 
+             
+             In some cases, operators should be converted to identifiers.
+             For example, the string "&'s" (without the double quotes)
+             should be treated as one identifier with three characters. 
+
+             In some cases, apostrophes inside a string should be treated
+             as part of the contents of the string, rather than terminating
+             the string. For example consider the string 'abc users's def'.
+             The apostrophe after 'users' (without the quotes) is not meant
+             to terminate the string, but is just a possessive form. The 
+             string should not be converted to an identifier. 
+
+             The rules for using an apostrophe are quite complex. See the
+               following references.
+
+               https://www.freecodecamp.org/news/what-is-a-contraction-grammar-and-definition/
+               https://www.suu.edu/writingcenter/undergraduate/pdf/tip-sheets/apostrophe.pdf
+               https://en.wikipedia.org/wiki/Apostrophe
+               https://en.wikipedia.org/wiki/Wikipedia:List_of_English_contractions
+             
+             The plural and possessive forms are badly mixed up. For example, in some
+             cases apostrophe s is plural and in other cases it is a possessive. */  
+          let forceAlphaNumeric = false;   
+          /* What follows is a dummy loop used only to allow break to work */          
+          while (true) {
+            /* Check if we have a single quote character. If we don't
+               then we have not more work to do. */
+            if (ch != "'") 
+              break;
+            /* Check if the caller wants to ignore some single quotes.
+               If not, then we have not more work to so. */
+            if (ignoreSomeSingleQuotes == false)
+              break;
+            /* Get the number of prior characters. This is the number of
+               characters before the single quote. */
+            let priorCount = pos;
+            /* Get the prior character, if we have one */
+            let priorChar = '';
+            let priorCharIsAlphaStrictly = false;
+            if (priorCount >= 1) {
+              priorChar = inStr.charAt(pos - 1);
+              priorCharIsAlphaStrictly = HDLmString.isAlphaStrict(priorChar);
+            }
+            /* Get the number of characters after the single quote. This 
+               is the number of characters after the single quote. */
+            let afterCount = inLen - pos - 1;
+            /* Check if the next character is an 's' (without the quotes) */ 
+            let afterChar = '';
+            if (afterCount >= 1)
+              afterChar = inStr.charAt(pos + 1);
+            /* We assume that the character after the plural form is not a white 
+               space character. If it is, then we have might have a valid plural 
+               form. The other possibility is that we don't have any characters
+               after the plural form. */
+            let afterOk = false;
+            if (afterCount >= 1) {        
+              let afterChar = inStr.charAt(pos + 1);
+              if (HDLmString.isWhiteSpace(afterChar))       
+                afterOk = true;
+            }
+            /* This is a check for end-of-string */ 
+            else if (afterCount == 0) 
+              afterOk = true;
+            /* We assume that the character after the contraction or possessive form
+               or plural form is not a white space character. If it is, then we have
+               might have a valid contraction or possessive form or plural form. The 
+               other possibility is that we don't have any characters after the contraction
+               or possessive form or plural form. */
+            let afterNextOk = false;
+            if (afterCount >= 2) {        
+              let afterNextChar = inStr.charAt(pos + 2);
+              if (HDLmString.isWhiteSpace(afterNextChar))       
+                afterNextOk = true;
+            }
+            /* This is a check for end-of-string */ 
+            else if (afterCount == 1) 
+              afterNextOk = true;
+            /* We assume that the character after the contraction or possessive form
+               or plural form is not a white space character. If it is, then we have
+               might have a valid contraction or possessive form or plural form. The 
+               other possibility is that we don't have any characters after the contraction
+               or possessive form or plural form. */
+            let afterAfterNextOk = false;
+            if (afterCount >= 3) {        
+              let afterAfterNextChar = inStr.charAt(pos + 3);
+              if (HDLmString.isWhiteSpace(afterAfterNextChar))       
+                afterAfterNextOk = true;
+            }
+            /* This is a check for end-of-string */ 
+            else if (afterCount == 2) 
+              afterAfterNextOk = true;
+            /* Check if we have a contraction. This code checks for many
+               types of contractions. */ 
+            if ((priorCharIsAlphaStrictly       && 
+                 afterCount >= 2                &&
+                 inStr.substr(pos+1, 2) == "ll" &&
+                 afterAfterNextOk == true )        ||
+                (priorCharIsAlphaStrictly       && 
+                 afterCount >= 2                &&
+                 inStr.substr(pos+1, 2) == "re" &&
+                 afterAfterNextOk == true )        ||
+                (priorCharIsAlphaStrictly       && 
+                 afterCount >= 2                &&
+                 inStr.substr(pos+1, 2) == "ve" &&
+                 afterAfterNextOk == true )        ||
+                (priorCharIsAlphaStrictly       && 
+                 afterCount >= 1                &&
+                 inStr.substr(pos+1, 1) == "d"  &&
+                 afterNextOk == true )             ||
+                (priorCharIsAlphaStrictly       && 
+                 afterCount >= 1                &&
+                 inStr.substr(pos+1, 1) == "m"  &&
+                 afterNextOk == true )             || 
+                (priorChar == 'n'               && 
+                 afterCount >= 1                &&
+                 inStr.substr(pos+1, 1) == "t"  &&
+                 afterNextOk == true)              ||
+                /* Check for a'ight which is a contraction of alright */
+                (priorChar == 'a'               && 
+                 afterCount >= 4                &&
+                 inStr.substr(pos+1, 4) == "ight") ||
+                /* Check for g'ovt which is a contraction of government */
+                (priorChar == 'g'               && 
+                 afterCount >= 3                &&
+                 inStr.substr(pos+1, 3) == "ovt")
+                ) { 
+              forceAlphaNumeric = true;
+              break;
+            }
+            /* Check if we have a possessive form. The first step is to check  
+               if the prior character is strictly an alpha character. The
+               second stop is to check if the character after the single
+               quote is an 's' (without the quotes). The third step is 
+               to check for a blank or end-of-string after the 's' (without 
+               the quotes). */ 
+            if (priorCharIsAlphaStrictly == true &&
+                afterChar == 's'                 &&
+                afterNextOk == true) {
+              forceAlphaNumeric = true;
+              break;
+            }
+            /* Check if we are in a string, delimited by single quotes */
+            let unmatchedSingleQuotes = false;
+            if (quoteChars == "'" &&
+                unmatchedQuotes == true)
+              unmatchedSingleQuotes = true;           
+            /* Check if we have a plural form. The first step is to check
+               if the prior character is an 's' (without the quotes). The 
+               second step is to check for a blank or end-of-string after
+               the single quote. The third step is to make sure we are not
+               in a string delimited by single quotes. 
+               
+               The above comment may be wrong. If the letter 's' (without
+               the quotes) is followed by single quote, we have plural 
+               noun and the single quote probably means we have the 
+               possessive form. Of course, some strings actually end 
+               in 's' (without the quotes). It would be a mistake in 
+               these cases, to treat the single quote after the 's' 
+               (without the quotes) and anything other than the end
+               of the string. */
+            if (priorChar == 's'         &&
+                afterOk   == true        &&
+                unmatchedSingleQuotes == false) {
+              forceAlphaNumeric = true;
+              break;
+            }      
+            break;
+          }
+          /* Check if the force alphanumeric flag is set or if the character 
+             is really an alphanumeric character */
+          if (forceAlphaNumeric             == false && 
+              HDLmString.isAlphaNumeric(ch) == false)
             break;
           obj.value += ch;
           pos++;
@@ -404,14 +607,17 @@ class HDLmString {
         rv.push(obj);
         continue;
       }
+      /* A variable is set here to show that we have found a quote character.
+         This variable is reset if the quote character should be ignored. */
+      let quoteCharFound = quoteChars.includes(ch)
       /* Check for a quote character. The quote character does not become
          part of the output token. Pairs of quotes are combined into one
          quote character that does become part of the output token. The 
          final quote terminates the quoted string. The first quote character
          and the final quote character do not become part of the output token. */
-      if (quoteChars.includes(ch) == true) {
+      if (quoteCharFound == true) {
         let localQuoteChar = ch;
-        let unmatchedQuotes = true;
+        unmatchedQuotes = true;
         obj = {};
         obj.tokType = HDLmTokenTypes.quoted;
         obj.pos = pos;
@@ -624,6 +830,27 @@ class HDLmString {
            (inChar == '_' || inChar == '$') ||
            (inChar >= 'a' && inChar <= 'z') ||
            (inChar >= 'A' && inChar <= 'Z');   
+  }
+  /* The function below returns a boolean showing if a character
+     is a valid alpha character or not. The caller actually passes 
+     a string. However, the length of the string must be exactly
+     one. Note that underscore and dollar sign are not considered 
+     to be alpha characters even though JavaScript considers them
+     to be alpha characters. */
+  static isAlphaStrict(inChar) {
+    /* Make sure the argument passed by the caller is a string */
+    if (typeof inChar != 'string') {
+      let errorText = `Input character value passed to isAlphaStrict is not a string`;
+      HDLmAssert(false, errorText);
+    }
+    let inLen = inChar.length;
+    /* Make sure the input string length is one */
+    if (inLen != 1) {
+      let errorText = 'Input string (' + inChar + ') length (' + inLen + ') passed to isAlphaStrict is not one';
+      HDLmAssert(false, errorText);
+    }
+    return (inChar >= 'a' && inChar <= 'z') ||
+           (inChar >= 'A' && inChar <= 'Z');
   }
   /* The function below returns a boolean showing if a character
      is a valid numeric digit or not. The caller actually passes 
@@ -890,7 +1117,7 @@ class HDLmString {
   }
   /* Convert the first character all of words in a string to uppercase
      and return the possibly modified sentence to the caller */
-  static ucFirstSentence(inputValue) {
+  static ucFirstSentence(inputValue, quoteChars = "'", ignoreSomeSingleQuotes = false) {
     /* Make sure the argument passed by the caller is a string */
     if (typeof inputValue != 'string') {
       let errorText = `Input value passed to ucFirstSentence is not a string`;
@@ -899,7 +1126,7 @@ class HDLmString {
     let outputValue = '';
     let valueString;
     let valueToken;
-    let valueTokens = HDLmString.getTokens(inputValue);
+    let valueTokens = HDLmString.getTokens(inputValue, quoteChars, ignoreSomeSingleQuotes);
     let tokenCount = valueTokens.length - 1;
     for (let i = 0; i < tokenCount; i++) {
       /* Get some information from the current token */

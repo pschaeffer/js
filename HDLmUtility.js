@@ -1681,6 +1681,54 @@ class HDLmUtility {
     }
     return [errorDetected, rv];
   }
+  /* This routine breaks a string into an array of substrings.
+	   The array is returned to the caller. The caller passes
+	   the original string and the desired length of each substring.
+	   The last substring may be a short string (if need be). If the
+	   string passed by the caller is empty (zero-length), the array
+	   will have zero elements. */
+	static createArrayOfStrings(inStr, desiredLength) {
+		/* Check the values passed by the caller */
+		if (inStr == null) {
+		  let errorText = "String passed to createArrayOfStrings is null";
+		  HDLmAssert(false, errorText);
+		}
+    /* Make sure the input string argument is a string */
+    if (typeof inStr != 'string') {
+      let errorText = `Input string value passed to createArrayOfStrings  is not a string`;
+      HDLmAssert(false, errorText);
+    }
+		/* Check the desired length passed by the caller */
+		if (desiredLength <= 0) {
+			let errorText = "Desired length passed to createArrayOfStrings is less than or equal to zero";
+			HDLmAssert(false, errorText);
+	  }
+    /* Make sure the desired length argument is a number */
+    if (typeof desiredLength != 'number') {
+      let errorText = `Desired length value passed to createArrayOfStrings  is not a number`;
+      HDLmAssert(false, errorText);
+    }
+		/* Get the length of the string passed by the caller */
+		let inStrLen = inStr.length;
+		/* Allocate the ArrayList that is returned to the caller */
+		let localArray = [];
+		if (localArray == null) {
+			let errorText = "Array not allocated in createArrayOfStrings";
+			HDLmAssertAction(false, errorText);
+    }
+		/* Build the array that is returned to the caller from each
+		   substring */
+		let strOffset = 0;
+		while (strOffset < inStrLen) {
+			let remainingLen = inStrLen - strOffset;
+			if (remainingLen > desiredLength)
+				remainingLen = desiredLength;
+			let tempStr = inStr.substring(strOffset, strOffset + desiredLength);
+			localArray.push(tempStr);
+			strOffset += desiredLength;
+		}
+		return localArray;
+	}
   /* Build a (JSON) string from an error object. The error object may
      be an actual error object or just a string containing an error
      message. The code below handles both cases and returns a JSON
@@ -3264,6 +3312,13 @@ class HDLmUtility {
     let re = /^(?!:\/\/)([a-zA-Z0-9-]+\.){0,5}[a-zA-Z0-9-][a-zA-Z0-9-]+\.[a-zA-Z]{2,64}?$/gi;
     return re.test(domainStr);
   }
+  /* Check if the caller passed a valid floating-point value or not. Return 
+     true if the floating-point value appears to be valid. Return false, if
+     the floating-point value appears to be invalid. */
+  static isValidFloat(passedStr) {
+    const numericalValue = parseFloat(passedStr);
+    return !isNaN(numericalValue) && typeof numericalValue === 'number';
+  }
   /* The method below determines if an HTML visit string is valid or not. 
      This method returns an error string, if an error is detected. This 
      method returns an empty string, if no errors are detected. Note that
@@ -3278,6 +3333,43 @@ class HDLmUtility {
     let errorText = '';
     return errorText;
   }
+  /* This routine takes a string (possibly very long) and breaks
+	   into parts (substrings). Each part is logged. Logged (in this
+     context) means written to the console. */
+	static logStringInParts(whereStr, inStr) {
+		/* Check the values passed by the caller */
+		if (whereStr == null) {
+		  let errorText = "Where string passed to logStringInParts is null";
+		  HDLmAssert(false, errorText);
+		}
+    /* Make sure the where argument is a string */
+    if (typeof whereStr != 'string') {
+      let errorText = `Where value passed to logStringInParts is not a string`;
+      HDLmAssert(false, errorText);
+    }
+    /* Check if the string value is null */
+		if (inStr == null) {
+		  let errorText = "Input string passed to logStringInParts is null";
+		  HDLmAssert(false, errorText);
+		}
+    /* Make sure the input string argument is a string */
+    if (typeof inStr != 'string') {
+      let errorText = `Input string value passed to logStringInParts is not a string`;
+      HDLmAssert(false, errorText);
+    }
+		/* Set a few values for use later. These values make sure we always
+		   use the correct part length. */
+		let partSize = 20;
+		let partOffset = 0;
+		/* Break the passed string into an array of substrings and
+		   log each one */
+		let strArray = HDLmUtility.createArrayOfStrings(inStr, partSize);
+		/* Pass each part of the string passed by the caller to the string function */
+		for (let strEntry of strArray) {
+			console.log(whereStr + " " + partOffset.toString() + " " + strEntry);
+			partOffset += partSize;
+		}
+	}
   /* Merge two objects into a third (new) object. The
      output object is always a new object. The first
      input object is just copied into the output object.

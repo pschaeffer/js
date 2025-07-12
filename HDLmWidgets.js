@@ -2745,7 +2745,7 @@ class HDLmListWidget {
           catch (e) {
             valueValid = false;
           }
-          /* Build the error text message if the valud is invalid */
+          /* Build the error text message if the value is invalid */
           if (!valueValid) {
             let valueTrunc = HDLmString.truncateString(value, 30);
             errorText = `Replace value (${valueTrunc}) is invalid`;
@@ -7255,6 +7255,20 @@ class HDLmTextWidget {
           }
         }
       }
+      /* Check for a probability value. Note that in some cases
+         we allow an empty probability value. */
+      if (subType == 'probability') {
+        value = value.trim();
+        /* Check if the probability value is empty and if empty
+           values are not allowed */
+        if (value == '' &&
+          this.options.emptyFieldOk == false) {
+          errorText = 'The probability value must not be empty';
+          break;
+        }        
+        errorText = HDLmMod.checkProbability(value);   
+        break;
+      }
       /* Check for a user name value. This type of user name is 
          used for authentication. The user name must not be empty 
          or have blanks in it. */
@@ -7707,14 +7721,32 @@ class HDLmTextWidget {
                                                  enterMessageNeededTrueOrFalse);
     /* console.log(errorText); */
     /* We need to check for a very special case where the user is entering
+       a probability. We only really want the error message to be displayed
+       if the user has pressed the enter key. This code should probably 
+       be more general. Update on enter is commonly set as a option.
+       We probably should be checking the options, not looking for a 
+       specific sub type. Note the use of 'in' (without the quotes) 
+       to check for the existence of the 'key' (without the quotes)
+       property. This is required because 'key' (without the quotes)
+       property is inherited. */
+    if (subType == 'probability') {
+      if (event == null             ||
+          ('key' in event) == false ||
+          event.key != 'Enter') 
+        errorText = '';
+    }
+    /* We need to check for a very special case where the user is entering
        a use mode. We only really want the error message to be displayed
        if the user has pressed the enter key. This code should probably 
        be more general. Update on enter is commonly set as a option.
        We probably should be checking the options, not looking for a 
-       specific sub type. */
+       specific sub type. Note the use of 'in' (without the quotes)
+       to check for the existence of the 'key' (without the quotes)
+       property. This is required because 'key' (without the quotes)
+       property is inherited.*/
     if (subType == 'usemode') {
-      if (event == null                        ||
-          event.hasOwnProperty('key') == false ||
+      if (event == null             ||
+          ('key' in event) == false ||
           event.key != 'Enter') 
         errorText = '';
     }

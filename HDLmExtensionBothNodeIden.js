@@ -370,8 +370,8 @@ class HDLmExtensionBothNodeIden {
           /* Write the JSON string to the console so that we can see it */
           /* console.log(jsonStr); */
           alert(jsonStr);
-          /* HDLmWebSockets.sendCurrentRequest(jsonStr, 'buildNode'); */
-          break;
+          HDLmWebSockets.sendCurrentRequest(jsonStr, 'buildNode'); 
+          break
         }
         /* Add a new window, if need be. This code runs as part of the
            content script. That means that it can not do much. We just

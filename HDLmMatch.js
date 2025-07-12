@@ -362,11 +362,11 @@ class HDLmMatch {
     /* Construct a list (vector) of tokens from the test string passed
        by the caller */
     if (matchType == HDLmMatchTypes.glob) {
-      tokenList = HDLmMatch.getTokens(testString, '[]?*!-');
+      tokenList = HDLmMatch.getMatchTokens(testString, '[]?*!-');
       rv = HDLmMatch.checkTokensGlob(tokenList);
     }
     if (matchType == HDLmMatchTypes.like) {
-      tokenList = HDLmMatch.getTokens(testString, '[]%_^-');
+      tokenList = HDLmMatch.getMatchTokens(testString, '[]%_^-');
       rv = HDLmMatch.checkTokensLike(tokenList);
     }
     /* Return a value showing if the test string was valid or not */
@@ -723,7 +723,7 @@ class HDLmMatch {
      
      Note that an identifier can contain numeric digits in it. This is part
      of the definition of an identifier in JavaScript. */
-  static getTokens(inStr, inOps) {
+  static getMatchTokens(inStr, inOps) {
     /* Make sure the input string is not a null value */
     if (inStr == null) {
       let errorText = 'Input string value passed to getTokens is null';

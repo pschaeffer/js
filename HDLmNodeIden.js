@@ -660,6 +660,7 @@ class HDLmNodeIden {
        count values for each type of search */
     let counts = {};
     /* Get the count of DOM elements with the current tag name */
+    /* console.log('In HDLmNodeIden.getCounts', element); */
     let elementTag = element.tagName;
     let nodeList = document.getElementsByTagName(elementTag);
     let nodeListCount = nodeList.length;

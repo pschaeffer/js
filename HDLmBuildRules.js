@@ -40,6 +40,204 @@ class HDLmBuildRules {
     /* event.preventDefault(); */
     HDLmBuildRules.beforeUnloadResolveFunction('The browser was closed');
   }
+    /* Build the addTreeNode string. This string is used just for
+       testing and debugging purposes. */
+  static buildAddTreeNodeString(nodePath) {       
+    let addTreeNodeString = '';
+    addTreeNodeString = '{"tooltip":"Script modification from web-page improver",' +
+                        '"nodePath":["Top","Companies","www.yogadirect.com","Rules",' +
+                        '"www.yogadirect.com","www.yogadirect.com","Script Modification 6/6/2025, 1:24:17 PM"],' +
+                        '"type":"mod",' +
+                        '"details":{' +  
+                        '"type":"script",' +
+                        '"name":"Script Modification 6/6/2025, 1:24:17 PM",' +
+                        '"extra":"",' + 
+                        '"enabled":true,' +
+                        '"created":"2025-06-03T05:57:13.345Z",' +
+                        '"lastModified":"2025-06-03T05:57:13.345Z",' +
+                        '"pathvalue":"","comments":"From variant variant_1747833857020.js",' +
+                        '"prob":100.0,' +
+                        '"usemode":"test",' +
+                        '"cssselector":"",' +  
+                        '"xpath":"",' + 
+                        '"find":[],' + 
+                        '"nodeiden":{"type":"tag",' +  
+                        '"attributes":{"tag":"head"},"counts":{"tag":1},"parent":{"tag":"html"}},' +
+                        '"parameter":0,' +     
+                        '"scripts":[' +
+                        '"document.addEventListener(\\\"DOMContentLoaded\\\"' +
+                        ', function() {\\n    if (window.self !== window.top) {\\n        alert(\\\"This web'        +
+                        'page has been updated for better user experience. We increased the visibility of'           +
+                        ' the contact information and added a prominent \'Contact Us\' button.\\\");\\n       '      +
+                        ' document.querySelector(\\\"body\\\").insertAdjacentHTML(\\\"afterbegin\\\", \\\"<button s' +
+                        'tyle=\'position:fixed; top:10px; right:10px; padding:10px; background-color:#007B'          +
+                        'FF; color:white; border:none; border-radius:5px;\'>Contact Us</button>\\\");\\n    }'       +
+                        ' else {\\n        alert(\\\"This webpage has been updated for better user experienc'        +
+                        'e. We increased the visibility of the contact information and added a prominent '           +
+                        '\'Contact Us\' button.\\\");\\n        document.querySelector(\\\"body\\\").insertAdjacen'  +
+                        'tHTML(\\\"afterbegin\\\", \\\"<button style=\'position:fixed; top:10px; right:10px; pad'    +
+                        'ding:10px; background-color:#007BFF; color:white; border:none; border-radius:5px'           +
+                        ';\'>Contact Us</button>\\\");\\n    }\\n});"],' +
+                        '"updated":false,' +
+                        '"path":"",' +
+                        '"pathre":false}}';
+    let addTreeNodeStrinh = '';
+    addTreeNodeStrinh = '{"tooltip":"Script modification from web-page improver",' +
+                        '"nodePath":["Top","Companies","www.yogadirect.com","Rules",' +
+                        '"www.yogadirect.com","www.yogadirect.com","Script Modification 6/6/2025, 1:24:17 PM"],' +
+                        '"type":"mod",' +
+                        '"details":{' +  
+                        '"type":"script",' +
+                        '"name":"Script Modification 6/6/2025, 1:24:17 PM",' +
+                        '"extra":"",' + 
+                        '"enabled":true,' +
+                        '"created":"2025-06-03T05:57:13.345Z",' +
+                        '"lastModified":"2025-06-03T05:57:13.345Z",' +
+                        '"pathvalue":"","comments":"From variant variant_1747833857020.js",' +
+                        '"prob":100.0,' +
+                        '"usemode":"test",' +
+                        '"cssselector":"",' +  
+                        '"xpath":"",' + 
+                        '"find":[],' + 
+                        '"nodeiden":{"type":"tag",' +  
+                        '"attributes":{"tag":"head"},"counts":{"tag":1},"parent":{"tag":"html"}},' +
+                        '"parameter":0,' +     
+                        '"scripts":[""' +
+                        '],' +
+                        '"updated":false,' +
+                        '"path":"",' +
+                        '"pathre":false}}';
+    let addTreeNodeStrini = '';
+    addTreeNodeStrini = '' +                      
+                        '{' +
+                        '  "type": "mod",' +
+                        '  "tooltip": "Script modification",' +
+                        '  "details": {' +
+                        '    "find": [],' +
+                        '    "scripts": [' +
+                        '      "document.addEventListener(\\\"DOMContentLoaded\\\", function() {\\n  ' +
+                        '       if (window.self !== window.top) {\\n    ' + 
+                        '       alert(\\\"This webpage has been updated for better user experience. ' +
+                        '       We increased the visibility of the contact information and added ' +
+                        '       a prominent \'Contact Us\' button.\\\");\\n       ' +
+                        '       document.querySelector(\\\"body\\\").insertAdjacentHTML(\\\"after' +
+                        '       begin\\\", \\\"<button style=\'position:fixed; top:10px; right:10px; ' +
+                        '       padding:10px; background-color:#007BFF; color:white; border:none; ' +
+                        '       border-radius:5px;\'>Contact Us</button>\\\");\\n    } else {\\n  ' +
+                        '       alert(\\\"This webpage has been updated for better user ' +
+                        '       experience. We increased the visibility of the contact information ' +
+                        '       and added a prominent \'Contact Us\' button.\\\");\\n' +        
+                        '       document.querySelector(\\\"body\\\").insertAdjacentHTML(\\\"after' +
+                        '       begin\\\", \\\"<button style=\'position:fixed; top:10px; right:10px;' +
+                        '       padding:10px; background-color:#007BFF; color:white; border:none; ' +
+                        '       border-radius:5px;\'>Contact Us</button>\\\");\\n    }\\n});"' +
+                        '    ],' +
+                        '    "enabled": true,' +
+                        '    "pathre": false,' +
+                        '    "type": "script",' +
+                        '    "parameter": 0,' +
+                        '    "cssselector": "",' +
+                        '    "comments": "",' +
+                        '    "created": "2025-06-05T07:16:10.434Z",' +
+                        '    "lastmodified": "2025-06-05T07:16:10.434Z",' +
+                        '    "updated": false,' +
+                        '    "extra": "",' +
+                        '    "name": "Mod AB-Testing Variant 5/21/2025, 1:24:17 PM Script",' +
+                        '    "nodeiden": {' +
+                        '      "type": "tag",' + 
+                        '      "attributes": {' +
+                        '        "tag": "head"' +
+                        '       },' +
+                        '      "counts": {' +
+                        '      "tag": 1' +
+                        '       },' +
+                        '      "parent": {' +
+                        '        "tag": "html"' +
+                        '      }' +
+                        '    },' +
+                        '    "path": "/yoga-direct-1-4-inch-yoga-mat.html",' +
+                        '    "prob": 100.0,' +
+                        '    "usemode": "test",' +
+                        '    "xpath": ""' +
+                        '  },' +
+                        '  "nodePath": [' +
+                        '     "Top",' +
+                        '     "Companies",' +
+                        '     "www.yogadirect.com",' +
+                        '     "Rules",' +
+                        '     "example.com",' +
+                        '     "example.com",' +
+                        '     "Mod AB-Testing Variant 5/21/2025, 1:24:17 PM Script"' +
+                        '  ]' +
+                        '}'
+    let addTreeNodeStrinj = '';
+    addTreeNodeStrinj = '' +                      
+                        '{' +
+                        '  "type": "mod",' +
+                        '  "tooltip": "Script modification",' +
+                        '  "details": {' +
+                        '    "find": [],' +
+                        '    "scripts": ' +
+                        '    [' +
+                        '      "/* console.log(\\\"In script\\\", event); */' + 
+                        '       {' +
+                        '         /* alert(\\\"This page has been modified to improve conversion: links in buttons have been updated to direct users to more sensible locations.\\\"); */' +
+                        '         const buttonsToUpdate = [ \\n' +
+                        '           { className: \\\"btn-primary\\\", newHref: \\\"/yoga-mats\\\" }, // Shop Now for Yoga Mats \\n' +
+                        '           { className: \\\"add-to-cart\\\", newHref: \\\"/view_cart.asp\\\" } // View Cart for all Add to Cart buttons \\n' +
+                        '         ]; \\n' +
+                        '         buttonsToUpdate.forEach(button => {' +
+                        '           /* console.log(\\\"In buttons\\\", button); */' +
+                        '           const elements = document.querySelectorAll(`.${button.className}`);' +
+                        '           /* console.log(\\\"In elements\\\", elements); */' +
+                        '           elements.forEach(element => {' +
+                        '             /* console.log(\\\"For Each Before\\\", element.href); */' +
+                        '             element.href = button.newHref;' +
+                        '             /* console.log(\\\"For Each After\\\", element.href); */' +
+                        '           });' +
+                        '        });' +
+                        '      };"' +
+                        '    ],' +
+                        '    "enabled": true,' +
+                        '    "pathre": false,' +
+                        '    "type": "script",' +
+                        '    "parameter": 0,' +
+                        '    "cssselector": "",' +
+                        '    "comments": "",' +
+                        '    "created": "2025-06-05T07:16:10.434Z",' +
+                        '    "lastmodified": "2025-06-05T07:16:10.434Z",' +
+                        '    "updated": false,' +
+                        '    "extra": "",' +
+                        '    "name": "Script Mod Variant 7",' +
+                        '    "nodeiden": {' +
+                        '      "type": "tag",' + 
+                        '      "attributes": {' +
+                        '        "tag": "head"' +
+                        '       },' +
+                        '      "counts": {' +
+                        '      "tag": 1' +
+                        '       },' +
+                        '      "parent": {' +
+                        '        "tag": "html"' +
+                        '      }' +
+                        '    },' +
+                        '    "path": "//.*/",' +
+                        '    "prob": 1.0,' +
+                        '    "usemode": "prod",' +
+                        '    "xpath": ""' +
+                        '  },' +
+                        '  "nodePath": [' +
+                        '     "Top",' +
+                        '     "Companies",' +
+                        '     "www.yogadirect.com",' +
+                        '     "Rules",' +
+                        '     "example.com",' +
+                        '     "example.com",' +
+                        '     "Script Mod Variant 7"' +
+                        '  ]' +
+                        '}';
+    return addTreeNodeStrinj;
+  }
   /* Build a JavaScript array with the new rules in it. For 
      now the new rules are hard-coded below. */
   static buildRulesArray() {
@@ -56,6 +254,7 @@ class HDLmBuildRules {
     '"2024-07-06T05:11:07.058Z","lastmodified":' + 
     '"2024-07-06T05:11:07.058Z","pathvalue":' + 
     '"/yoga-direct-1-4-inch-yoga-mat.html","comments":"",' + 
+    '"prob":100.0,' +
     '"usemode":"test",' +
     '"children": [],' +
     '"cssselector":"","xpath":"","find":[],"nodeiden":' + 
@@ -79,6 +278,7 @@ class HDLmBuildRules {
     '"2024-07-06T05:11:07.058Z","lastmodified":' + 
     '"2024-07-06T05:11:07.058Z","pathvalue":' + 
     '"/yoga-direct-1-4-inch-yoga-mat.html","comments":"",' + 
+    '"prob":100.0,' +
     '"usemode":"test",' +
     '"children": [],' +
     '"cssselector":"","xpath":"","find":[],"nodeiden":' + 
@@ -102,6 +302,7 @@ class HDLmBuildRules {
     '"2024-07-06T05:11:07.058Z","lastmodified":' + 
     '"2024-07-06T05:11:07.058Z","pathvalue":' + 
     '"/yoga-direct-1-4-inch-yoga-mat.html","comments":"",' + 
+    '"prob":100.0,' +
     '"usemode":"test",' +
     '"children": [],' +
     '"cssselector":"","xpath":"","find":[],"nodeiden":' + 
@@ -117,202 +318,7 @@ class HDLmBuildRules {
     rulesArray.push(newRuleStr);
     /* Return the rules array to the caller */
     return rulesArray;
-  }
-  /* Construct a tree node based on the information passed 
-     to this routine. The new tree node object is returned
-     to the caller.  */
-  static constructTreeNode(urlStr, improveWhy, markupObj) {
-    let nodePathEntry;
-    let nodeType = 'mod';
-    let ruleType = 'script'
-    let scriptValid = false;
-    let stylesStr = '';
-    let stylesValid = false;
-    let overallValid = false;
-    let overallStr = ''; 
-    /* console.log('In HDLmBuildRules.constructTreeNode'); */
-    /* console.log(urlStr); */
-    /* console.log(improveWhy); */
-    /* console.log(markupObj); */
-    /* Extract some values from the markup object */
-    let scriptStr = markupObj.scriptInsertions;
-    let styleStr = markupObj.styleInsertions;
-    /* Change the script in a few ways. The regular expressions 
-       below remove the leading and trailing 'script' tags and
-       some new line characters. */
-    /* console.log(scriptStr); */
-    scriptStr = scriptStr.replace(/^<script((\s)+type(\s)*=(\s)*(?<quotechar>'|")text\/javascript(\k<quotechar>))?>(\n)*/g, "");  
-    scriptStr = scriptStr.replace(/(\n)*<\/script>/, "");   
-    /* Check if the JavaScript script starts and/or ends
-       with a new line. If it does, remove the new line
-       from the start or end or both. This code is no
-       longer needed. The regular expressions above do 
-       the same work. */
-    /* 
-    if (scriptStr.startsWith('\n'))
-      scriptStr = scriptStr.substring(1);
-    if (scriptStr.endsWith('\n')) {
-      let scriptStrLen = scriptStr.length;
-      if (scriptStrLen > 0)
-        scriptStrLen -= 1;
-      scriptStr = scriptStr.substring(0, scriptStrLen);
-    }
-    */
-    /* Check if the script is valid JavaScript */
-    scriptValid = HDLmHtml.checkJavaScriptCode(scriptStr);
-    /* scriptValid = false; */
-    /* Check if the script is valid JavaScript. If the script is not
-       valid JavaScript, then we can't do anything. */
-    if (!scriptValid)  
-      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];
-    /* At this point we want to work on the 'style' insertions. The first 
-       step is too remove any 'style' tags and/or new line characters. */
-    styleStr = styleStr.replace(/^<style>(\n)*/g, "");  
-    styleStr = styleStr.replace(/(\n)*<\/style>/, "");
-    /* The style string may actually contain several styles. The 
-       first step is break up the style string into individual
-       styles. The individual styles are return in an array. */
-    let styleArray = HDLmHtml.splitCssString(styleStr);
-    /* Process each of the styles */
-    for (styleStr of styleArray) {
-      /* The next step is to escape any single quotes in the style string.
-         This is done because the style string is going to be assigned to
-         a JavaScript variable. */
-      styleStr = styleStr.replace(/\'/g, "\\'");
-      /* The next step is to escape any new line characters in the style
-         string. This is done because the style string is going to be
-         assigned to a JavaScript variable. The inspiration for this code
-         came from https://github.com/benjamn/recast/issues/421. */ 
-      styleStr = styleStr.replace(/\n/g, "\\n");
-      /* Build some more JavaScript code. This JavaScript code is used to
-         add the style string to the web page. */
-      let styleScript = '';
-      styleScript += '\n';
-      styleScript += '{\n';
-      styleScript += '  var styleSheet = document.createElement("style");\n';
-      styleScript += '  styleSheet.textContent = ' + "'" + styleStr + "'" + ';' + '\n';
-      styleScript += '  document.head.appendChild(styleSheet);\n';
-      styleScript += '}';
-      /* Add the style script to the styles script string */
-      stylesStr += styleScript;
-    }
-    /* Check if the script built to add style information 
-       is valid JavaScript */
-    stylesValid = HDLmHtml.checkJavaScriptCode(stylesStr);
-    /* Check if the script built to add style information
-       is valid JavaScript. If the script is not valid 
-       JavaScript, then we can't do anything. */
-    if (!stylesValid)  
-      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr]; 
-    /* Check if the both the script string and the style string 
-       are valid JavaScript. If both are valid, then the overall 
-       JavaScript is valid. */
-    if (scriptValid && stylesValid) {
-      overallStr = scriptStr + stylesStr;
-      overallValid = true;
-    }
-    /* Either the script string or the style string is not valid 
-       JavaScript */
-    else 
-      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];    
-    /* Build a URL object from the URL string */
-    let urlObj = new URL(urlStr);
-    /* Get some information from the URL object */
-    let urlHostName = urlObj.hostname;
-    let urlPathName = urlObj.pathname;
-    /* Build the node path of the parent node (site) */
-    let parentNodePath = [];
-    nodePathEntry = HDLmDefines.getString('HDLMTOPNODENAME');
-    parentNodePath.push(nodePathEntry);
-    nodePathEntry = HDLmDefines.getString('HDLMCOMPANIESNODENAME');
-    parentNodePath.push(nodePathEntry); 
-    parentNodePath.push(urlHostName);
-    nodePathEntry = HDLmDefines.getString('HDLMRULESNODENAME');
-    parentNodePath.push(nodePathEntry);
-    nodePathEntry = HDLmDefines.getString('HDLMDIVISIONNODENAME');
-    parentNodePath.push(nodePathEntry);
-    nodePathEntry = HDLmDefines.getString('HDLMSITENODENAME');
-    parentNodePath.push(nodePathEntry);
-    /* Build all of the intermediate levels as need be. This call will
-       update the node tree (HDLmTree) in memory and won't send any new 
-       nodes to the database. */
-    let updateDatabaseFalse = false;
-    let newSiteNode;
-    newSiteNode = HDLmTree.buildSiteNode(parentNodePath, updateDatabaseFalse, HDLmNodeTypes.rules);
-    /* Try to locate the parent node of the new tree node. The 
-       parent node is needed to get the (possible) new name 
-       suffix. */
-    let parentTreeNode = HDLmTree.locateTreeNode(parentNodePath);
-    /* Report an error if the parent node could not be found */
-    if (parentTreeNode == null) {
-      let nodeString = parentNodePath.toString();
-      console.log('In HDLmBuildRules.constructTreeNode', nodeString);
-      HDLmError.buildError('Error', 'Locate', 9, nodeString);
-      /* This routine used to just return 'null' (without the quotes)
-         to the caller. However, the caller expects a list with two
-         values. */
-      /* return null; */
-      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];  
-    }    
-    /* The URL string is modified (possibly) to remove the suffix.
-       We don't want the suffix (and the period before the suffix)
-       to be part of the new modification name. This is the old
-       approach where the modification name was derived from the
-       URL. */
-    let urlStringModified = HDLmString.removeFileNameSuffix(urlStr);
-    if (urlStringModified == null)
-      urlStringModified = urlStr;
-    /* Get the new modification name */
-    let newModName = HDLmMenus.buildModificationName(parentTreeNode, 
-                                                     urlStringModified,
-                                                     ruleType);  
-    /* Get the modification name from the why string */
-    let tempWhyValue = HDLmString.getCompleteWords(improveWhy, 55);
-    tempWhyValue = tempWhyValue.trim();
-    newModName = HDLmMenus.buildModificationName(parentTreeNode, 
-                                                 tempWhyValue,
-                                                 ruleType);  
-    /* console.log('New mod name = ' + newModName); */
-    /* Build the tooltip for the rule */
-    let longNameStr = HDLmMod.getModificationLongName(ruleType);
-    let tooltipStr = HDLmString.ucFirst(longNameStr);
-    tooltipStr += ' ' + 'modification'
-    /* Build the node path for the rule */
-    let newRuleNodePath = parentNodePath;
-    newRuleNodePath.push(newModName);
-    /* Creat a new node identification object for the 
-       new rule. The node identification object is used
-       to locate a node in the HTML. The HTML node is 
-       always the head node. */
-    let newNodeIdenObj = new HDLmNodeIden()
-    newNodeIdenObj.type = 'tag';
-    newNodeIdenObj.attributes = {};
-    newNodeIdenObj.attributes.tag = 'head';
-    newNodeIdenObj.counts = {};
-    newNodeIdenObj.counts.tag = 1;
-    newNodeIdenObj.parent = {};
-    newNodeIdenObj.parent.tag = 'html';  
-    /* Create a new rule/modification/details object */
-    let newRuleObj = new HDLmMod(newModName, '', true, ruleType);
-    newRuleObj.pathvalue = urlPathName;
-    newRuleObj.comments = '';
-    newRuleObj.usemode = 'test';
-    newRuleObj.cssselector = '';
-    newRuleObj.xpath = '';
-    newRuleObj.find = [];
-    newRuleObj.nodeiden = newNodeIdenObj;
-    newRuleObj.parameter = 0;
-    /* newRuleObj.scripts = ['let aaa = 3;\nlet bbb = 4;']; */
-    newRuleObj.scripts = [overallStr];  
-    newRuleObj.updated = false;
-    /* Create a new tree node object */
-    let treeNodeObj = new HDLmTree(nodeType, tooltipStr); 
-    treeNodeObj.details = newRuleObj 
-    treeNodeObj.type = nodeType
-    treeNodeObj.nodePath = newRuleNodePath;
-    /* Return the new tree node object to the caller */
-    return [treeNodeObj, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];
-  }
+  }  
   /* Build the UI used to get the web page URL. The 
      web page URL is provided by the user. */
   static buildWebPageUi() {
@@ -452,6 +458,220 @@ class HDLmBuildRules {
       errorText = 'Hoat name is not a string'; 
     return errorText;
   }
+  /* Construct a tree node based on the information passed 
+     to this routine. The new tree node object is returned
+     to the caller.  */
+  static constructTreeNode(urlStr, improveWhy, markupObj) {
+    let nodePathEntry;
+    let nodeType = 'mod';
+    let ruleType = 'script'
+    let scriptValid = false;
+    let stylesStr = '';
+    let stylesValid = false;
+    let overallValid = false;
+    let overallStr = ''; 
+    /* console.log('In HDLmBuildRules.constructTreeNode'); */
+    /* console.log(urlStr); */
+    /* console.log(improveWhy); */
+    /* console.log(markupObj); */
+    /* Extract some values from the markup object */
+    let scriptStr = markupObj.scriptInsertions;
+    let styleStr = markupObj.styleInsertions;
+    /* Change the script in a few ways. The regular expressions 
+       below remove the leading and trailing 'script' tags and
+       some new line characters. */
+    /* console.log(scriptStr); */
+    scriptStr = scriptStr.replace(/^<script((\s)+type(\s)*=(\s)*(?<quotechar>'|")text\/javascript(\k<quotechar>))?>(\n)*/g, "");  
+    scriptStr = scriptStr.replace(/(\n)*<\/script>/, "");   
+    /* Check if the JavaScript script starts and/or ends
+       with a new line. If it does, remove the new line
+       from the start or end or both. This code is no
+       longer needed. The regular expressions above do 
+       the same work. */
+    /* 
+    if (scriptStr.startsWith('\n'))
+      scriptStr = scriptStr.substring(1);
+    if (scriptStr.endsWith('\n')) {
+      let scriptStrLen = scriptStr.length;
+      if (scriptStrLen > 0)
+        scriptStrLen -= 1;
+      scriptStr = scriptStr.substring(0, scriptStrLen);
+    }
+    */
+    /* Check if the script is valid JavaScript */
+    scriptValid = HDLmHtml.checkJavaScriptCode(scriptStr);
+    /* If the script is not valid JavaScript, log the script to the
+       console. This is useful for debugging purposes. */
+    if (!scriptValid)
+      HDLmUtility.logStringInParts('Script', scriptStr);
+    /* scriptValid = false; */
+    /* Check if the script is valid JavaScript. If the script is not
+       valid JavaScript, then we can't do anything. */
+    if (!scriptValid)  
+      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];
+    /* At this point we want to work on the 'style' insertions. The first 
+       step is too remove any 'style' tags and/or new line characters. */
+    styleStr = styleStr.replace(/^<style>(\n)*/g, "");  
+    styleStr = styleStr.replace(/(\n)*<\/style>/, "");
+    /* The style string may actually contain several styles. The 
+       first step is break up the style string into individual
+       styles. The individual styles are return in an array. */
+    let styleArray = HDLmHtml.splitCssString(styleStr);
+    /* Process each of the styles */
+    for (styleStr of styleArray) {
+      /* The next step is to escape any single quotes in the style string.
+         This is done because the style string is going to be assigned to
+         a JavaScript variable. */
+      styleStr = styleStr.replace(/\'/g, "\\'");
+      /* The next step is to escape any new line characters in the style
+         string. This is done because the style string is going to be
+         assigned to a JavaScript variable. The inspiration for this code
+         came from https://github.com/benjamn/recast/issues/421. */ 
+      styleStr = styleStr.replace(/\n/g, "\\n");
+      /* Build some more JavaScript code. This JavaScript code is used to
+         add the style string to the web page. */
+      let styleScript = '';
+      styleScript += '\n';
+      styleScript += '{\n';
+      styleScript += '  var styleSheet = document.createElement("style");\n';
+      styleScript += '  styleSheet.textContent = ' + "'" + styleStr + "'" + ';' + '\n';
+      styleScript += '  document.head.appendChild(styleSheet);\n';
+      styleScript += '}';
+      /* Add the style script to the styles script string */
+      stylesStr += styleScript;
+    }
+    /* Check if the script built to add style information 
+       is valid JavaScript */
+    stylesValid = HDLmHtml.checkJavaScriptCode(stylesStr);
+    /* If the styles string is not valid JavaScript, log the 
+       styles string to the console. This is useful for 
+       debugging purposes. */
+    if (!stylesValid)
+      HDLmUtility.logStringInParts('Styles', stylesStr);
+    /* Check if the script built to add style information
+       is valid JavaScript. If the script is not valid 
+       JavaScript, then we can't do anything. */
+    if (!stylesValid)  
+      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr]; 
+    /* Check if the both the script string and the style string 
+       are valid JavaScript. If both are valid, then the overall 
+       JavaScript is valid. */
+    if (scriptValid && stylesValid) {
+      overallStr = scriptStr + stylesStr;
+      overallValid = true;
+    }
+    /* Either the script string or the style string is not valid 
+       JavaScript */
+    else 
+      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];    
+    /* Build a URL object from the URL string */
+    let urlObj = new URL(urlStr);
+    /* Get some information from the URL object */
+    let urlHostName = urlObj.hostname;
+    let urlPathName = urlObj.pathname;
+    /* Build the node path of the parent node (site) */
+    let parentNodePath = [];
+    nodePathEntry = HDLmDefines.getString('HDLMTOPNODENAME');
+    parentNodePath.push(nodePathEntry);
+    nodePathEntry = HDLmDefines.getString('HDLMCOMPANIESNODENAME');
+    parentNodePath.push(nodePathEntry); 
+    parentNodePath.push(urlHostName);
+    nodePathEntry = HDLmDefines.getString('HDLMRULESNODENAME');
+    parentNodePath.push(nodePathEntry);
+    nodePathEntry = HDLmDefines.getString('HDLMDIVISIONNODENAME');
+    parentNodePath.push(nodePathEntry);
+    nodePathEntry = HDLmDefines.getString('HDLMSITENODENAME');
+    parentNodePath.push(nodePathEntry);
+    /* Build all of the intermediate levels as need be. This call will
+       update the node tree (HDLmTree) in memory and won't send any new 
+       nodes to the database. */
+    let updateDatabaseFalse = false;
+    let newSiteNode;
+    newSiteNode = HDLmTree.buildSiteNode(parentNodePath, updateDatabaseFalse, HDLmNodeTypes.rules);
+    /* Try to locate the parent node of the new tree node. The 
+       parent node is needed to get the (possible) new name 
+       suffix. */
+    let parentTreeNode = HDLmTree.locateTreeNode(parentNodePath);
+    /* Report an error if the parent node could not be found */
+    if (parentTreeNode == null) {
+      let nodeString = parentNodePath.toString();
+      /* console.log('In HDLmBuildRules.constructTreeNode', nodeString); */
+      HDLmError.buildError('Error', 'Locate', 9, nodeString);
+      /* This routine used to just return 'null' (without the quotes)
+         to the caller. However, the caller expects a list with two
+         values. */
+      /* return null; */
+      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];  
+    }    
+    /* The URL string is modified (possibly) to remove the suffix.
+       We don't want the suffix (and the period before the suffix)
+       to be part of the new modification name. This is the old
+       approach where the modification name was derived from the
+       URL. */
+    let urlStringModified = HDLmString.removeFileNameSuffix(urlStr);
+    if (urlStringModified == null)
+      urlStringModified = urlStr;
+    /* Get the new modification name */
+    let removeTailsFalse = false;
+    let quoteCharsSingleQuote = "'"; 
+    let ignoreSomeSingleQuotesTrue = true;
+    let newModName = HDLmMenus.buildModificationName(parentTreeNode, 
+                                                      urlStringModified,
+                                                      ruleType,
+                                                      removeTailsFalse, 
+                                                      quoteCharsSingleQuote,  
+                                                      ignoreSomeSingleQuotesTrue);  
+    /* Get the modification name from the why string */
+    let tempWhyValue = HDLmString.getCompleteWords(improveWhy, 55);
+    tempWhyValue = tempWhyValue.trim();
+    newModName = HDLmMenus.buildModificationName(parentTreeNode, 
+                                                  tempWhyValue,
+                                                  ruleType,
+                                                  removeTailsFalse, 
+                                                  quoteCharsSingleQuote,  
+                                                  ignoreSomeSingleQuotesTrue);
+    /* console.log('New mod name = ' + newModName); */
+    /* Build the tooltip for the rule */
+    let longNameStr = HDLmMod.getModificationLongName(ruleType);
+    let tooltipStr = HDLmString.ucFirst(longNameStr);
+    tooltipStr += ' ' + 'modification'
+    /* Build the node path for the rule */
+    let newRuleNodePath = parentNodePath;
+    newRuleNodePath.push(newModName);
+    /* Creat a new node identification object for the 
+       new rule. The node identification object is used
+       to locate a node in the HTML. The HTML node is 
+       always the head node. */
+    let newNodeIdenObj = new HDLmNodeIden()
+    newNodeIdenObj.type = 'tag';
+    newNodeIdenObj.attributes = {};
+    newNodeIdenObj.attributes.tag = 'head';
+    newNodeIdenObj.counts = {};
+    newNodeIdenObj.counts.tag = 1;
+    newNodeIdenObj.parent = {};
+    newNodeIdenObj.parent.tag = 'html';  
+    /* Create a new rule/modification/details object */
+    let newRuleObj = new HDLmMod(newModName, '', true, ruleType);
+    newRuleObj.pathvalue = urlPathName;
+    newRuleObj.comments = '';
+    newRuleObj.probability = 100.0;
+    newRuleObj.usemode = 'test';
+    newRuleObj.cssselector = '';
+    newRuleObj.xpath = '';
+    newRuleObj.find = [];
+    newRuleObj.nodeiden = newNodeIdenObj;
+    newRuleObj.parameter = 0;
+    /* newRuleObj.scripts = ['let aaa = 3;\nlet bbb = 4;']; */
+    newRuleObj.scripts = [overallStr];  
+    newRuleObj.updated = false;
+    /* Create a new tree node object */
+    let treeNodeObj = new HDLmTree(nodeType, tooltipStr); 
+    treeNodeObj.details = newRuleObj 
+    treeNodeObj.type = nodeType
+    treeNodeObj.nodePath = newRuleNodePath;
+    /* Return the new tree node object to the caller */
+    return [treeNodeObj, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];
+  }
   /* Get a set of headers for a fetch request. The headers are built 
      and returned to the caller as an object. */
   static getHeadersFetch(hostNameStr) {
@@ -482,18 +702,29 @@ class HDLmBuildRules {
     /* Return the headers object to the caller */
     return headersObj;
   }
-  /* Handle overall initialization */
-  static handleInitialization() {
-    /* console.log('In HDLmBuildRules.handleInitialization'); */
+  /* Provide the main routine */
+  static main() {
+    /* console.log('In HDLmBuildRules.main'); */
     /* console.log(window.location); */
     /* console.log(window.location.pathname); */  
+    /*
+    let testStr2 = "this don't string is a test of the new code j's user's won't i'd glasses' a cat's toys three cats' toys three cats's toys"; 
+    */
+    /* testStr2 = "a'ight"; */
+    /* testStr2 = 'a\'b'; has a length of 3, not 4 */
+    /*                    
+    testStr2 = 'a\'b';
+    testStr2 = 'var = \'abc user\'s guide\'';
+    let tokArray = HDLmString.getTokens(testStr2, "'", true); 
+    return; 
+    */
     /* This routine may been invoked to build rules or it may have 
        been invoked for some other reason. Check if the path shows 
        that what the user really wants is to build rules. */
     let buildRules = false;
     let windowlocationPathName = window.location.pathname;
     /* Under the debugger, we get somethink like */
-    console.log('window.location.pathname - ' + window.location.pathname);
+    /* console.log('window.location.pathname - ' + window.location.pathname); */
     /* const str = "Hello\x20World"; */
     /* console.log("Hello\x20\x22\x20World"); */
     /* l6et rv = HDLmString.getCompleteWords('The quick brown fox', 3); */
@@ -518,13 +749,23 @@ class HDLmBuildRules {
     /* console.log(y2); */
     /* console.log(JSON.stringify(y1)); */
     /* console.log(JSON.stringify(y2)); */
+    let addTreeNodeStr = HDLmBuildRules.buildAddTreeNodeString(); 
+    /*
+    let addTreeNodeStrLen = addTreeNodeStr.length;
+    for (let i = 0; i < addTreeNodeStrLen; i += 10) {
+      console.log(i);
+      console.log(addTreeNodeStr.substring(i, i + 10));
+    }
+    */
+    let addTreeNodeObj = JSON.parse(addTreeNodeStr); 
+    /* let sendPromise = HDLmWebSockets.sendAddTreeNodeRequestTest1(addTreeNodeStr); */
+    if (1 == 1) 
+      HDLmWebSockets.sendAddTreeNodeRequest(addTreeNodeObj); 
     if (windowlocationPathName.toLowerCase() == '/buildrules') 
       buildRules = true; 
-    /* Check if the user wants to build rules under the debbuger */
-    
+    /* Check if the user wants to build rules under the debugger */     
     if (windowlocationPathName.endsWith('index.html'))
-      buildRules = true;
-    
+      buildRules = true;        
     /* Check if we really want to build rules */
     if (!buildRules)
       return; 
@@ -568,7 +809,7 @@ class HDLmBuildRules {
     let nextStageLoop = true;
     /* Loop handling the next stage of processing */
     while (nextStageLoop) {
-      console.log(`In HDLmBuildRules.nextStage while loop ${stage}`); 
+      console.log(`In HDLmBuildRules.nextStage while loop ${stage}`);
       /* console.log(stage); */
       /* The code below was used to find a bug */
       if (typeof(stage) == 'undefined') {
@@ -586,14 +827,15 @@ class HDLmBuildRules {
         }
         /* Get the rules/modifications from the server */
         case HDLmBuildRulesStageTypes.getModifications: {
-          /* console.log('In HDLmBuildRules.handleInitialization before get modifications'); */         
+          /* console.log('In HDLmBuildRules.nextStage before get modifications'); */         
           let getModificationsPromise = HDLmWebSockets.getModifications();
-          /* console.log('In HDLmBuildRules.handleInitialization after get modifications', getModificationsPromise); */
+          /* console.log('In HDLmBuildRules.nextStage after get modifications', getModificationsPromise); */
           getModificationsPromise.then(function (responseText) {
             /* console.log(responseText); */
             /* Convert the JSON string passed to this routine 
                back into set of objects */
             HDLmTree.addToTree(responseText);
+            /* console.log(responseText); */
             /* We now have the rules. We need to turn test mode on. */
             stage = HDLmBuildRulesStageTypes.setTestModeOn;
             HDLmBuildRules.nextStage(stage, '');          
@@ -929,7 +1171,7 @@ class HDLmBuildRules {
               HDLmBuildRules.nextStage(stage, '');
             }             
           }, function(webpageImproverError) {
-            console.log(webpageImproverError); 
+            /* console.log(webpageImproverError); */
             stage = HDLmBuildRulesStageTypes.waitForUrlInput;
             HDLmBuildRules.nextStage(stage, '');
           });
@@ -1042,9 +1284,13 @@ class HDLmBuildRules {
           /* Build a JSON string from the rules array */          
           let newRulesStr = newRulesArray.toString();
           newRulesStr = '{"rules": ' + '[' + newRulesStr + ']' + '}';
+          /* console.log(newRulesArray); */
+          /* console.log(newRulesStr); */ 
           /* console.log(newRulesStr); */
           /* Try to send the rule to the server */
+          /* */
           let sendPromise = HDLmWebSockets.sendStoreTreeNodesRequest(newRulesStr);
+          /* */
           /* console.log(sendPromise); */
           /* Try to wait on the promise. If the promise is resolved,
              then check the response. If the promise is rejected, then
@@ -1360,13 +1606,23 @@ class HDLmBuildRules {
     let urlStr = '';
     urlStr += HDLmConfigInfo.getFetchInternetMethodNoSsl();
     urlStr += '://';
+    
     urlStr += HDLmConfigInfo.getServerName();
+    
+    /*
+    urlStr += '127.0.0.1';  
+    */ 
     urlStr += ':';
     urlStr += HDLmConfigInfo.getWebpageImproverPort();
     urlStr += '/';
     urlStr += servicePath;
-    console.log('urlStr is ' + urlStr); 
-    console.log('JSON is ' + serviceJson);
+    /* console.log('urlStr is ' + urlStr); */
+    /* console.log('JSON is ' + serviceJson); */
+    let serviceHeadersJsonKeys = Object.keys(serviceHeaders);
+    /* console.log(serviceHeaders); */
+    /* console.log('serviceHeaders keys length is ' + serviceHeadersJsonKeys.length); */
+    serviceHeadersJsonKeys.forEach((item) => { /* console.log('Key name is', item, */
+                                               /*             'Key value is', serviceHeaders[item]); */ });
     /* Send the URL to the service */
     webPromise = fetch(urlStr, {  
                                   "method": "POST",
@@ -1541,10 +1797,10 @@ class HDLmBuildRules {
         /* Some type of error was detected. Report the error 
            and continue processing. */
         else {
-          console.log('Information from constructTreeNode()', treeNodeObj, improvementWhy, markupObj, HDLmBuildRules.webPageUrl);
-          console.log(overallValid, scriptValid, stylesValid);
-          console.log(scriptStr);
-          console.log(stylesStr);
+          /* console.log('Information from constructTreeNode()', treeNodeObj, improvementWhy, markupObj, HDLmBuildRules.webPageUrl); */
+          /* console.log(overallValid, scriptValid, stylesValid); */
+          /* console.log(scriptStr); */
+          /* console.log(stylesStr); */
           let errorText = 'The generated script or style value(s) is/are not valid';
           HDLmUtility.setErrorText(errorText); 
           return false
@@ -1598,5 +1854,3 @@ HDLmBuildRules.webpageImproverWebpage = null;
 /* After a number of tests have been sucessfully completed, 
    the web page URL is stored in the field below */ 
 HDLmBuildRules.webPageUrl = null;
-/* Run the handle initialization function */
-HDLmBuildRules.handleInitialization();

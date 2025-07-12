@@ -26,7 +26,6 @@ class HDLmWebSockets {
       let requestType = 'getConfigValues';
       let jsonStr = JSON.stringify(configObj); 
       jsonStr = HDLmUtility.updateJsonStr(jsonStr, 'HDLmRequestType', requestType);   
-      HDLmWebSockets.contentSendValue.push(jsonStr);
       /* Build the callback function that will be used to handle the
          WebSocket message that is returned by the caller. Note that
          this routine is a closure and get important values from the
@@ -50,7 +49,7 @@ class HDLmWebSockets {
         }
       };
       /* Open a connnection to another process */
-      HDLmWebSockets.openWebSocketConnection(messageCallback);
+      HDLmWebSockets.openWebSocketConnection(messageCallback, jsonStr);
     });
     return newPromise;
   } 
@@ -59,7 +58,6 @@ class HDLmWebSockets {
      thenable. */
   static getImageChoices(inputImage, urlStr, pathValueStr) {
     /* console.log('In HDLmWebSockets.getImageChoices'); */
-    /* console.log(HDLmWebSockets.contentSendValue); */
     /* Create a promise that we can settle later */
     let newPromise = new Promise(function (resolve, reject) {
       /* Build a message with the required information */
@@ -69,7 +67,6 @@ class HDLmWebSockets {
       sendJsonStr = HDLmUtility.updateJsonStr(sendJsonStr, 'HDLmUrlValue', urlStr);
       sendJsonStr = HDLmUtility.updateJsonStr(sendJsonStr, 'HDLmPathValue', pathValueStr);
       /* console.log('In getImageChoices', sendJsonStr); */
-      HDLmWebSockets.contentSendValue.push(sendJsonStr);
       /* Build the callback function that will be used to handle the
          WebSocket message that is returned by the caller. Note that
          this routine is a closure and get important values from the
@@ -93,7 +90,7 @@ class HDLmWebSockets {
         }
       };
       /* Open a connnection to another process */
-      HDLmWebSockets.openWebSocketConnection(messageCallback);
+      HDLmWebSockets.openWebSocketConnection(messageCallback, sendJsonStr);
     });
     return newPromise;
   }
@@ -103,7 +100,6 @@ class HDLmWebSockets {
   static getModifications() {
     /* console.log('In HDLmWebSockets.getModifications', HDLmUtility.getHostName()); */
     /* console.trace(); */
-    /* console.log(HDLmWebSockets.contentSendValue); */
     /* Create a promise that we can settle later */
     let newPromise = new Promise(function (resolve, reject) {
       /* Build a message with the required information */
@@ -111,7 +107,8 @@ class HDLmWebSockets {
       sendJsonStr = HDLmUtility.updateJsonStr(sendJsonStr, 'HDLmRequestType', 'getModPart');
       sendJsonStr = HDLmUtility.updateJsonStr(sendJsonStr, 'HDLmUrlValue', window.location.href);
       /* console.log('In getModifications', sendJsonStr); */
-      HDLmWebSockets.contentSendValue.push(sendJsonStr);
+      /* console.log('In getModifications', firstentry); */
+      /* console.log('In getModifications', secondentry); */
       /* Build the callback function that will be used to handle the
          WebSocket message that is returned by the caller. Note that
          this routine is a closure and get important values from the
@@ -119,6 +116,7 @@ class HDLmWebSockets {
       let messageCallback = (event) => {
         /* Provide an exception handler for the entire callback */
         try {
+          /* console.log(event.data); */
           let currentWebSocket = event.target;
           /* Close the WebSocket, if need be */
           if (currentWebSocket != null) {
@@ -135,7 +133,7 @@ class HDLmWebSockets {
         }
       };
       /* Open a connnection to another process */
-      HDLmWebSockets.openWebSocketConnection(messageCallback);
+      HDLmWebSockets.openWebSocketConnection(messageCallback, sendJsonStr);
     });
     return newPromise;
   }
@@ -144,7 +142,6 @@ class HDLmWebSockets {
      thenable. */
   static getTextChoices(inputText, urlStr, pathValueStr) {
     /* console.log('In HDLmWebSockets.getTextChoices'); */
-    /* console.log(HDLmWebSockets.contentSendValue); */
     /* Create a promise that we can settle later */
     let newPromise = new Promise(function (resolve, reject) {
       /* Build a message with the required information */
@@ -154,7 +151,6 @@ class HDLmWebSockets {
       sendJsonStr = HDLmUtility.updateJsonStr(sendJsonStr, 'HDLmUrlValue', urlStr);
       sendJsonStr = HDLmUtility.updateJsonStr(sendJsonStr, 'HDLmPathValue', pathValueStr);
       /* console.log('In getTextChoices', sendJsonStr); */
-      HDLmWebSockets.contentSendValue.push(sendJsonStr);
       /* Build the callback function that will be used to handle the
          WebSocket message that is returned by the caller. Note that
          this routine is a closure and gets important values from the
@@ -178,7 +174,7 @@ class HDLmWebSockets {
         }
       };
       /* Open a connnection to another process */
-      HDLmWebSockets.openWebSocketConnection(messageCallback);
+      HDLmWebSockets.openWebSocketConnection(messageCallback, sendJsonStr);
     });
     return newPromise;
   }
@@ -209,39 +205,37 @@ class HDLmWebSockets {
      as part of a content script. This method does the actual work
      of receiving a WebSocket message. */
   static onMessageWebSocketContent(event) {
-    /* Build an object from the JSON we just received. Get the
-       request type from the JSON. */
+    /* Build an object from the JSON we just received */
+    /* console.log(event.data); */
     let eventObj = JSON.parse(event.data);
   }
   /* This method is the WebSocket open handler. This method runs as
      part of a content script. This method does the actual work of
      sending a WebSocket message to (hopefully) the receiver. */
   static onOpenWebSocketContent(event) {
-    /* console.log('In HDLmWebSockets.onOpenWebSocketContent', event); */
-    /* console.log(event); */
+    /* console.log('In HDLmWebSockets.onOpenWebSocketContent', event); */ 
+    /* console.log(event); */ 
     let currentWebSocket = event.target;
     /* console.log(currentWebSocket); */
-    /* console.log(HDLmWebSockets.contentSendValue); */
-    /* Check if the send array is empty. We have nothing to send
-       if the send array is empty. */
-    if (HDLmWebSockets.contentSendValue.length == 0)
+    /* Check if we have any data to actually send */
+    if (!currentWebSocket.hasOwnProperty('dataToSend'))
       return;
-    /* Get and remove the first entry from the send array and
-       send it */
-    let messageStr = HDLmWebSockets.contentSendValue.shift();
-    /* console.log(messageStr, HDLmWebSockets.contentSendValue); */    
+    /* Get the data that is to be sent */       
+    let messageStr = currentWebSocket.dataToSend;
+    /* console.log(currentWebSocket.dataToSend); */
     currentWebSocket.send(messageStr);    
     /* At the point, we used to close the WebSocket port in all cases. This is no longer
        possible because we expect to receive messages from the server in some cases. Of
        course, this means that the WebSocket must remain open. */
     let messageObj = JSON.parse(messageStr);
-    /* This is the web sockets on open routine. In most cases, we
+    /* This is the WebSockets on open routine. In most cases, we
        want to close the socket right here. However, in some number
        of important cases, this is not true. We want to leave the
-       web socket open so that we can get and use the reply. */
-    if (messageObj.hasOwnProperty('HDLmRequestType')) {
+       WebSocket open so that we can get and use the reply. */
+    if (messageObj.hasOwnProperty('HDLmRequestType')) { 
       let messageRequestType = messageObj['HDLmRequestType'];
-      if (messageRequestType.startsWith('getConfig')      == false &&
+      if (messageRequestType.startsWith('addTreeNode')    == false &&
+          messageRequestType.startsWith('getConfig')      == false &&
           messageRequestType.startsWith('getImage')       == false &&
           messageRequestType.startsWith('getMod')         == false &&
           messageRequestType.startsWith('getText')        == false &&
@@ -250,9 +244,12 @@ class HDLmWebSockets {
       }
     }    
   }
-  /* The next routine establishes a Web Sockets connection to another
-     process */
-  static openWebSocketConnection(messageCallback) {
+  /* The next routine establishes a WebSockets connection to another
+     process. The caller provides the data to send which is attached
+     to the WebSocket created below. */
+  static openWebSocketConnection(messageCallback, dataToSend = null) {
+    /* console.log(dataToSend); */
+    /* console.trace(); */
     /* console.log('In HDLmWebSockets.openWebSocketConnection', messageCallback); */
     /* Declare and define a few variables for use below */
     let newWebTargetPort;
@@ -287,6 +284,12 @@ class HDLmWebSockets {
       newWebTargetPort + '/' + newWebTargetPathValue + '/';
     /* console.log('In HDLmWebSockets.openWebSocketConnection', newWebTarget); */
     const newWebSocket = new WebSocket(newWebTarget);
+    /* console.log(dataToSend); */
+    /* Store the data to send in the new WebSocket.    
+       This allows us to send the data when the 
+       WebSocket is opened. */
+    newWebSocket.dataToSend = dataToSend;
+    /* newWebSocket.open(); */
     /* console.log(newWebSocket); */
     /* The statement below establishes the message (receive) routine
        for this WebSocket. The message routine does the actual work
@@ -304,10 +307,8 @@ class HDLmWebSockets {
   }
   /* The next routine resets a field */
   static resetWebSockets() {
-    /* console.log('In HDLmWebSockets.resetWebSockets', HDLmWebSockets.contentSendValue); */
     /* console.log('In HDLmWebSockets.resetWebSockets'); */
     /* console.trace(); */
-    HDLmWebSockets.contentSendValue.length = 0; 
   }
   /* This method sends an add tree node request to the server. The add tree 
      node request adds one tree node. */
@@ -321,7 +322,47 @@ class HDLmWebSockets {
     let tempPosStr = JSON.stringify(tempPos);
     /* console.log(tempPosStr); */
     /* Open a connnection to another process */
-    HDLmWebSockets.sendCurrentRequest(tempPosStr, 'addTreeNode');
+    if (1 == 1)
+      HDLmWebSockets.sendCurrentRequest(tempPosStr, 'addTreeNode'); 
+  }
+  /* This test method sends an add tree node request to the server.
+     The test add tree node request adds exactly one tree node. Note
+     that intermediate levels may also be created. This code is used
+     for testing purposes only. */ 
+  static sendAddTreeNodeRequestTest1(treeNodeStr) { 
+    /* console.log('In HDLmWebSockets.sendAddTreeNodeRequestTest1', treeNodeStr); */
+    /* Create a promise that we can settle later */
+    let newPromise = new Promise(function (resolve, reject) {
+      /* Build a message with the required information */
+      let requestType = 'addTreeNode';
+      let jsonStr = treeNodeStr; 
+      jsonStr = HDLmUtility.updateJsonStr(jsonStr, 'HDLmRequestType', requestType);   
+      /* Build the callback function that will be used to handle the
+         WebSocket message that is returned by the caller. Note that
+         this routine is a closure and get important values from the
+         environment where it is defined. */
+      let messageCallback = (event) => {
+        /* Provide an exception handler for the entire callback */
+        try {
+          let currentWebSocket = event.target;
+          /* Close the WebSocket, if need be */
+          if (currentWebSocket != null) {
+            currentWebSocket.close();
+          }
+          /* Pass the WebSocket message to the appropriate handler */
+          /* console.log(event.data); */
+          /* console.log(typeof event.data); */
+          resolve(event.data);
+        }
+        catch (errorObj) {
+          let errorText = HDLmError.reportError(errorObj, 'messageCallback');
+          reject(errorText);
+        }
+      };
+      /* Open a connnection to another process */
+      HDLmWebSockets.openWebSocketConnection(messageCallback , jsonStr);
+    });
+    return newPromise;
   }
   /* Send the current request to the server. The caller provides
      all of the information needed for the current request. This
@@ -338,12 +379,16 @@ class HDLmWebSockets {
     let valueStrJsonFalse = false;
     jsonStr = HDLmUtility.updateJsonStr(jsonStr, 'HDLmRequestType', requestType); 
     jsonStr = HDLmUtility.updateJsonStr(jsonStr, 'HDLmCopyElements', valueStrJsonFalse);
-    jsonStr = HDLmUtility.updateJsonStr(jsonStr, 'HDLmUrlValue', window.location.href);
-    HDLmWebSockets.contentSendValue.push(jsonStr);
+    jsonStr = HDLmUtility.updateJsonStr(jsonStr, 'HDLmUrlValue', window.location.href); 
     /* Take the appropriate action */
-    HDLmWebSockets.contentSendValue.push(jsonStr);
     let webSocketsMessageCallbackNull = null;
-    HDLmWebSockets.openWebSocketConnection(webSocketsMessageCallbackNull);
+    let newWebSocket = HDLmWebSockets.openWebSocketConnection(webSocketsMessageCallbackNull, jsonStr);
+    /* Close the WebSocket after a short delay. This is done
+        because the WebSocket may not have been used to send
+        any data yet. If the WebSocket is closed immediately,
+        then the server may not receive the data. */
+    if (newWebSocket != null) 
+      setTimeout((newWebSocket) => newWebSocket.close(), 3000, newWebSocket);
     return;  
   }
   /* This method sends a delete tree node request to the server. 
@@ -369,7 +414,6 @@ class HDLmWebSockets {
       let requestType = 'storeTreeNodes';
       let jsonStr = treeNodesStr; 
       jsonStr = HDLmUtility.updateJsonStr(jsonStr, 'HDLmRequestType', requestType);   
-      HDLmWebSockets.contentSendValue.push(jsonStr);
       /* Build the callback function that will be used to handle the
          WebSocket message that is returned by the caller. Note that
          this routine is a closure and get important values from the
@@ -393,7 +437,7 @@ class HDLmWebSockets {
         }
       };
       /* Open a connnection to another process */
-      HDLmWebSockets.openWebSocketConnection(messageCallback);
+      HDLmWebSockets.openWebSocketConnection(messageCallback, jsonStr);
     });
     return newPromise;
   }
@@ -411,4 +455,3 @@ class HDLmWebSockets {
     HDLmWebSockets.sendCurrentRequest(tempPosStr, 'updateTreeNode');
   }
 }
-HDLmWebSockets.contentSendValue = [];

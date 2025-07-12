@@ -733,6 +733,9 @@ class HDLmTree {
     /* The data may have returned in a new format. Handle the new format.
        The new format has one row for each node in the node tree. */
     let jsonData = jsonObj.data;  
+    let jsondataTypeof = typeof jsonData;
+    if (false && jsondataTypeof == 'undefined')
+      console.log(typeof jsonData, jsonData)
     /* The JSON data array may (or may not) contain bad entries.
        Why the JSON data array can have bad entries is not clear.
        However, it is empirically correct that bad entries can
@@ -1028,6 +1031,9 @@ class HDLmTree {
         if (!node.details.hasOwnProperty('pathvalue')) {
           node.details.pathvalue = '';
           /* console.log(node.details.pathvalue); */
+        }
+        if (!node.details.hasOwnProperty('probality')) {
+          node.details.probability = '';           
         }
         if (!node.details.hasOwnProperty('usemode')) {
           node.details.usemode = '';           

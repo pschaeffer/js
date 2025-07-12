@@ -120,6 +120,12 @@ const HDLmModInfoData =
                            "subtype":       "extraAttribute"
                          },
                          {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
+                         },
+                         {
                            "description":   "Use Mode",
                            "source":        "usemode",
                            "fieldtype":     "usemode",
@@ -200,6 +206,12 @@ const HDLmModInfoData =
                            "source":        "extra",
                            "fieldtype":     "extrainfo",
                            "subtype":       "extra"
+                         },
+                         {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
                          },
                          {
                            "description":   "Use Mode",
@@ -297,6 +309,12 @@ const HDLmModInfoData =
                            "subtype":       "extra"
                          },
                          {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
+                         },
+                         {
                            "description":   "Use Mode",
                            "source":        "usemode",
                            "fieldtype":     "usemode",
@@ -392,6 +410,12 @@ const HDLmModInfoData =
                            "subtype":       "extra"
                          },
                          {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
+                         },
+                         {
                            "description":   "Use Mode",
                            "source":        "usemode",
                            "fieldtype":     "usemode",
@@ -472,6 +496,12 @@ const HDLmModInfoData =
                            "source":        "extra",
                            "fieldtype":     "extrainfo",
                            "subtype":       "extra"
+                         },
+                         {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
                          },
                          {
                            "description":   "Use Mode",
@@ -569,6 +599,12 @@ const HDLmModInfoData =
                            "subtype":       "extra"
                          },
                          {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
+                         },
+                         {
                            "description":   "Use Mode",
                            "source":        "usemode",
                            "fieldtype":     "usemode",
@@ -662,6 +698,12 @@ const HDLmModInfoData =
                            "source":        "extra",
                            "fieldtype":     "extrainfo",
                            "subtype":       "extra"
+                         },
+                         {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
                          },
                          {
                            "description":   "Use Mode",
@@ -759,6 +801,12 @@ const HDLmModInfoData =
                            "subtype":       "extra"
                          },
                          {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
+                         },
+                         {
                            "description":   "Use Mode",
                            "source":        "usemode",
                            "fieldtype":     "usemode",
@@ -852,6 +900,12 @@ const HDLmModInfoData =
                            "source":        "extra",
                            "fieldtype":     "extrainfo",
                            "subtype":       "extra"
+                         },
+                         {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
                          },
                          {
                            "description":   "Use Mode",
@@ -949,6 +1003,12 @@ const HDLmModInfoData =
                            "subtype":       "extra"
                          },
                          {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
+                         },
+                         {
                            "description":   "Use Mode",
                            "source":        "usemode",
                            "fieldtype":     "usemode",
@@ -1042,6 +1102,12 @@ const HDLmModInfoData =
                            "source":        "extra",
                            "fieldtype":     "extrainfo",
                            "subtype":       "extra"
+                         },
+                         {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
                          },
                          {
                            "description":   "Use Mode",
@@ -1139,6 +1205,12 @@ const HDLmModInfoData =
                            "subtype":       "extra"
                          },
                          {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
+                         },
+                         {
                            "description":   "Use Mode",
                            "source":        "usemode",
                            "fieldtype":     "usemode",
@@ -1234,6 +1306,12 @@ const HDLmModInfoData =
                            "subtype":       "extra"
                          },
                          {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
+                         },
+                         {
                            "description":   "Use Mode",
                            "source":        "usemode",
                            "fieldtype":     "usemode",
@@ -1314,6 +1392,12 @@ const HDLmModInfoData =
                            "source":        "extra",
                            "fieldtype":     "extrainfo",
                            "subtype":       "extra"
+                         },
+                         {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
                          },
                          {
                            "description":   "Use Mode",
@@ -1403,6 +1487,12 @@ const HDLmModInfoData =
                            "source":        "extra",
                            "fieldtype":     "extrainfo",
                            "subtype":       "extra"
+                         },
+                         {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
                          },
                          {
                            "description":   "Use Mode",
@@ -1500,6 +1590,12 @@ const HDLmModInfoData =
                            "subtype":       "extra"
                          },
                          {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
+                         },
+                         {
                            "description":   "Use Mode",
                            "source":        "usemode",
                            "fieldtype":     "usemode",
@@ -1595,6 +1691,12 @@ const HDLmModInfoData =
                            "subtype":       "extra"
                          },
                          {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
+                         }, 
+                         {
                            "description":   "Use Mode",
                            "source":        "usemode",
                            "fieldtype":     "usemode",
@@ -1688,6 +1790,12 @@ const HDLmModInfoData =
                            "source":        "extra",
                            "fieldtype":     "extrainfo",
                            "subtype":       "extra"
+                         },
+                         {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
                          },
                          {
                            "description":   "Use Mode",
@@ -1785,6 +1893,12 @@ const HDLmModInfoData =
                            "subtype":       "extraStyle"
                          },
                          {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
+                         },
+                         {
                            "description":   "Use Mode",
                            "source":        "usemode",
                            "fieldtype":     "usemode",
@@ -1878,6 +1992,12 @@ const HDLmModInfoData =
                            "source":        "extra",
                            "fieldtype":     "extrainfo",
                            "subtype":       "extra"
+                         },
+                         {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
                          },
                          {
                            "description":   "Use Mode",
@@ -1975,6 +2095,12 @@ const HDLmModInfoData =
                            "subtype":       "extra"
                          },
                          {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
+                         },
+                         {
                            "description":   "Use Mode",
                            "source":        "usemode",
                            "fieldtype":     "usemode",
@@ -2068,6 +2194,12 @@ const HDLmModInfoData =
                            "source":        "extra",
                            "fieldtype":     "extrainfo",
                            "subtype":       "extra"
+                         },
+                         {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
                          },
                          {
                            "description":   "Use Mode",
@@ -2165,6 +2297,12 @@ const HDLmModInfoData =
                            "subtype":       "extra"
                          },
                          {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
+                         },
+                         {
                            "description":   "Use Mode",
                            "source":        "usemode",
                            "fieldtype":     "usemode",
@@ -2258,6 +2396,12 @@ const HDLmModInfoData =
                            "source":        "extra",
                            "fieldtype":     "extrainfo",
                            "subtype":       "extra"
+                         },
+                         {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
                          },
                          {
                            "description":   "Use Mode",
@@ -2892,6 +3036,55 @@ class HDLmMod {
     }
     return errorText;
   }
+  /* This routine checks if a passed probability value is valid. A 
+     booolean value is always returned to the caller. If the probability 
+     value is valid, then an empty error text value is returned. Otherwise,
+     a non-empty error text value is returned. */
+  static checkProbability(probabilityStr) {
+    /* console.log('In HDLmMod.checkProbability'); */
+    /* console.log(probabilityStr, probabilityStr.length); */
+    /* console.trace(); */
+    let errorText = '';
+    /* What follows is a dummy loop used only to allow break to work */
+    while (true) {
+      /* Check if the caller passed a null value. Null values are always
+         OK. */
+      if (probabilityStr == null) { 
+        break
+      }
+      /* Check if the caller passed an empty string. Empty strings are always
+         OK. */
+      if (probabilityStr == '') { 
+        break
+      }
+      /* Change the value to lowercase. This makes the checks below
+         much simpler and caseless. */ 
+      probabilityStr = probabilityStr.toLowerCase();
+      /* Check if the probability string is a valid floating-
+         point value */
+      let probabilityValid = HDLmUtility.isValidFloat(probabilityStr);
+      if (!probabilityValid) {
+        errorText = 'Probability value is not a valid floating-point number';
+        break;
+      }
+      /* Convert the string to a floating-point value */
+      let probabilityValue = parseFloat(probabilityStr);
+      /* Check if the probability value is too low */
+      if (probabilityValue < 0.0) {
+        errorText = 'Probability value must be zero or greater';
+        break;
+      }
+      /* Check if the probability value is too high */
+      if (probabilityValue > 100.0) {
+        errorText = 'Probability value must be 100.0 or less  ';
+        break;
+      }
+      break;
+    }
+    /* console.log('At end of HDLmMod.checkProbability'); */
+    /* console.log(errorText, errorText.length); */
+    return errorText;
+  }
   /* This routine checks if a passed script (JavaScript) is valid or not.
      A boolean value is always returned to the caller. If the script is
      valid, then a true value is returned. Otherwise, a false value is
@@ -2899,9 +3092,19 @@ class HDLmMod {
      script. It only checks the syntax of the script. */
   static checkScriptValid(scriptStr) {
     /* Assume that the script is valid */
-    let rv = true;  
-    let newScript = scriptStr.replaceAll("'", "\\x27");
+    /* console.log(scriptStr); */
+    let rv = true;
+    /* Check if the script is valid */
+    rv = HDLmHtml.checkJavaScriptCode(scriptStr); 
+    /* console.log(rv); */
+    return rv; 
+    /* This is the old code that used a very different approach 
+       to check the script. It is left here for reference only.
+       This approach did not work in key cases. */
+    let newScript = scriptStr.replaceAll("'", "\\x27"); 
     let finalStr = "new Function('" + newScript + "');";
+    /* console.log(newScript); */
+    /* console.log(finalStr); */
     try {
       let evalOutput = eval(finalStr); 
     } 
@@ -3363,6 +3566,73 @@ class HDLmMod {
                                         typeType, typeSubType,
                                         fullRedrawCallback);
     return gridWidget;
+  }
+  /* This routine displays a floating-point  value that can be modified */
+  static displayFieldFloat(typeType, typeSubType,
+                           currentTreeNode, 
+                           containerWidget,
+                           inputCallback,
+                           description, value, subType,
+                           redrawCallback,
+                           updateCallback, 
+                           keyDownCallback,
+                           fullRedrawCallback,
+                           currentModification) {
+    /* console.log('In HDLmMod.displayFieldFloat'); */
+    /* console.log(typeType, typeSubType, subType); */
+    /* console.log(currentTreeNode); */
+    /* Make sure the value is not an array */
+    if (Array.isArray(value) == true) {
+      let errorText = 'Value passed to displayFieldFoat method is an array';
+      HDLmAssert(false, errorText);
+    }
+    /* Set a few default options for the text widget built below */
+    let optPlaceHolder = "New Float Value";
+    let optUpdateOnEnter = true;
+    /* Check if sub type shows that special values should be
+       used. */
+    /* console.log(typeSubType, subType); */
+    /* console.log(subType == 'probability'); */
+    if (subType == 'probability') {
+      optPlaceHolder = "New Probability Value"; 
+    }
+    /* Set a few options for text widget built below. Use them
+       to build the text widget. The text widget is used to display
+       and update the floating-point value. */
+    let floatOptions = {
+      "delete":            true,
+      "editable":          true,
+      "elementSelection":  false, 
+      "emptyFieldOk":      true,
+      "invokeRedraw":      false,
+      "placeHolderText":   optPlaceHolder,
+      "sizeValue":         15,
+      "spellCheck":        false,
+      "subType":           subType,
+      "updateOnEnter":     optUpdateOnEnter
+    };
+    /* Get the current modification type, if possible. The current modification
+       type is obtained from the current modification object, if possible. This 
+       is not always possible. */
+    let currentModificationType = '';
+    if (currentModification != null &&
+        (typeof currentModification.details.type) == 'string')
+      currentModificationType = currentModification.details.type;
+    /* A callback is provided for updating the actual data when
+       the data in the widget is modified. This callback uses a 
+       closure to access the current node and the correct field 
+       of the current node. */
+    let floatWidget = new HDLmTextWidget(containerWidget, floatOptions,
+                                               inputCallback,
+                                               description, value,
+                                               currentTreeNode,
+                                               redrawCallback,
+                                               updateCallback, 
+                                               keyDownCallback,
+                                               typeType, typeSubType, 
+                                               fullRedrawCallback,
+                                               currentModification);
+    return floatWidget;
   }
   /* This routine displays a image list field */
   static displayFieldImageList(typeType, typeSubType,
@@ -4591,6 +4861,80 @@ class HDLmMod {
                                             textWidgetCurrentModificationNull);
     return nodeIdenWidget;
   }  
+  /* This routine displays a path text value that can be modified.
+     We support many types of path text values. The types are  
+     simple, regex, glob, and like. Note that a valid path text
+     value can never be empty (a zero-length string). Also note that
+     a valid path text value will always start with a forward slash. 
+     This is true even for like (SQL LIKE) text value that could (hypothetically)
+     start with an underscore. */
+  static displayFieldPathValue(typeType, typeSubType,
+                               currentTreeNode, containerWidget,
+                               inputCallback,
+                               description, value, subType,
+                               redrawCallback,
+                               updateCallback, keyDownCallback,
+                               fullRedrawCallback) {
+    /* Make sure the value is not an array */
+    if (Array.isArray(value) == true) {
+      let errorText = 'Value passed to displayFieldPathValue method is an array';
+      HDLmAssert(false, errorText);
+    }
+    /* Make sure the value passed by the caller is a string */
+    if (typeof(value) != 'string') {
+      let errorText = 'Value passed to displayFieldPathValue method is not a string';
+      HDLmAssert(false, errorText);
+    }
+    /* Make sure the value passed by the caller is not empty. Sadly 
+       we must tolerate empty values here to allow Insert to work. */
+    if (false && value.length == 0) {
+      let errorText = 'Value passed to displayFieldPathValue method is empty';
+      HDLmAssert(false, errorText);
+    }
+    /* Make sure the value passed by the caller starts with a forward slash */
+    if (value.length >= 1 &&
+        value.charAt(0) != '/') {
+      let errorText = 'Value passed to displayFieldPathValue method does not start with a forward slash';
+      HDLmAssert(false, errorText);
+    }
+    /* Set a few options for text widget built below. Use them
+       to build the text widget. Note that we allow empty path
+       name fields below. This is required so that modifications 
+       for a home page can be handled. This has been changed. We 
+       do not allow empty path value fields. Even a home page field
+       has a forward slash. */
+    let textOptions = {
+      "bold":             true,
+      "delete":           true,
+      "editable":         true,
+      "elementSelection": false,
+      "emptyFieldOk":     false,
+      "placeHolderText":  "New Path Value",
+      "sizeValue":        30,
+      "spellCheck":       false,
+      "subType":          subType
+    };
+    /* The current modification is set to null. This value is not
+       or passed by the caller. */
+    let textWidgetCurrentModificationNull = null;
+    /* Set the full redraw callback address to null. This value 
+       is not used in this context. */
+    let fullRedrawCallbackNull = null;
+    /* A callback is provided for updating the actual data when
+       the data in the widget is modified. This callback uses a 
+       closure to access the current node and the correct field 
+       of the current node. */
+    let textWidget = new HDLmTextWidget(containerWidget, textOptions,
+                                        inputCallback,
+                                        description, value,
+                                        currentTreeNode,
+                                        redrawCallback,
+                                        updateCallback, keyDownCallback,
+                                        typeType, typeSubType,
+                                        fullRedrawCallback,
+                                        textWidgetCurrentModificationNull);
+    return textWidget;
+  }
   /* This routine displays a set of protocol type values that can
      be modified. The new protocol value must be in the list of 
      supported protocol type values. */
@@ -4977,80 +5321,7 @@ class HDLmMod {
                                             deleteCallback);
     return selectWidget;
   }  
-  /* This routine displays a path text value that can be modified.
-     We support many types of path text values. The types are  
-     simple, regex, glob, and like. Note that a valid path text
-     value can never be empty (a zero-length string). Also note that
-     a valid path text value will always start with a forward slash. 
-     This is true even for like (SQL LIKE) text value that could (hypothetically)
-     start with an underscore. */
-  static displayFieldPathValue(typeType, typeSubType,
-                               currentTreeNode, containerWidget,
-                               inputCallback,
-                               description, value, subType,
-                               redrawCallback,
-                               updateCallback, keyDownCallback,
-                               fullRedrawCallback) {
-    /* Make sure the value is not an array */
-    if (Array.isArray(value) == true) {
-      let errorText = 'Value passed to displayFieldPathValue method is an array';
-      HDLmAssert(false, errorText);
-    }
-    /* Make sure the value passed by the caller is a string */
-    if (typeof(value) != 'string') {
-      let errorText = 'Value passed to displayFieldPathValue method is not a string';
-      HDLmAssert(false, errorText);
-    }
-    /* Make sure the value passed by the caller is not empty. Sadly 
-       we must tolerate empty values here to allow Insert to work. */
-    if (false && value.length == 0) {
-      let errorText = 'Value passed to displayFieldPathValue method is empty';
-      HDLmAssert(false, errorText);
-    }
-    /* Make sure the value passed by the caller starts with a forward slash */
-    if (value.length >= 1 &&
-        value.charAt(0) != '/') {
-      let errorText = 'Value passed to displayFieldPathValue method does not start with a forward slash';
-      HDLmAssert(false, errorText);
-    }
-    /* Set a few options for text widget built below. Use them
-       to build the text widget. Note that we allow empty path
-       name fields below. This is required so that modifications 
-       for a home page can be handled. This has been changed. We 
-       do not allow empty path value fields. Even a home page field
-       has a forward slash. */
-    let textOptions = {
-      "bold":             true,
-      "delete":           true,
-      "editable":         true,
-      "elementSelection": false,
-      "emptyFieldOk":     false,
-      "placeHolderText":  "New Path Value",
-      "sizeValue":        30,
-      "spellCheck":       false,
-      "subType":          subType
-    };
-    /* The current modification is set to null. This value is not
-       or passed by the caller. */
-    let textWidgetCurrentModificationNull = null;
-    /* Set the full redraw callback address to null. This value 
-       is not used in this context. */
-    let fullRedrawCallbackNull = null;
-    /* A callback is provided for updating the actual data when
-       the data in the widget is modified. This callback uses a 
-       closure to access the current node and the correct field 
-       of the current node. */
-    let textWidget = new HDLmTextWidget(containerWidget, textOptions,
-                                        inputCallback,
-                                        description, value,
-                                        currentTreeNode,
-                                        redrawCallback,
-                                        updateCallback, keyDownCallback,
-                                        typeType, typeSubType,
-                                        fullRedrawCallback,
-                                        textWidgetCurrentModificationNull);
-    return textWidget;
-  }
+  
   /* This routine displays the use mode value that can be modified */
   static displayFieldUseMode(typeType, typeSubType,
                              currentTreeNode, 
@@ -5512,8 +5783,9 @@ class HDLmMod {
           typeType == 'cssinfo'      ||
           typeType == 'dateio'       ||
           typeType == 'datetime'     ||
-          typeType == 'extrainfo'    ||
+          typeType == 'extrainfo'    || 
           typeType == 'findinfo'     ||
+          typeType == 'float'        ||
           typeType == 'imagelist'    ||
           typeType == 'ionumber'     ||
           typeType == 'iotable'      ||
@@ -6493,6 +6765,80 @@ class HDLmMod {
                                   callSource);             
             });
           break;
+        case 'float':
+          newWidget = HDLmMod.displayFieldFloat(typeType, typeSubType,
+                                                currentTreeNode, containerWidget,
+                                                function () {
+                                                  containerWidget.displayErrorText();
+                                                },
+                                                typeDescription, value, typeSubType,
+                                                function () {
+                                                  containerWidget.render(parentDescriptionId, parentValueId);
+                                                },
+                                                function(newFloatValue, noErrors) {
+                                                  let rvStr = '';
+                                                  let oldNodeState = JSON.stringify(currentTreeNode.details);
+                                                  newFloatValue = newFloatValue.trim();
+                                                  currentTreeNode.details.updated = true;
+                                                  HDLmMod.resetLastModified(currentTreeNode.details);
+                                                  currentTreeNode.details[typeSource] = newFloatValue;
+                                                  let newNodeState = JSON.stringify(currentTreeNode.details);
+                                                  /* Update the database row with the updated node information
+                                                     and then possibly reload the current page. This can only
+                                                     be done if we have an ID for the current row. Of course,
+                                                     we will not have an ID for a new row / node we are 
+                                                     inserting. */
+                                                  if (noErrors) {
+                                                    let ajaxPromise;
+                                                    ajaxPromise = HDLmTree.passUpdateOneTreePos(currentTreeNode, newTreeEntry);
+                                                    ajaxPromise.then(function (responseText) {
+                                                      HDLmMod.handleUpdateReloadPageUnconditional();
+                                                    }, function (error) {
+                                                      HDLmError.buildError('Error', 'Pass update failure', 14, error);
+                                                    });
+                                                  }
+                                                  /* Add the current modify update event to the undo / redo change list */
+                                                  HDLmUnRe.addModify(currentTreeNode.nodePath, oldNodeState, newNodeState);
+                                                  /* At this point we may be able to do some work on a new tree node of
+                                                    some type. Of course, we may not be handling a new tree node at this
+                                                    point. However, in some cases work on a new tree node is possible. 
+                                                    The call below will do the work on the new tree node (if one exists)
+                                                    if possible. */
+                                                  let addTreeNodeDone;
+                                                  let insertIntoDone;
+                                                  let callFromCallbackTrue = true;
+                                                  let containerAvailableTrue = true;
+                                                  let needUserInputTrue = true;
+                                                  [insertIntoDone, addTreeNodeDone, rvStr] = 
+                                                    HDLmMenus.finishTreeNode(currentTreeNode, containerAvailableTrue,
+                                                                              possibleRuleTypes, currentDomElement,
+                                                                              newTreeEntry, handlingCmdInsert,
+                                                                              callFromCallbackTrue, needUserInputTrue);
+                                                  return rvStr;
+                                                },
+                                                /* This callback function handles key down (key press) events from the 
+                                                    current widget. The widget may or may not call this routine. */
+                                                function (event) {
+                                                  HDLmMenus.handleKeyboardWidget(currentTreeNode, event);
+                                                },
+                                                /* This callback function handles full redraw events. A full redraw
+                                                    is needed when even redrawing each widget is not enough. For example,
+                                                    when a style is changed, a full redraw is required. */
+                                                function () { 
+                                                  /* console.log('about to displaymod'); */
+                                                  let callSource = 'HDLmMod.displayMod.displayFieldFloat.fullRedrawCallback';
+                                                  let inlineStartupFlagFalse = false;
+                                                  HDLmMod.displayMod(parentDescriptionId, parentValueId, currentTreeNode,
+                                                                      possibleRuleTypes, currentDomElement,
+                                                                      useEditorType, newTreeEntry, 
+                                                                      inlineStartupFlagFalse, handlingCmdInsert,
+                                                                      callSource);             
+                                                },  
+                                                /* Pass the address (a reference) to the current modification. This value
+                                                    will not be null in most cases */
+                                                currentTreeNode
+                                               );
+            break;
         /* Note that the update callback must update the values array in place. 
            Creating a new array will not work in this case. */
         case 'imagelist':
@@ -7445,10 +7791,10 @@ class HDLmMod {
                                                     let callSource = 'HDLmMod.displayMod.displayFieldUseMode.fullRedrawCallback';
                                                     let inlineStartupFlagFalse = false;
                                                     HDLmMod.displayMod(parentDescriptionId, parentValueId, currentTreeNode,
-                                                                      possibleRuleTypes, currentDomElement,
-                                                                      useEditorType, newTreeEntry, 
-                                                                      inlineStartupFlagFalse, handlingCmdInsert,
-                                                                      callSource);             
+                                                                       possibleRuleTypes, currentDomElement,
+                                                                       useEditorType, newTreeEntry, 
+                                                                       inlineStartupFlagFalse, handlingCmdInsert,
+                                                                       callSource);             
                                                   },
                                                   /* Pass the address (a reference) to the current modification. This value
                                                     will not be null in most cases */

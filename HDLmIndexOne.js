@@ -11,9 +11,9 @@
    does define a set of static methods that are used to build the
    a rule editor. No instances of this class can ever be created. */
 class HDLmIndexOne {
-  /* Handle overall initialization */
-  static handleInitialization() {  
-    /* console.log('In HDLmIndexOne.handleInitialization'); */
+  /* Provide the main routine  */
+  static main() {  
+    /* console.log('In HDLmIndexOne.main'); */
     /* console.log(window); */
     /* This routine may been invoked to edit rules or it may have 
        been invoked for some other reason. Check if the path shows 
@@ -23,10 +23,10 @@ class HDLmIndexOne {
     if (windowlocationPathName == '/') 
       editRules = true; 
     /* Check if the user wants to edit rules under the debbuger */
-    /*
+    
     if (windowlocationPathName.endsWith('index.html'))
       editRules = true;
-    */
+    
     /* Check if we really want to edit rules */
     if (!editRules)
       return; 
@@ -38,7 +38,7 @@ class HDLmIndexOne {
     let divDescriptions = HDLmDefines.getString('HDLMENTRYDESCRIPTIONS');
     let divValues = HDLmDefines.getString('HDLMENTRYVALUES');
     let authPromise = HDLmAuth.getAuth(divDescriptions, divValues);
-    /* console.log('In HDLmIndexone.handleInitialization'); */
+    /* console.log('In HDLmIndexOne.main'); */
     /* console.log(authPromise); */
     /* Handle the Promise used to obtain authentication information */
     authPromise.then(function (responseText) {
@@ -93,7 +93,7 @@ class HDLmIndexOne {
          cases, we need a separate code path if we are running
          under a debugger. */
       let windowsLocationHostName = window.location.hostname;
-      /* console.log('In HDLmIndexOne.handleInitialization'); */
+      /* console.log('In HDLmIndexOne.main'); */
       /* console.log('windowsLocationHostName = ' + windowsLocationHostName); */ 
       /* console.log(window.location); */
       /* In the Visual Studio Code environment, the host name is an empty
@@ -231,7 +231,7 @@ class HDLmIndexOne {
       let systemCharacter = HDLmUtility.getSystemCharacter();
       systemCharacter = 'a';
       HDLmStateInfo.setEntriesSystemValues(systemCharacter);
-      /* console.log('In HDLmIndexOne.handleInitialization'); */
+      /* console.log('In HDLmIndexOne.main'); */
       /* The updates below were created for testing purposes. It turns
          out that these updates don't work. The ID values don't exist
          and as a consequence, these updates don't work. */
@@ -273,24 +273,24 @@ class HDLmIndexOne {
          then we need to send a message to a server to get the tree
          of modifications. */
       if (HDLmGlobals.checkForInlineEditor()) {
-        /* console.log('In HDLmIndexOne.handleInitialization before get modifications'); */
+        /* console.log('In HDLmIndexOne.main before get modifications'); */
         let getModificationsPromise = HDLmWebSockets.getModifications();
-        /* console.log('In HDLmIndexOne.handleInitialization after get modifications'); */
+        /* console.log('In HDLmIndexOne.main after get modifications'); */
         return getModificationsPromise;
       }
       else {
-        /* console.log('In HDLmIndexOne.handleInitialization before get modifications'); */
+        /* console.log('In HDLmIndexOne.main before get modifications'); */
         let getModificationsPromise = HDLmMod.buildModificationTree();
-        /* console.log('In HDLmIndexOne.handleInitialization after get modifications'); *
+        /* console.log('In HDLmIndexOne.main after get modifications'); *
         /* console.log(getModificationsPromise); */
         return getModificationsPromise;
       }
     }, function (error) {
-      /* console.log('In HDLmIndexOne.handleInitialization error after get modifications'); */
+      /* console.log('In HDLmIndexOne.main error after get modifications'); */
       HDLmError.buildError('Error', 'Authentication failure', 14, error);
     /* Handle the Promise used to load the modifications */
     }).then(function (responseText) {
-      /* console.log('In HDLmIndexOne.handleInitialization then after get modifications'); */
+      /* console.log('In HDLmIndexOne.main then after get modifications'); */
       /* console.log(responseText); */
       HDLmTree.addToTree(responseText);
       /* What needs to be done now, is a function of whether we are 
@@ -560,5 +560,3 @@ class HDLmIndexOne {
     }
   };
 }
-/* Run the handle initialization function */
-HDLmIndexOne.handleInitialization();
