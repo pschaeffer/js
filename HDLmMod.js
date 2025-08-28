@@ -2695,6 +2695,35 @@ class HDLmMod {
     this.created = new Date();
     this.lastmodified = new Date();
   }
+  /* This routine adds any missing fields to a modification object */
+  static addMissingFieldsModObject(newMod, modInfoFunction, modType) {
+    /* Add any missing fields to the modification object passed 
+       by the caller */
+    let typeInfo = modInfoFunction;
+    let modInfo = typeInfo[modType];
+    let modInfoArray = modInfo['fields'];
+    let modArrayLength = modInfoArray.length;
+    /* Process each of the entries in the array. Check if the field
+       already exists or not. */
+    for (let i = 0; i < modArrayLength; i++) {
+      let fieldSource = modInfoArray[i].source;
+      let fieldType = modInfoArray[i].fieldtype;
+      /* Add a default (empty or false) value, if need be */
+      if (!newMod.hasOwnProperty(fieldSource)) {
+        if (fieldType == 'checkbox')
+          newMod[fieldSource] = false;
+        else
+          newMod[fieldSource] = '';
+      }
+      /* Since the field already has a value, check the value
+         in some cases */
+      else {
+        if (fieldType == 'checkbox' &&
+            newMod[fieldSource] == '') 
+          newMod[fieldSource] = false;
+      }
+    }
+  }
   /* Build an HTML modification object from the values passed by the
      caller */
   static buildModificationObject(name, pathStr, extraStr, enabled,
@@ -4262,6 +4291,19 @@ class HDLmMod {
       if (HDLmGlobals.checkForInlineEditor())
         optUpdateOnEnter = false;
     }
+    else if (subType == 'generalpassword') {
+      optDelete = true;
+      optEditable = true;
+      optEmptyFieldOk = false;
+      optMaskValue = true;
+      optPlaceHolder = "Password Value";
+      optSpellCheck = false;
+      optUpdateOnEnter = true;
+      /* We really don't want to use update on enter if any of
+         inline editors are in use */
+      if (HDLmGlobals.checkForInlineEditor())
+        optUpdateOnEnter = false;
+    }
     else if (subType == 'height') {
       optDelete = true;
       optEditable = true;
@@ -4435,18 +4477,6 @@ class HDLmMod {
       optPlaceHolder = "";
       optSpellCheck = false;
       optUpdateOnEnter = false;
-    }
-    else if (subType == 'password') {
-      optDelete = true;
-      optEditable = true;
-      optEmptyFieldOk = false;
-      optPlaceHolder = "Password Value";
-      optSpellCheck = false;
-      optUpdateOnEnter = true;
-      /* We really don't want to use update on enter if any of
-         inline editors are in use */
-      if (HDLmGlobals.checkForInlineEditor())
-        optUpdateOnEnter = false;
     }
     else if (subType == 'positivefloat') {
       optDelete = true;
@@ -5745,6 +5775,7 @@ class HDLmMod {
        We always should, but you never know. */
     /* console.log('s2'); */
     /* console.log(modificationType, useEditorType, typeInfo); */
+    /* console.log('s2.3'); */
     if (!(modificationType in typeInfo)) {
       let errorString = modificationType;
       /* console.log('In HDLmMod.displayMod', errorString); */
@@ -5753,6 +5784,7 @@ class HDLmMod {
       return;
     }
     let typeData = typeInfo[modificationType];
+    /* console.log('s2.6'); */ 
     /* At this point we can (and should) mark the current node
        as unchanged. The node may be changed later. However, at
        this point it has not been changed. */
@@ -5760,7 +5792,7 @@ class HDLmMod {
     /* Get the array of fields to be displayed */
     let typeFields = typeData.fields;
     let typeFieldsLength = typeFields.length;
-    /* console.log('s3'); */
+    /* console.log('s3'); */  
     /* console.log(typeFieldsLength); */
     for (let i = 0; i < typeFieldsLength; i++) {
       let typeSubType = null;

@@ -7087,7 +7087,7 @@ class HDLmTextWidget {
         break;
       }
       /* Check for a password and handle password checking */
-      if (subType == 'password') {
+      if (subType == 'generalpassword') {
         value = value.trim();
         if (value == '' &&
           this.options.emptyFieldOk == false)

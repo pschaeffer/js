@@ -16,6 +16,8 @@
    be used */
 const HDLmDefinesConstants =
   {
+    "HDLMACCESSCOOKIE":                   "HDLmAccessCookie",
+    "HDLMDUMMYCOOKIE":                    "HDLmDummyCookie",
     "HDLMAPICHECKUSERNAMEPASSWORD":       "checkUsernamePassword",
     "HDLMAPICHECKLASTTIME":               "checkLastTime",
     "HDLMAPIGETUSER":                     "getUser",
@@ -29,7 +31,7 @@ const HDLmDefinesConstants =
     "HDLMCOMPANIESNODENAME":              "Companies",
     "HDLMCOMPANIESTYPE":                  "companies",
     "HDLMCOMPANYTYPE":                    "company",
-    "HDLMCONFIGS":                        "HDLmConfigs",
+    "HDLMCONFIGS":                        "HDLmConfigs",    
     "HDLMCURENV":                         "HDLm_Cur_Env",
     "HDLMDATANODENAME":                   "Data",
     "HDLMDATATYPE":                       "data",
@@ -72,6 +74,10 @@ const HDLmDefinesConstants =
     "HDLMLOADMODNAME":                    "load",
     "HDLMLOADPAGEMODNAME":                "load page",
     "HDLMLOADPAGEMODNAMEOLD":             "load",
+    "HDLMMANAGERULESBUILDCOOKIE":         "HDLmManageRulesBuildCookie",
+    "HDLMMANAGERULESJSNAME":              "HDLmManageRulesJs",
+    "HDLMMANAGERULESSETTESTOFF":          "HDLmManageRulesSetTestOff",
+    "HDLMMANAGERULESSETTESTON":           "HDLmManageRulesSetTestOn",
     "HDLMMAXCHANGES":                     100,
     "HDLMMAXIDENTEXTLEN":                 20,
     "HDLMMAXJSONERRORLEN":                50,

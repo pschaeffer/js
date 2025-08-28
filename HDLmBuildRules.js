@@ -7,17 +7,17 @@
  * @author Peter
  */
 "use strict";
-/* console.log('s1'); */  
+/* console.log('s1'); */
 /* import React from "react"; */
 /* console.log('s2'); */
 /* import { createRoot } from 'react-dom/client'; */
 /* console.log('s3'); */
-/* The HDLmBuildRules class doesn't actually do anything. However,  
-   it does define a set of static methods that are used to build  
-   zero or more rules. No instances of this class can ever be 
-   created. */ 
+/* The HDLmBuildRules class doesn't actually do anything. However,
+   it does define a set of static methods that are used to build
+   zero or more rules. No instances of this class can ever be
+   created. */
 class HDLmBuildRules {
-  /* This routine when called, adds an event listener to the window 
+  /* This routine when called, adds an event listener to the window
      object. The event listener is used to detect when the user
      unloads the browser. */
   static beforeUnloadAdd() {
@@ -27,8 +27,8 @@ class HDLmBuildRules {
     });
   }
   /* This routine is called when the user unloads the browser.
-     This routine handles the before unload event. The routine 
-     is used to resolve the promise that was created before the 
+     This routine handles the before unload event. The routine
+     is used to resolve the promise that was created before the
      user unloaded the browser. */
   static beforeUnloadDone(event) {
     /* console.log('In HDLmBuildRules.beforeUnloadDone'); */
@@ -42,28 +42,28 @@ class HDLmBuildRules {
   }
     /* Build the addTreeNode string. This string is used just for
        testing and debugging purposes. */
-  static buildAddTreeNodeString(nodePath) {       
+  static buildAddTreeNodeString(nodePath) {
     let addTreeNodeString = '';
     addTreeNodeString = '{"tooltip":"Script modification from web-page improver",' +
                         '"nodePath":["Top","Companies","www.yogadirect.com","Rules",' +
                         '"www.yogadirect.com","www.yogadirect.com","Script Modification 6/6/2025, 1:24:17 PM"],' +
                         '"type":"mod",' +
-                        '"details":{' +  
+                        '"details":{' +
                         '"type":"script",' +
                         '"name":"Script Modification 6/6/2025, 1:24:17 PM",' +
-                        '"extra":"",' + 
+                        '"extra":"",' +
                         '"enabled":true,' +
                         '"created":"2025-06-03T05:57:13.345Z",' +
                         '"lastModified":"2025-06-03T05:57:13.345Z",' +
                         '"pathvalue":"","comments":"From variant variant_1747833857020.js",' +
                         '"prob":100.0,' +
                         '"usemode":"test",' +
-                        '"cssselector":"",' +  
-                        '"xpath":"",' + 
-                        '"find":[],' + 
-                        '"nodeiden":{"type":"tag",' +  
+                        '"cssselector":"",' +
+                        '"xpath":"",' +
+                        '"find":[],' +
+                        '"nodeiden":{"type":"tag",' +
                         '"attributes":{"tag":"head"},"counts":{"tag":1},"parent":{"tag":"html"}},' +
-                        '"parameter":0,' +     
+                        '"parameter":0,' +
                         '"scripts":[' +
                         '"document.addEventListener(\\\"DOMContentLoaded\\\"' +
                         ', function() {\\n    if (window.self !== window.top) {\\n        alert(\\\"This web'        +
@@ -86,29 +86,29 @@ class HDLmBuildRules {
                         '"nodePath":["Top","Companies","www.yogadirect.com","Rules",' +
                         '"www.yogadirect.com","www.yogadirect.com","Script Modification 6/6/2025, 1:24:17 PM"],' +
                         '"type":"mod",' +
-                        '"details":{' +  
+                        '"details":{' +
                         '"type":"script",' +
                         '"name":"Script Modification 6/6/2025, 1:24:17 PM",' +
-                        '"extra":"",' + 
+                        '"extra":"",' +
                         '"enabled":true,' +
                         '"created":"2025-06-03T05:57:13.345Z",' +
                         '"lastModified":"2025-06-03T05:57:13.345Z",' +
                         '"pathvalue":"","comments":"From variant variant_1747833857020.js",' +
                         '"prob":100.0,' +
                         '"usemode":"test",' +
-                        '"cssselector":"",' +  
-                        '"xpath":"",' + 
-                        '"find":[],' + 
-                        '"nodeiden":{"type":"tag",' +  
+                        '"cssselector":"",' +
+                        '"xpath":"",' +
+                        '"find":[],' +
+                        '"nodeiden":{"type":"tag",' +
                         '"attributes":{"tag":"head"},"counts":{"tag":1},"parent":{"tag":"html"}},' +
-                        '"parameter":0,' +     
+                        '"parameter":0,' +
                         '"scripts":[""' +
                         '],' +
                         '"updated":false,' +
                         '"path":"",' +
                         '"pathre":false}}';
     let addTreeNodeStrini = '';
-    addTreeNodeStrini = '' +                      
+    addTreeNodeStrini = '' +
                         '{' +
                         '  "type": "mod",' +
                         '  "tooltip": "Script modification",' +
@@ -116,7 +116,7 @@ class HDLmBuildRules {
                         '    "find": [],' +
                         '    "scripts": [' +
                         '      "document.addEventListener(\\\"DOMContentLoaded\\\", function() {\\n  ' +
-                        '       if (window.self !== window.top) {\\n    ' + 
+                        '       if (window.self !== window.top) {\\n    ' +
                         '       alert(\\\"This webpage has been updated for better user experience. ' +
                         '       We increased the visibility of the contact information and added ' +
                         '       a prominent \'Contact Us\' button.\\\");\\n       ' +
@@ -126,7 +126,7 @@ class HDLmBuildRules {
                         '       border-radius:5px;\'>Contact Us</button>\\\");\\n    } else {\\n  ' +
                         '       alert(\\\"This webpage has been updated for better user ' +
                         '       experience. We increased the visibility of the contact information ' +
-                        '       and added a prominent \'Contact Us\' button.\\\");\\n' +        
+                        '       and added a prominent \'Contact Us\' button.\\\");\\n' +
                         '       document.querySelector(\\\"body\\\").insertAdjacentHTML(\\\"after' +
                         '       begin\\\", \\\"<button style=\'position:fixed; top:10px; right:10px;' +
                         '       padding:10px; background-color:#007BFF; color:white; border:none; ' +
@@ -144,7 +144,7 @@ class HDLmBuildRules {
                         '    "extra": "",' +
                         '    "name": "Mod AB-Testing Variant 5/21/2025, 1:24:17 PM Script",' +
                         '    "nodeiden": {' +
-                        '      "type": "tag",' + 
+                        '      "type": "tag",' +
                         '      "attributes": {' +
                         '        "tag": "head"' +
                         '       },' +
@@ -171,7 +171,7 @@ class HDLmBuildRules {
                         '  ]' +
                         '}'
     let addTreeNodeStrinj = '';
-    addTreeNodeStrinj = '' +                      
+    addTreeNodeStrinj = '' +
                         '{' +
                         '  "type": "mod",' +
                         '  "tooltip": "Script modification",' +
@@ -179,7 +179,7 @@ class HDLmBuildRules {
                         '    "find": [],' +
                         '    "scripts": ' +
                         '    [' +
-                        '      "/* console.log(\\\"In script\\\", event); */' + 
+                        '      "/* console.log(\\\"In script\\\", event); */' +
                         '       {' +
                         '         /* alert(\\\"This page has been modified to improve conversion: links in buttons have been updated to direct users to more sensible locations.\\\"); */' +
                         '         const buttonsToUpdate = [ \\n' +
@@ -210,7 +210,7 @@ class HDLmBuildRules {
                         '    "extra": "",' +
                         '    "name": "Script Mod Variant 7",' +
                         '    "nodeiden": {' +
-                        '      "type": "tag",' + 
+                        '      "type": "tag",' +
                         '      "attributes": {' +
                         '        "tag": "head"' +
                         '       },' +
@@ -236,90 +236,969 @@ class HDLmBuildRules {
                         '     "Script Mod Variant 7"' +
                         '  ]' +
                         '}';
-    return addTreeNodeStrinj;
+    let addTreeNodeString1 = '';
+    addTreeNodeString1 = '' +
+                         '{' +
+                         '  "type": "mod",' +
+                         '  "tooltip": "Script modification",' +
+                         '  "details": {' +
+                         '    "find": [],' +
+                         '    "scripts": ' +
+                         '    ["' +
+                         '( function() {' +
+                         '    /* alert(\\"This script modifies the webpage by adding a call-to-action button and updating the header text to enhance user conversion rates. The button encourages users to shop yoga mats.\\"); */' +
+                         '    const body = (window.self !== window.top) ? window.parent.document.body : document.body;' +
+                         '    if (!body) return;' +
+                         '    // Update header text \\n' +
+                         '    const header = body.querySelector(\'.site-header h1\');' +
+                         '    if (header) {' +
+                         '        header.innerText = \\"Explore Our Premium Yoga Products Today!\\";' +
+                         '    }' +
+                         '    // Create a new button \\n' +
+                         '    const buttonContainer = body.querySelector(\'.content-holder\');' +
+                         '    if (buttonContainer) {' +
+                         '        const button = document.createElement(\'button\');' +
+                         '        button.innerText = \\"Shop Yoga Mats Now!\\";' +
+                         '        button.className = \\"btn btn-success\\";' +
+                         '        button.style.display = \\"block\\";' +
+                         '        button.style.margin = \\"20px auto\\";' +
+                         '        button.onclick = function() {' +
+                         '            window.location.href = \\"/yoga-mats\\";' +
+                         '        };' +
+                         '        buttonContainer.prepend(button);' +
+                         '    }' +
+                         '})();' +
+                         '    "],' +
+                         '    "enabled": false,' +
+                         '    "pathre": false,' +
+                         '    "type": "script",' +
+                         '    "parameter": 0,' +
+                         '    "cssselector": "",' +
+                         '    "comments": "",' +
+                         '    "created": "2025-06-05T07:16:10.434Z",' +
+                         '    "lastmodified": "2025-06-05T07:16:10.434Z",' +
+                         '    "updated": false,' +
+                         '    "extra": "",' +
+                         '    "name": "Script Mod CC Variant 1",' +
+                         '    "nodeiden": {' +
+                         '      "type": "tag",' +
+                         '      "attributes": {' +
+                         '        "tag": "head"' +
+                         '       },' +
+                         '      "counts": {' +
+                         '      "tag": 1' +
+                         '       },' +
+                         '      "parent": {' +
+                         '        "tag": "html"' +
+                         '      }' +
+                         '    },' +
+                         '    "path": "//.*/",' +
+                         '    "prob": 1.0,' +
+                         '    "usemode": "prod",' +
+                         '    "xpath": ""' +
+                         '  },' +
+                         '  "nodePath": [' +
+                         '     "Top",' +
+                         '     "Companies",' +
+                         '     "www.yogadirect.com",' +
+                         '     "Rules",' +
+                         '     "example.com",' +
+                         '     "example.com",' +
+                         '     "Script Mod CC Variant 1"' +
+                         '  ]' +
+                         '}'
+    let addTreeNodeString2 = '';
+    addTreeNodeString2 = '' +
+                         '{' +
+                         '  "type": "mod",' +
+                         '  "tooltip": "Script modification",' +
+                         '  "details": {' +
+                         '    "find": [],' +
+                         '    "scripts": ' +
+                         '    ["' +
+                         '( function() {' +
+                         '    /* alert(\\"This page\'s scrolling carousel width has been modified to occupy only one third of the screen width.\\"); */' +
+                         '    const carousel = document.querySelector(\'.homeCarousel\');' +
+                         '    if (carousel) {' +
+                         '        carousel.style.width = \'33.33vw\';' +
+                         '    }' +
+                         '})();' +
+                         '    "],' +
+                         '    "enabled": false,' +
+                         '    "pathre": false,' +
+                         '    "type": "script",' +
+                         '    "parameter": 0,' +
+                         '    "cssselector": "",' +
+                         '    "comments": "",' +
+                         '    "created": "2025-06-05T07:16:10.434Z",' +
+                         '    "lastmodified": "2025-06-05T07:16:10.434Z",' +
+                         '    "updated": false,' +
+                         '    "extra": "",' +
+                         '    "name": "Script Mod CC Variant 2",' +
+                         '    "nodeiden": {' +
+                         '      "type": "tag",' +
+                         '      "attributes": {' +
+                         '        "tag": "head"' +
+                         '       },' +
+                         '      "counts": {' +
+                         '      "tag": 1' +
+                         '       },' +
+                         '      "parent": {' +
+                         '        "tag": "html"' +
+                         '      }' +
+                         '    },' +
+                         '    "path": "//.*/",' +
+                         '    "prob": 1.0,' +
+                         '    "usemode": "prod",' +
+                         '    "xpath": ""' +
+                         '  },' +
+                         '  "nodePath": [' +
+                         '     "Top",' +
+                         '     "Companies",' +
+                         '     "www.yogadirect.com",' +
+                         '     "Rules",' +
+                         '     "example.com",' +
+                         '     "example.com",' +
+                         '     "Script Mod CC Variant 2"' +
+                         '  ]' +
+                         '}'
+    let addTreeNodeString3 = '';
+    addTreeNodeString3 = '' +
+                         '{' +
+                         '  "type": "mod",' +
+                         '  "tooltip": "Script modification",' +
+                         '  "details": {' +
+                         '    "find": [],' +
+                         '    "scripts": ' +
+                         '    ["' +
+                         '( function() {' +
+                         '    /* alert(\\"The scrolling carousel has been set to occupy one third of the screen and centered on the page.\\"); */' +
+                         '    var carousel = document.querySelector(\'.homeCarousel\');' +
+                         '    if (carousel) {' +
+                         '        carousel.style.width = \'33.33%25\';' +
+                         '        carousel.stylemargin = \'0 auto\';' +
+                         '    }' +
+                         '})();' +
+                         '    "],' +
+                         '    "enabled": false,' +
+                         '    "pathre": false,' +
+                         '    "type": "script",' +
+                         '    "parameter": 0,' +
+                         '    "cssselector": "",' +
+                         '    "comments": "",' +
+                         '    "created": "2025-06-05T07:16:10.434Z",' +
+                         '    "lastmodified": "2025-06-05T07:16:10.434Z",' +
+                         '    "updated": false,' +
+                         '    "extra": "",' +
+                         '    "name": "Script Mod CC Variant 3",' +
+                         '    "nodeiden": {' +
+                         '      "type": "tag",' +
+                         '      "attributes": {' +
+                         '        "tag": "head"' +
+                         '       },' +
+                         '      "counts": {' +
+                         '      "tag": 1' +
+                         '       },' +
+                         '      "parent": {' +
+                         '        "tag": "html"' +
+                         '      }' +
+                         '    },' +
+                         '    "path": "//.*/",' +
+                         '    "prob": 1.0,' +
+                         '    "usemode": "prod",' +
+                         '    "xpath": ""' +
+                         '  },' +
+                         '  "nodePath": [' +
+                         '     "Top",' +
+                         '     "Companies",' +
+                         '     "www.yogadirect.com",' +
+                         '     "Rules",' +
+                         '     "example.com",' +
+                         '     "example.com",' +
+                         '     "Script Mod CC Variant 3"' +
+                         '  ]' +
+                         '}'
+    let addTreeNodeString4 = '';
+    addTreeNodeString4 = '' +
+                         '{' +
+                         '  "type": "mod",' +
+                         '  "tooltip": "Script modification",' +
+                         '  "details": {' +
+                         '    "find": [],' +
+                         '    "scripts": ' +
+                         '    ["' +
+                         '( function() {' +
+                         '    if (window.self !== window.top) {' +
+                         '        /* alert(\\"This page is being displayed in an iframe. Enhancements will be applied to the iframe\'s content.\\"); */' +
+                         '    } else {' +
+                         '        /* alert(\\"You are viewing this page in a standalone window. Enhancements will be applied directly to the page\\"); */' +
+                         '    }' +
+                         '    document.body.style.backgroundColor = \\"#f9f9f9\\";' +
+                         '    document.body.style.fontFamily = \\"\'Lato\', sans-serif\\";' +
+                         '    const header = document.querySelector(\'.site-header\');' +
+                         '    header.style.backgroundColor = \\"#fff\\";' +
+                         '    header.style.boxShadow = \\"0 2px 10px rgba(0, 0, 0, 0.1)\\";' +
+                         '    const buttons = document.querySelectorAll(\'.btn\');' +
+                         '    buttons.forEach(button => {' +
+                         '        button.style.backgroundColor = \\"#4CAF50\\";' +
+                         '        button.stylecolor = \\"#fff\\";' +
+                         '        button.style.borderRadius = \\"5px\\";' +
+                         '        button.styletransition = \\"background-color 0.3s\\";' +
+                         '        button.addEventListener(\'mouseover\', function() {' +
+                         '            this.style.backgroundColor = \\"#45a049\\";' +
+                         '        });' +
+                         '        button.addEventListener(\'mouseout\', function() {' +
+                         '            this.style.backgroundColor = \\"#4CAF50\\";' +
+                         '        });' +
+                         '    });' +
+                         '    const productItems = document.querySelectorAll(\'.product-item\');' +
+                         '    productItems.forEach(item => {' +
+                         '        item.style.border = \\"1px solid #e0e0e0\\";' +
+                         '        item.style.borderRadius = \\"10px\\";' +
+                         '        item.style.padding = \\"10px\\";' +
+                         '        item.style.margin = \\"10px 0\\";' +
+                         '        item.style.transition = \\"transform 0.2s\\";' +
+                         '        item.addEventListener(\'mouseover\', function() {' +
+                         '            this.style.transform = \\"scale(1.05)\\";' +
+                         '        });' +
+                         '        item.addEventListener(\'mouseout\', function() {' +
+                         '            this.style.transform = \\"scale(1)\\";' +
+                         '        });' +
+                         '    });' +
+                         '})();' +
+                         '    "],' +
+                         '    "enabled": false,' +
+                         '    "pathre": false,' +
+                         '    "type": "script",' +
+                         '    "parameter": 0,' +
+                         '    "cssselector": "",' +
+                         '    "comments": "",' +
+                         '    "created": "2025-06-05T07:16:10.434Z",' +
+                         '    "lastmodified": "2025-06-05T07:16:10.434Z",' +
+                         '    "updated": false,' +
+                         '    "extra": "",' +
+                         '    "name": "Script Mod CC Variant 4",' +
+                         '    "nodeiden": {' +
+                         '      "type": "tag",' +
+                         '      "attributes": {' +
+                         '        "tag": "head"' +
+                         '       },' +
+                         '      "counts": {' +
+                         '      "tag": 1' +
+                         '       },' +
+                         '      "parent": {' +
+                         '        "tag": "html"' +
+                         '      }' +
+                         '    },' +
+                         '    "path": "//.*/",' +
+                         '    "prob": 1.0,' +
+                         '    "usemode": "prod",' +
+                         '    "xpath": ""' +
+                         '  },' +
+                         '  "nodePath": [' +
+                         '     "Top",' +
+                         '     "Companies",' +
+                         '     "www.yogadirect.com",' +
+                         '     "Rules",' +
+                         '     "example.com",' +
+                         '     "example.com",' +
+                         '     "Script Mod CC Variant 4"' +
+                         '  ]' +
+                         '}'
+    let addTreeNodeString5 = '';
+    addTreeNodeString5 = '' +
+                         '{' +
+                         '  "type": "mod",' +
+                         '  "tooltip": "Script modification",' +
+                         '  "details": {' +
+                         '    "find": [],' +
+                         '    "scripts": ' +
+                         '    ["' +
+                         '( function() {' +
+                         '    /* alert(\\"This script enhances the visual appeal of the webpage by changing the background color, adding shadows to elements, and improving font styles.\\"); */' +
+                         '    const isIframe = window.self !== window.top;' +
+                         '    document.body.style.backgroundColor = \\"#f0f4f8\\";' +
+                         '    document.body.style.fontFamily = \\"\'Roboto\', sans-serif\\";' +
+                         '    const headers = document.querySelectorAll(\\"h1, h2, h3, h4\\");' +
+                         '    headers.forEach(header => {' +
+                         '        header.style.color = \\"#333\\";' +
+                         '        header.style.textShadow = \\"1px 1px 2px rgba(0, 0, 0, 0.1)\\";' +
+                         '    });' +
+                         '    const buttons = document.querySelectorAll(\\"button, .btn\\");' +
+                         '    buttons.forEach(button => {' +
+                         '        button.style.backgroundColor = \\"#007bff\\";' +
+                         '        button.style.color = \\"#fff\\";' +
+                         '        button.style.borderRadius = \\"5px\\";' +
+                         '        button.style.padding = \\"10px 15px\\";' +
+                         '        button.style.transition = \\"background-color 0.3s\\";' +
+                         '        button.onmouseover = () => button.style.backgroundColor = \\"#0056b3\\";' +
+                         '        button.onmouseout = () => button.style.backgroundColor = \\"#007bff\\";' +
+                         '    });' +
+                         '    const productItems = document.querySelectorAll(\\".product-item\\");' +
+                         '    productItems.forEach(item => {' +
+                         '        item.style.boxShadow = \\"0 4px 8px rgba(0, 0, 0, 0.1)\\";' +
+                         '        item.style.borderRadius = \\"8px\\";' +
+                         '        item.style.transition = \\"transform 0.2s\\";' +
+                         '        item.onmouseover = () => itemstyle.transform = \\"scale(1.05)\\";' +
+                         '        item.onmouseout = () => item.style.transform = \\"scale(1)\\";' +
+                         '    });' +
+                         '})();' +
+                         '    "],' +
+                         '    "enabled": false,' +
+                         '    "pathre": false,' +
+                         '    "type": "script",' +
+                         '    "parameter": 0,' +
+                         '    "cssselector": "",' +
+                         '    "comments": "",' +
+                         '    "created": "2025-06-05T07:16:10.434Z",' +
+                         '    "lastmodified": "2025-06-05T07:16:10.434Z",' +
+                         '    "updated": false,' +
+                         '    "extra": "",' +
+                         '    "name": "Script Mod CC Variant 5",' +
+                         '    "nodeiden": {' +
+                         '      "type": "tag",' +
+                         '      "attributes": {' +
+                         '        "tag": "head"' +
+                         '       },' +
+                         '      "counts": {' +
+                         '      "tag": 1' +
+                         '       },' +
+                         '      "parent": {' +
+                         '        "tag": "html"' +
+                         '      }' +
+                         '    },' +
+                         '    "path": "//.*/",' +
+                         '    "prob": 1.0,' +
+                         '    "usemode": "prod",' +
+                         '    "xpath": ""' +
+                         '  },' +
+                         '  "nodePath": [' +
+                         '     "Top",' +
+                         '     "Companies",' +
+                         '     "www.yogadirect.com",' +
+                         '     "Rules",' +
+                         '     "example.com",' +
+                         '     "example.com",' +
+                         '     "Script Mod CC Variant 5"' +
+                         '  ]' +
+                         '}'
+    let addTreeNodeString6 = '';
+    addTreeNodeString6 = '' +
+                         '{' +
+                         '  "type": "mod",' +
+                         '  "tooltip": "Script modification",' +
+                         '  "details": {' +
+                         '    "find": [],' +
+                         '    "scripts": ' +
+                         '    ["' +
+                         '( function() {' +
+                         '    /* alert(\\"This script has made some visual modifications to the site, including updating the background color and adding a box shadow to product items.\\"); */' +
+                         '    const isIframe = window.self !== window.top;' +
+                         '    if (isIframe) {' +
+                         '        document.body.style.backgroundColor = \\"#f9f9f9\\";' +
+                         '    } else {' +
+                         '        document.body.style.backgroundColor = \\"#e0e0e0\\";' +
+                         '    }' +
+                         '    const productItems = document.querySelectorAll(\'.product-item\');' +
+                         '    productItems.forEach(item => {' +
+                         '        item.style.boxShadow = \\"0 4px 10px rgba(0, 0, 0, 01)\\";' +
+                         '        item.style.borderRadius = \\"8px\\";' +
+                         '        item.style.transition = \\"transform 0.3s\\";' +
+                         '        item.addEventListener(\'mouseenter\', () => {' +
+                         '            item.style.transform = \\"scale(1.05)\\";' +
+                         '        });' +
+                         '        item.addEventListener(\'mouseleave\', () => {' +
+                         '            item.style.transform = \\"scale(1)\\";' +
+                         '        });' +
+                         '    });' +
+                         '})();' +
+                         '    "],' +
+                         '    "enabled": false,' +
+                         '    "pathre": false,' +
+                         '    "type": "script",' +
+                         '    "parameter": 0,' +
+                         '    "cssselector": "",' +
+                         '    "comments": "",' +
+                         '    "created": "2025-06-05T07:16:10.434Z",' +
+                         '    "lastmodified": "2025-06-05T07:16:10.434Z",' +
+                         '    "updated": false,' +
+                         '    "extra": "",' +
+                         '    "name": "Script Mod CC Variant 6",' +
+                         '    "nodeiden": {' +
+                         '      "type": "tag",' +
+                         '      "attributes": {' +
+                         '        "tag": "head"' +
+                         '       },' +
+                         '      "counts": {' +
+                         '      "tag": 1' +
+                         '       },' +
+                         '      "parent": {' +
+                         '        "tag": "html"' +
+                         '      }' +
+                         '    },' +
+                         '    "path": "//.*/",' +
+                         '    "prob": 1.0,' +
+                         '    "usemode": "prod",' +
+                         '    "xpath": ""' +
+                         '  },' +
+                         '  "nodePath": [' +
+                         '     "Top",' +
+                         '     "Companies",' +
+                         '     "www.yogadirect.com",' +
+                         '     "Rules",' +
+                         '     "example.com",' +
+                         '     "example.com",' +
+                         '     "Script Mod CC Variant 6"' +
+                         '  ]' +
+                         '}'
+    let addTreeNodeString7 = '';
+    addTreeNodeString7 = '' +
+                         '{' +
+                         '  "type": "mod",' +
+                         '  "tooltip": "Script modification",' +
+                         '  "details": {' +
+                         '    "find": [],' +
+                         '    "scripts": ' +
+                         '    ["' +
+                         '( function() {' +
+                         '    /* alert(\\"This script has made some visual modifications to the site, including updating the background color and adding a box shadow to product items.\\"); */' +
+                         '    const isIframe = window.self !== window.top;' +
+                         '    if (isIframe) {' +
+                         '        document.body.style.backgroundColor = \\"#f9f9f9\\";' +
+                         '    } else {' +
+                         '        document.body.style.backgroundColor = \\"#e0e0e0\\";' +
+                         '    }' +
+                         '    const productItems = document.querySelectorAll(\'.product-item\');' +
+                         '    productItems.forEach(item => {' +
+                         '        item.style.boxShadow = \\"0 4px 10px rgba(0, 0, 0, 0.1)\\";' +
+                         '        item.style.borderRadius = \\"8px\\";' +
+                         '        item.style.transition = \\"transform 0.3s\\";' +
+                         '        item.addEventListener(\'mouseenter\', () => {' +
+                         '            item.style.transform = \\"scale(1.05)\\";' +
+                         '        });' +
+                         '        item.addEventListener(\'mouseleave\', () => {' +
+                         '            item.style.transform = \\"scale(1)\\";' +
+                         '        });' +
+                         '    });' +
+                         '})();' +
+                         '    "],' +
+                         '    "enabled": false,' +
+                         '    "pathre": false,' +
+                         '    "type": "script",' +
+                         '    "parameter": 0,' +
+                         '    "cssselector": "",' +
+                         '    "comments": "",' +
+                         '    "created": "2025-06-05T07:16:10.434Z",' +
+                         '    "lastmodified": "2025-06-05T07:16:10.434Z",' +
+                         '    "updated": false,' +
+                         '    "extra": "",' +
+                         '    "name": "Script Mod CC Variant 7",' +
+                         '    "nodeiden": {' +
+                         '      "type": "tag",' +
+                         '      "attributes": {' +
+                         '        "tag": "head"' +
+                         '       },' +
+                         '      "counts": {' +
+                         '      "tag": 1' +
+                         '       },' +
+                         '      "parent": {' +
+                         '        "tag": "html"' +
+                         '      }' +
+                         '    },' +
+                         '    "path": "//.*/",' +
+                         '    "prob": 1.0,' +
+                         '    "usemode": "prod",' +
+                         '    "xpath": ""' +
+                         '  },' +
+                         '  "nodePath": [' +
+                         '     "Top",' +
+                         '     "Companies",' +
+                         '     "www.yogadirect.com",' +
+                         '     "Rules",' +
+                         '     "example.com",' +
+                         '     "example.com",' +
+                         '     "Script Mod CC Variant 7"' +
+                         '  ]' +
+                         '}'
+    let addTreeNodeString8 = '';
+    addTreeNodeString8 = '' +
+                         '{' +
+                         '  "type": "mod",' +
+                         '  "tooltip": "Script modification",' +
+                         '  "details": {' +
+                         '    "find": [],' +
+                         '    "scripts": ' +
+                         '    ["' +
+                         '( function() {' +
+                         '    /* alert(\\"This script modifies the page\'s background color to a light blue and adds a shadow to product items for a more visually appealing look.\\"); */' +
+                         '    if (window.self !== window.top) {' +
+                         '        // Running inside an iframe \\n' +
+                         '        document.body.style.backgroundColor = \\"#e0f7fa\\"; // light blue background \\n' +
+                         '    } else {' +
+                         '        // Running in the main window \\n' +
+                         '        document.body.style.backgroundColor = \\"#e0f7fa\\"; // light blue background \\n' +
+                         '    }' +
+                         '    const productItems = document.querySelectorAll(\'.product-item\');' +
+                         '    productItems.forEach(item => {' +
+                         '        item.style.boxShadow = \\"0 4px 8px rgba(0, 0, 0, 0.2)\\";' +
+                         '        item.style.transition = \\"0.3s\\"; // Smooth transition \\n' +
+                         '        item.addEventListener(\'mouseenter\', function() {' +
+                         '            item.style.transform = \\"scale(1.05)\\";' +
+                         '        });' +
+                         '        item.addEventListener(\'mouseleave\', function() {' +
+                         '            item.style.transform = \\"scale(1)\\";' +
+                         '        });' +
+                         '    });' +
+                         '})();' +
+                         '    "],' +
+                         '    "enabled": false,' +
+                         '    "pathre": false,' +
+                         '    "type": "script",' +
+                         '    "parameter": 0,' +
+                         '    "cssselector": "",' +
+                         '    "comments": "",' +
+                         '    "created": "2025-06-05T07:16:10.434Z",' +
+                         '    "lastmodified": "2025-06-05T07:16:10.434Z",' +
+                         '    "updated": false,' +
+                         '    "extra": "",' +
+                         '    "name": "Script Mod CC Variant 8",' +
+                         '    "nodeiden": {' +
+                         '      "type": "tag",' +
+                         '      "attributes": {' +
+                         '        "tag": "head"' +
+                         '       },' +
+                         '      "counts": {' +
+                         '      "tag": 1' +
+                         '       },' +
+                         '      "parent": {' +
+                         '        "tag": "html"' +
+                         '      }' +
+                         '    },' +
+                         '    "path": "//.*/",' +
+                         '    "prob": 1.0,' +
+                         '    "usemode": "prod",' +
+                         '    "xpath": ""' +
+                         '  },' +
+                         '  "nodePath": [' +
+                         '     "Top",' +
+                         '     "Companies",' +
+                         '     "www.yogadirect.com",' +
+                         '     "Rules",' +
+                         '     "example.com",' +
+                         '     "example.com",' +
+                         '     "Script Mod CC Variant 8"' +
+                         '  ]' +
+                         '}'
+    let addTreeNodeString9 = '';
+    addTreeNodeString9 = '' +
+                         '{' +
+                         '  "type": "mod",' +
+                         '  "tooltip": "Script modification",' +
+                         '  "details": {' +
+                         '    "find": [],' +
+                         '    "scripts": ' +
+                         '    ["' +
+                         '( function() {' +
+                         '    /* alert(\\"The menu bar has been moved from the top to the left side of the page.\\"); */' +
+                         '    var isIframe = window.self !== window.top;' +
+                         '    var menuBar = document.getElementById(\\"FRAME_MENU\\");' +
+                         '    if (menuBar) {' +
+                         '        var navSection = document.querySelector(\\"section.top-nav\\");' +
+                         '        if (navSection) {' +
+                         '            navSection.style.display = \\"none\\";' +
+                         '        }' +
+                         '        menuBar.style.position = \\"absolute\\";' +
+                         '        menuBar.style.top = \\"0\\";' +
+                         '        menuBar.style.left = \\"0\\";' +
+                         '        menuBar.style.width = \\"200px\\";' +
+                         '        menuBar.style.height = \\"100%25\\";' +
+                         '        menuBar.style.backgroundColor = \\"#fff\\"; // You can customize the background color \\n' +
+                         '        menuBar.style.boxShadow = \\"2px 0 5px rgba(0,0,0,0.1)\\";' +
+                         '    }' +
+                         '})();' +
+                         '    "],' +
+                         '    "enabled": false,' +
+                         '    "pathre": false,' +
+                         '    "type": "script",' +
+                         '    "parameter": 0,' +
+                         '    "cssselector": "",' +
+                         '    "comments": "",' +
+                         '    "created": "2025-06-05T07:16:10.434Z",' +
+                         '    "lastmodified": "2025-06-05T07:16:10.434Z",' +
+                         '    "updated": false,' +
+                         '    "extra": "",' +
+                         '    "name": "Script Mod CC Variant 9",' +
+                         '    "nodeiden": {' +
+                         '      "type": "tag",' +
+                         '      "attributes": {' +
+                         '        "tag": "head"' +
+                         '       },' +
+                         '      "counts": {' +
+                         '      "tag": 1' +
+                         '       },' +
+                         '      "parent": {' +
+                         '        "tag": "html"' +
+                         '      }' +
+                         '    },' +
+                         '    "path": "//.*/",' +
+                         '    "prob": 1.0,' +
+                         '    "usemode": "prod",' +
+                         '    "xpath": ""' +
+                         '  },' +
+                         '  "nodePath": [' +
+                         '     "Top",' +
+                         '     "Companies",' +
+                         '     "www.yogadirect.com",' +
+                         '     "Rules",' +
+                         '     "example.com",' +
+                         '     "example.com",' +
+                         '     "Script Mod CC Variant 9"' +
+                         '  ]' +
+                         '}'
+    let addTreeNodeString10 = '';
+    addTreeNodeString10 = '' +
+                          '{' +
+                          '  "type": "mod",' +
+                          '  "tooltip": "Script modification",' +
+                          '  "details": {' +
+                          '    "find": [],' +
+                          '    "scripts": ' +
+                          '    ["' +
+                          '( function() {' +
+                          '    if (window.self !== window.top) {' +
+                          '        /* alert(\\"This webpage is being modified to move the menu from the top to the left side.\\"); */' +
+                          '    } else {' +
+                          '        /* alert(\\"This webpage is being modified to move the menu from the top to the left side.\\"); */' +
+                          '    }' +
+                          '    const menuBar = document.querySelector(\\".navbar-wrapper\\");' +
+                          '    if (menuBar) {' +
+                          '        menuBar.style.position = \\"fixed\\";' +
+                          '        menuBar.style.top = \\"0\\";' +
+                          '        menuBar.style.left = \\"0\\";' +
+                          '        menuBar.style.width = \\"200px\\"; // Set menu width \\n' +
+                          '        menuBar.style.height = \\"100%25\\"; // Full height \\n' +
+                          '        menuBar.style.zIndex = \\"1000\\"; // Ensure it\'s on top \\n' +
+                          '        menuBar.style.transform = \\"translateX(-100%25)\\"; // Start hidden \\n' +
+                          '        menuBar.style.transition = \\"transform 0.3s ease\\"; // Animation for transition \\n' +
+                          '        document.body.style.marginLeft = \\"200px\\"; // Adjust body margin to make space for menu \\n' +
+                          '        // Add a button or mechanism to toggle the menu visibility \\n' +
+                          '        const toggleButton = document.createElement(\'button\');' +
+                          '        toggleButton.innerText = \\"Toggle Menu\\";' +
+                          '        toggleButton.style.position = \\"fixed\\";' +
+                          '        toggleButton.style.top = \\"10px\\";' +
+                          '        toggleButton.style.left = \\"210px\\"; // Slightly away from the menu \\n' +
+                          '        toggleButton.onclick = function() {' +
+                          '            menuBar.style.transform = menuBar.style.transform === \\"translateX(0%25)\\" ? \\"translateX(-100%25)\\" : \\"translateX(0%25)\\";' +
+                          '        };' +
+                          '        document.body.appendChild(toggleButton);' +
+                          '    }' +
+                          '})();' +
+                          '    "],' +
+                          '    "enabled": false,' +
+                          '    "pathre": false,' +
+                          '    "type": "script",' +
+                          '    "parameter": 0,' +
+                          '    "cssselector": "",' +
+                          '    "comments": "",' +
+                          '    "created": "2025-06-05T07:16:10.434Z",' +
+                          '    "lastmodified": "2025-06-05T07:16:10.434Z",' +
+                          '    "updated": false,' +
+                          '    "extra": "",' +
+                          '    "name": "Script Mod CC Variant 10",' +
+                          '    "nodeiden": {' +
+                          '      "type": "tag",' +
+                          '      "attributes": {' +
+                          '        "tag": "head"' +
+                          '       },' +
+                          '      "counts": {' +
+                          '      "tag": 1' +
+                          '       },' +
+                          '      "parent": {' +
+                          '        "tag": "html"' +
+                          '      }' +
+                          '    },' +
+                          '    "path": "//.*/",' +
+                          '    "prob": 1.0,' +
+                          '    "usemode": "prod",' +
+                          '    "xpath": ""' +
+                          '  },' +
+                          '  "nodePath": [' +
+                          '     "Top",' +
+                          '     "Companies",' +
+                          '     "www.yogadirect.com",' +
+                          '     "Rules",' +
+                          '     "example.com",' +
+                          '     "example.com",' +
+                          '     "Script Mod CC Variant 10"' +
+                          '  ]' +
+                          '}'
+    let addTreeNodeString11 = '';
+    addTreeNodeString11 = '' +
+                          '{' +
+                          '  "type": "mod",' +
+                          '  "tooltip": "Script modification",' +
+                          '  "details": {' +
+                          '    "find": [],' +
+                          '    "scripts": ' +
+                          '    ["' +
+                          '( function() {' +
+                          '    /* alert(\\"The menu bar has been moved from the top to the left side of the page.\\"); */' +
+                          '    var isIframe = window.self !== window.top;' +
+                          '    var menuBar = document.getElementById(\\"menulinks-outer\\");' +
+                          '    if (menuBar) {' +
+                          '        var newContainer = document.createElement(\\"div\\");' +
+                          '        newContainer.style.position = \\"absolute\\";' +
+                          '        newContainer.style.top = \\"0\\";' +
+                          '        newContainer.style.left = \\"0\\";' +
+                          '        newContainer.style.width = \\"200px\\"; // Set a width for the vertical menu \\n' +
+                          '        newContainer.appendChild(menuBar);' +
+                          '        var body = document.body;' +
+                          '        body.insertBefore(newContainer, body.firstChild); // Insert the new menu at the top left \\n' +
+                          '        // Ensuring the content is pushed to the right \\n' +
+                          '        var contentHolder = document.querySelector(\'.content-holder\');' +
+                          '        if (contentHolder) {' +
+                          '            contentHolder.style.marginLeft = \\"220px\\"; // Adjust the margin according to the menu width \\n' +
+                          '        }' +
+                          '    }' +
+                          '})();' +
+                          '    "],' +
+                          '    "enabled": false,' +
+                          '    "pathre": false,' +
+                          '    "type": "script",' +
+                          '    "parameter": 0,' +
+                          '    "cssselector": "",' +
+                          '    "comments": "",' +
+                          '    "created": "2025-06-05T07:16:10.434Z",' +
+                          '    "lastmodified": "2025-06-05T07:16:10.434Z",' +
+                          '    "updated": false,' +
+                          '    "extra": "",' +
+                          '    "name": "Script Mod CC Variant 11",' +
+                          '    "nodeiden": {' +
+                          '      "type": "tag",' +
+                          '      "attributes": {' +
+                          '        "tag": "head"' +
+                          '       },' +
+                          '      "counts": {' +
+                          '      "tag": 1' +
+                          '       },' +
+                          '      "parent": {' +
+                          '        "tag": "html"' +
+                          '      }' +
+                          '    },' +
+                          '    "path": "//.*/",' +
+                          '    "prob": 1.0,' +
+                          '    "usemode": "prod",' +
+                          '    "xpath": ""' +
+                          '  },' +
+                          '  "nodePath": [' +
+                          '     "Top",' +
+                          '     "Companies",' +
+                          '     "www.yogadirect.com",' +
+                          '     "Rules",' +
+                          '     "example.com",' +
+                          '     "example.com",' +
+                          '     "Script Mod CC Variant 11"' +
+                          '  ]' +
+                          '}'
+    let addTreeNodeString12 = '';
+    addTreeNodeString12 = '' +
+                          '{' +
+                          '  "type": "mod",' +
+                          '  "tooltip": "Script modification",' +
+                          '  "details": {' +
+                          '    "find": [],' +
+                          '    "scripts": ' +
+                          '    ["' +
+                          '( function() {' +
+                          '    if (window.self !== window.top) {' +
+                          '        /* alert(\\"This script will add outlines to the featured products on the page.\\"); */' +
+                          '    } else {' +
+                          '        /* alert(\\"This script will add outlines to the featured products on the page.\\"); */' +
+                          '    }' +
+                          '    const featuredProducts = document.querySelectorAll(\'.products-section .product-item\');' +
+                          '    featuredProducts.forEach(product => {' +
+                          '        product.style.border = \'2px solid #ff0000\'; // Red outline \\n' +
+                          '    });' +
+                          '})();' +
+                          '    "],' +
+                          '    "enabled": false,' +
+                          '    "pathre": false,' +
+                          '    "type": "script",' +
+                          '    "parameter": 0,' +
+                          '    "cssselector": "",' +
+                          '    "comments": "",' +
+                          '    "created": "2025-06-05T07:16:10.434Z",' +
+                          '    "lastmodified": "2025-06-05T07:16:10.434Z",' +
+                          '    "updated": false,' +
+                          '    "extra": "",' +
+                          '    "name": "Script Mod CC Variant 12",' +
+                          '    "nodeiden": {' +
+                          '      "type": "tag",' +
+                          '      "attributes": {' +
+                          '        "tag": "head"' +
+                          '       },' +
+                          '      "counts": {' +
+                          '      "tag": 1' +
+                          '       },' +
+                          '      "parent": {' +
+                          '        "tag": "html"' +
+                          '      }' +
+                          '    },' +
+                          '    "path": "//.*/",' +
+                          '    "prob": 1.0,' +
+                          '    "usemode": "prod",' +
+                          '    "xpath": ""' +
+                          '  },' +
+                          '  "nodePath": [' +
+                          '     "Top",' +
+                          '     "Companies",' +
+                          '     "www.yogadirect.com",' +
+                          '     "Rules",' +
+                          '     "example.com",' +
+                          '     "example.com",' +
+                          '     "Script Mod CC Variant 12"' +
+                          '  ]' +
+                          '}'
+    let addTreeNodeString13 = '';
+    addTreeNodeString13 = '' +
+                          '{' +
+                          '  "type": "mod",' +
+                          '  "tooltip": "Script modification",' +
+                          '  "details": {' +
+                          '    "find": [],' +
+                          '    "scripts": ' +
+                          '    ["' +
+                          '( function() {' +
+                          '    /* alert(\\"This script adds purple outlines around featured products on the page.\\"); */' +
+                          '    const productItems = document.querySelectorAll(\'.product-item\');' +
+                          '    productItems.forEach(item => {' +
+                          '        item.style.border = \'2px solid purple\';' +
+                          '        item.style.boxSizing = \'border-box\';' +
+                          '    });' +
+                          '})();' +
+                          '    "],' +
+                          '    "enabled": false,' +
+                          '    "pathre": false,' +
+                          '    "type": "script",' +
+                          '    "parameter": 0,' +
+                          '    "cssselector": "",' +
+                          '    "comments": "",' +
+                          '    "created": "2025-06-05T07:16:10.434Z",' +
+                          '    "lastmodified": "2025-06-05T07:16:10.434Z",' +
+                          '    "updated": false,' +
+                          '    "extra": "",' +
+                          '    "name": "Script Mod CC Variant 13",' +
+                          '    "nodeiden": {' +
+                          '      "type": "tag",' +
+                          '      "attributes": {' +
+                          '        "tag": "head"' +
+                          '       },' +
+                          '      "counts": {' +
+                          '      "tag": 1' +
+                          '       },' +
+                          '      "parent": {' +
+                          '        "tag": "html"' +
+                          '      }' +
+                          '    },' +
+                          '    "path": "//.*/",' +
+                          '    "prob": 1.0,' +
+                          '    "usemode": "prod",' +
+                          '    "xpath": ""' +
+                          '  },' +
+                          '  "nodePath": [' +
+                          '     "Top",' +
+                          '     "Companies",' +
+                          '     "www.yogadirect.com",' +
+                          '     "Rules",' +
+                          '     "example.com",' +
+                          '     "example.com",' +
+                          '     "Script Mod CC Variant 13"' +
+                          '  ]' +
+                          '}'
+    return addTreeNodeString10;
   }
-  /* Build a JavaScript array with the new rules in it. For 
+  /* Build a JavaScript array with the new rules in it. For
      now the new rules are hard-coded below. */
   static buildRulesArray() {
     let rulesArray = [];
     let rulesIndex = 0
     let newRuleStr = '';
-    /* Create and add a rule in string form */       
-    newRuleStr = '{"tooltip":"Checked text modification",' + 
-    '"type":"mod","nodePath":["Top","Companies","www.yogadirect.com",' + 
-    '"Rules","example.com","example.com","Mod Yoga Direct 1 4 Inch ' + 
-    'Yoga Mat.Html Textcheckee"],"details":{"name":"Mod Yoga Direct ' + 
-    '1 4 Inch Yoga Mat.Html Textcheckee","extra":"Quantity",' + 
-    '"enabled":true,"type":"textchecked","created":' + 
-    '"2024-07-06T05:11:07.058Z","lastmodified":' + 
-    '"2024-07-06T05:11:07.058Z","pathvalue":' + 
-    '"/yoga-direct-1-4-inch-yoga-mat.html","comments":"",' + 
+    /* Create and add a rule in string form */
+    newRuleStr = '{"tooltip":"Checked text modification",' +
+    '"type":"mod","nodePath":["Top","Companies","www.yogadirect.com",' +
+    '"Rules","example.com","example.com","Mod Yoga Direct 1 4 Inch ' +
+    'Yoga Mat.Html Textcheckee"],"details":{"name":"Mod Yoga Direct ' +
+    '1 4 Inch Yoga Mat.Html Textcheckee","extra":"Quantity",' +
+    '"enabled":true,"type":"textchecked","created":' +
+    '"2024-07-06T05:11:07.058Z","lastmodified":' +
+    '"2024-07-06T05:11:07.058Z","pathvalue":' +
+    '"/yoga-direct-1-4-inch-yoga-mat.html","comments":"",' +
     '"prob":100.0,' +
     '"usemode":"test",' +
     '"children": [],' +
-    '"cssselector":"","xpath":"","find":[],"nodeiden":' + 
-    '{"type":"tag","attributes":{"tag":"label","innertext":' + 
-    '"quantity"},"counts":{"tag":18},"parent":{"class":["qtybox-addcart",' + 
-    '"form-group"],"tag":"div","innertext":"quantity"},"grandparent":' + 
-    '{"class":["addToCartBlock","sub-section"],"tag":"div","innertext":' + 
-    '"quantity"}},"parameter":2,"newtexts":["Quantities"' + 
-    '' + 
-    '],"updated":false}' + 
-    '' + 
+    '"cssselector":"","xpath":"","find":[],"nodeiden":' +
+    '{"type":"tag","attributes":{"tag":"label","innertext":' +
+    '"quantity"},"counts":{"tag":18},"parent":{"class":["qtybox-addcart",' +
+    '"form-group"],"tag":"div","innertext":"quantity"},"grandparent":' +
+    '{"class":["addToCartBlock","sub-section"],"tag":"div","innertext":' +
+    '"quantity"}},"parameter":2,"newtexts":["Quantities"' +
+    '' +
+    '],"updated":false}' +
+    '' +
     '}';
     rulesArray.push(newRuleStr);
-    /* Create and add a rule in string form */    
-    newRuleStr = '{"tooltip":"Checked text modification",' + 
-    '"type":"mod","nodePath":["Top","Companies","www.yogadirect.com",' + 
-    '"Rules","example.com","example.com","Mod Yoga Direct 1 4 Inch ' + 
-    'Yoga Mat.Html Textcheckef"],"details":{"name":"Mod Yoga Direct ' + 
-    '1 4 Inch Yoga Mat.Html Textcheckef","extra":"Quantity",' + 
-    '"enabled":true,"type":"textchecked","created":' + 
-    '"2024-07-06T05:11:07.058Z","lastmodified":' + 
-    '"2024-07-06T05:11:07.058Z","pathvalue":' + 
-    '"/yoga-direct-1-4-inch-yoga-mat.html","comments":"",' + 
+    /* Create and add a rule in string form */
+    newRuleStr = '{"tooltip":"Checked text modification",' +
+    '"type":"mod","nodePath":["Top","Companies","www.yogadirect.com",' +
+    '"Rules","example.com","example.com","Mod Yoga Direct 1 4 Inch ' +
+    'Yoga Mat.Html Textcheckef"],"details":{"name":"Mod Yoga Direct ' +
+    '1 4 Inch Yoga Mat.Html Textcheckef","extra":"Quantity",' +
+    '"enabled":true,"type":"textchecked","created":' +
+    '"2024-07-06T05:11:07.058Z","lastmodified":' +
+    '"2024-07-06T05:11:07.058Z","pathvalue":' +
+    '"/yoga-direct-1-4-inch-yoga-mat.html","comments":"",' +
     '"prob":100.0,' +
     '"usemode":"test",' +
     '"children": [],' +
-    '"cssselector":"","xpath":"","find":[],"nodeiden":' + 
-    '{"type":"tag","attributes":{"tag":"label","innertext":' + 
-    '"quantity"},"counts":{"tag":18},"parent":{"class":["qtybox-addcart",' + 
-    '"form-group"],"tag":"div","innertext":"quantity"},"grandparent":' + 
-    '{"class":["addToCartBlock","sub-section"],"tag":"div","innertext":' + 
-    '"quantity"}},"parameter":2,"newtexts":["Quantities"' + 
-    '' + 
-    '],"updated":false}' + 
-    '' + 
+    '"cssselector":"","xpath":"","find":[],"nodeiden":' +
+    '{"type":"tag","attributes":{"tag":"label","innertext":' +
+    '"quantity"},"counts":{"tag":18},"parent":{"class":["qtybox-addcart",' +
+    '"form-group"],"tag":"div","innertext":"quantity"},"grandparent":' +
+    '{"class":["addToCartBlock","sub-section"],"tag":"div","innertext":' +
+    '"quantity"}},"parameter":2,"newtexts":["Quantities"' +
+    '' +
+    '],"updated":false}' +
+    '' +
     '}';
     rulesArray.push(newRuleStr);
-    /* Create and add a rule in string form */        
-    newRuleStr = '{"tooltip":"Checked text modification",' + 
-    '"type":"mod","nodePath":["Top","Companies","www.yogadirect.com",' + 
-    '"Rules","example.com","example.com","Mod Yoga Direct 1 4 Inch ' + 
-    'Yoga Mat.Html Textcheckeg"],"details":{"name":"Mod Yoga Direct ' + 
-    '1 4 Inch Yoga Mat.Html Textcheckeg","extra":"Quantity",' + 
-    '"enabled":true,"type":"textchecked","created":' + 
-    '"2024-07-06T05:11:07.058Z","lastmodified":' + 
-    '"2024-07-06T05:11:07.058Z","pathvalue":' + 
-    '"/yoga-direct-1-4-inch-yoga-mat.html","comments":"",' + 
+    /* Create and add a rule in string form */
+    newRuleStr = '{"tooltip":"Checked text modification",' +
+    '"type":"mod","nodePath":["Top","Companies","www.yogadirect.com",' +
+    '"Rules","example.com","example.com","Mod Yoga Direct 1 4 Inch ' +
+    'Yoga Mat.Html Textcheckeg"],"details":{"name":"Mod Yoga Direct ' +
+    '1 4 Inch Yoga Mat.Html Textcheckeg","extra":"Quantity",' +
+    '"enabled":true,"type":"textchecked","created":' +
+    '"2024-07-06T05:11:07.058Z","lastmodified":' +
+    '"2024-07-06T05:11:07.058Z","pathvalue":' +
+    '"/yoga-direct-1-4-inch-yoga-mat.html","comments":"",' +
     '"prob":100.0,' +
     '"usemode":"test",' +
     '"children": [],' +
-    '"cssselector":"","xpath":"","find":[],"nodeiden":' + 
-    '{"type":"tag","attributes":{"tag":"label","innertext":' + 
-    '"quantity"},"counts":{"tag":18},"parent":{"class":["qtybox-addcart",' + 
-    '"form-group"],"tag":"div","innertext":"quantity"},"grandparent":' + 
-    '{"class":["addToCartBlock","sub-section"],"tag":"div","innertext":' + 
-    '"quantity"}},"parameter":2,"newtexts":["Quantities"' + 
-    '' + 
-    '],"updated":false}' + 
-    '' + 
+    '"cssselector":"","xpath":"","find":[],"nodeiden":' +
+    '{"type":"tag","attributes":{"tag":"label","innertext":' +
+    '"quantity"},"counts":{"tag":18},"parent":{"class":["qtybox-addcart",' +
+    '"form-group"],"tag":"div","innertext":"quantity"},"grandparent":' +
+    '{"class":["addToCartBlock","sub-section"],"tag":"div","innertext":' +
+    '"quantity"}},"parameter":2,"newtexts":["Quantities"' +
+    '' +
+    '],"updated":false}' +
+    '' +
     '}';
     rulesArray.push(newRuleStr);
     /* Return the rules array to the caller */
     return rulesArray;
-  }  
-  /* Build the UI used to get the web page URL. The 
+  }
+  /* Build the UI used to get the web page URL. The
      web page URL is provided by the user. */
   static buildWebPageUi() {
     let currentTreeNode = null;
@@ -351,7 +1230,7 @@ class HDLmBuildRules {
                                                   function () { }
                                                 );
     /* Add the new web page prompt widget */
-    containerWidget.addWidget(newPromptWidget, typeSource); 
+    containerWidget.addWidget(newPromptWidget, typeSource);
     /* Create a widget for the suggestion */
     typeDescription = '';
     typeSource = 'suggestionText';
@@ -374,7 +1253,7 @@ class HDLmBuildRules {
                                               function () { },
                                               function () { });
     /* Add the new web page URL widget */
-    containerWidget.addWidget(newUrlWidget, typeSource);  
+    containerWidget.addWidget(newUrlWidget, typeSource);
     /* Create a widget for the web page URL prompt information */
     typeDescription = '';
     typeSource = 'promptUrlText';
@@ -412,24 +1291,24 @@ class HDLmBuildRules {
                                                 /* console.log('noErrors = ' + noErrors); */
                                                 currentUrl = newTextValue;
                                               },
-                                              function () { 
+                                              function () {
                                                 /* console.log('currentUrl = ' + currentUrl); */
                                                 let errorText = containerWidget.getErrorText();
                                                 if (errorText == '') {
-                                                  let currentObj = {}; 
+                                                  let currentObj = {};
                                                   currentObj.webPageUrl = currentUrl;
                                                   currentObj.suggestionText = currentSuggestion;
                                                   let currentJson = JSON.stringify(currentObj);
                                                   /* console.log(currentJson); */
-                                                  HDLmBuildRules.inputDone(currentJson); 
+                                                  HDLmBuildRules.inputDone(currentJson);
                                                 }
                                               },
                                               function () { });
     /* Add the new web page URL widget */
-    containerWidget.addWidget(newUrlWidget, typeSource);  
+    containerWidget.addWidget(newUrlWidget, typeSource);
     /* Prompt for the URL and the (optional) suggestion*/
     HDLmBuildRules.renderWidget(containerWidget);
-  } 
+  }
   /* Check if a URL is minimally valid. This routine returns a error
      text message if the URL is not valid. If the URL is valid, then
      this routine returns an empty string. */
@@ -447,18 +1326,18 @@ class HDLmBuildRules {
     }
     /* Get and check the host name string in the
        URL. If the host name is not valid, we can't
-       do anything. */    
+       do anything. */
     let hostNameStr = HDLmHtml.getHostName(urlStr);
     let typeOfHost = typeof(hostNameStr);
-    if (typeOfHost == 'undefined') 
-      errorText = 'Hoat name is undefined'; 
-    if (typeOfHost == 'null') 
-      errorText = 'Hoat name is null'; 
-    if (typeOfHost != 'string') 
-      errorText = 'Hoat name is not a string'; 
+    if (typeOfHost == 'undefined')
+      errorText = 'Hoat name is undefined';
+    if (typeOfHost == 'null')
+      errorText = 'Hoat name is null';
+    if (typeOfHost != 'string')
+      errorText = 'Hoat name is not a string';
     return errorText;
   }
-  /* Construct a tree node based on the information passed 
+  /* Construct a tree node based on the information passed
      to this routine. The new tree node object is returned
      to the caller.  */
   static constructTreeNode(urlStr, improveWhy, markupObj) {
@@ -469,7 +1348,7 @@ class HDLmBuildRules {
     let stylesStr = '';
     let stylesValid = false;
     let overallValid = false;
-    let overallStr = ''; 
+    let overallStr = '';
     /* console.log('In HDLmBuildRules.constructTreeNode'); */
     /* console.log(urlStr); */
     /* console.log(improveWhy); */
@@ -477,18 +1356,18 @@ class HDLmBuildRules {
     /* Extract some values from the markup object */
     let scriptStr = markupObj.scriptInsertions;
     let styleStr = markupObj.styleInsertions;
-    /* Change the script in a few ways. The regular expressions 
+    /* Change the script in a few ways. The regular expressions
        below remove the leading and trailing 'script' tags and
        some new line characters. */
     /* console.log(scriptStr); */
-    scriptStr = scriptStr.replace(/^<script((\s)+type(\s)*=(\s)*(?<quotechar>'|")text\/javascript(\k<quotechar>))?>(\n)*/g, "");  
-    scriptStr = scriptStr.replace(/(\n)*<\/script>/, "");   
+    scriptStr = scriptStr.replace(/^<script((\s)+type(\s)*=(\s)*(?<quotechar>'|")text\/javascript(\k<quotechar>))?>(\n)*/g, "");
+    scriptStr = scriptStr.replace(/(\n)*<\/script>/, "");
     /* Check if the JavaScript script starts and/or ends
        with a new line. If it does, remove the new line
        from the start or end or both. This code is no
-       longer needed. The regular expressions above do 
+       longer needed. The regular expressions above do
        the same work. */
-    /* 
+    /*
     if (scriptStr.startsWith('\n'))
       scriptStr = scriptStr.substring(1);
     if (scriptStr.endsWith('\n')) {
@@ -507,13 +1386,13 @@ class HDLmBuildRules {
     /* scriptValid = false; */
     /* Check if the script is valid JavaScript. If the script is not
        valid JavaScript, then we can't do anything. */
-    if (!scriptValid)  
+    if (!scriptValid)
       return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];
-    /* At this point we want to work on the 'style' insertions. The first 
+    /* At this point we want to work on the 'style' insertions. The first
        step is too remove any 'style' tags and/or new line characters. */
-    styleStr = styleStr.replace(/^<style>(\n)*/g, "");  
+    styleStr = styleStr.replace(/^<style>(\n)*/g, "");
     styleStr = styleStr.replace(/(\n)*<\/style>/, "");
-    /* The style string may actually contain several styles. The 
+    /* The style string may actually contain several styles. The
        first step is break up the style string into individual
        styles. The individual styles are return in an array. */
     let styleArray = HDLmHtml.splitCssString(styleStr);
@@ -526,7 +1405,7 @@ class HDLmBuildRules {
       /* The next step is to escape any new line characters in the style
          string. This is done because the style string is going to be
          assigned to a JavaScript variable. The inspiration for this code
-         came from https://github.com/benjamn/recast/issues/421. */ 
+         came from https://github.com/benjamn/recast/issues/421. */
       styleStr = styleStr.replace(/\n/g, "\\n");
       /* Build some more JavaScript code. This JavaScript code is used to
          add the style string to the web page. */
@@ -540,30 +1419,30 @@ class HDLmBuildRules {
       /* Add the style script to the styles script string */
       stylesStr += styleScript;
     }
-    /* Check if the script built to add style information 
+    /* Check if the script built to add style information
        is valid JavaScript */
     stylesValid = HDLmHtml.checkJavaScriptCode(stylesStr);
-    /* If the styles string is not valid JavaScript, log the 
-       styles string to the console. This is useful for 
+    /* If the styles string is not valid JavaScript, log the
+       styles string to the console. This is useful for
        debugging purposes. */
     if (!stylesValid)
       HDLmUtility.logStringInParts('Styles', stylesStr);
     /* Check if the script built to add style information
-       is valid JavaScript. If the script is not valid 
+       is valid JavaScript. If the script is not valid
        JavaScript, then we can't do anything. */
-    if (!stylesValid)  
-      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr]; 
-    /* Check if the both the script string and the style string 
-       are valid JavaScript. If both are valid, then the overall 
+    if (!stylesValid)
+      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];
+    /* Check if the both the script string and the style string
+       are valid JavaScript. If both are valid, then the overall
        JavaScript is valid. */
     if (scriptValid && stylesValid) {
       overallStr = scriptStr + stylesStr;
       overallValid = true;
     }
-    /* Either the script string or the style string is not valid 
+    /* Either the script string or the style string is not valid
        JavaScript */
-    else 
-      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];    
+    else
+      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];
     /* Build a URL object from the URL string */
     let urlObj = new URL(urlStr);
     /* Get some information from the URL object */
@@ -574,7 +1453,7 @@ class HDLmBuildRules {
     nodePathEntry = HDLmDefines.getString('HDLMTOPNODENAME');
     parentNodePath.push(nodePathEntry);
     nodePathEntry = HDLmDefines.getString('HDLMCOMPANIESNODENAME');
-    parentNodePath.push(nodePathEntry); 
+    parentNodePath.push(nodePathEntry);
     parentNodePath.push(urlHostName);
     nodePathEntry = HDLmDefines.getString('HDLMRULESNODENAME');
     parentNodePath.push(nodePathEntry);
@@ -583,13 +1462,13 @@ class HDLmBuildRules {
     nodePathEntry = HDLmDefines.getString('HDLMSITENODENAME');
     parentNodePath.push(nodePathEntry);
     /* Build all of the intermediate levels as need be. This call will
-       update the node tree (HDLmTree) in memory and won't send any new 
+       update the node tree (HDLmTree) in memory and won't send any new
        nodes to the database. */
     let updateDatabaseFalse = false;
     let newSiteNode;
     newSiteNode = HDLmTree.buildSiteNode(parentNodePath, updateDatabaseFalse, HDLmNodeTypes.rules);
-    /* Try to locate the parent node of the new tree node. The 
-       parent node is needed to get the (possible) new name 
+    /* Try to locate the parent node of the new tree node. The
+       parent node is needed to get the (possible) new name
        suffix. */
     let parentTreeNode = HDLmTree.locateTreeNode(parentNodePath);
     /* Report an error if the parent node could not be found */
@@ -601,8 +1480,8 @@ class HDLmBuildRules {
          to the caller. However, the caller expects a list with two
          values. */
       /* return null; */
-      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];  
-    }    
+      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];
+    }
     /* The URL string is modified (possibly) to remove the suffix.
        We don't want the suffix (and the period before the suffix)
        to be part of the new modification name. This is the old
@@ -613,22 +1492,22 @@ class HDLmBuildRules {
       urlStringModified = urlStr;
     /* Get the new modification name */
     let removeTailsFalse = false;
-    let quoteCharsSingleQuote = "'"; 
+    let quoteCharsSingleQuote = "'";
     let ignoreSomeSingleQuotesTrue = true;
-    let newModName = HDLmMenus.buildModificationName(parentTreeNode, 
+    let newModName = HDLmMenus.buildModificationName(parentTreeNode,
                                                       urlStringModified,
                                                       ruleType,
-                                                      removeTailsFalse, 
-                                                      quoteCharsSingleQuote,  
-                                                      ignoreSomeSingleQuotesTrue);  
+                                                      removeTailsFalse,
+                                                      quoteCharsSingleQuote,
+                                                      ignoreSomeSingleQuotesTrue);
     /* Get the modification name from the why string */
     let tempWhyValue = HDLmString.getCompleteWords(improveWhy, 55);
     tempWhyValue = tempWhyValue.trim();
-    newModName = HDLmMenus.buildModificationName(parentTreeNode, 
+    newModName = HDLmMenus.buildModificationName(parentTreeNode,
                                                   tempWhyValue,
                                                   ruleType,
-                                                  removeTailsFalse, 
-                                                  quoteCharsSingleQuote,  
+                                                  removeTailsFalse,
+                                                  quoteCharsSingleQuote,
                                                   ignoreSomeSingleQuotesTrue);
     /* console.log('New mod name = ' + newModName); */
     /* Build the tooltip for the rule */
@@ -638,9 +1517,9 @@ class HDLmBuildRules {
     /* Build the node path for the rule */
     let newRuleNodePath = parentNodePath;
     newRuleNodePath.push(newModName);
-    /* Creat a new node identification object for the 
+    /* Creat a new node identification object for the
        new rule. The node identification object is used
-       to locate a node in the HTML. The HTML node is 
+       to locate a node in the HTML. The HTML node is
        always the head node. */
     let newNodeIdenObj = new HDLmNodeIden()
     newNodeIdenObj.type = 'tag';
@@ -649,7 +1528,7 @@ class HDLmBuildRules {
     newNodeIdenObj.counts = {};
     newNodeIdenObj.counts.tag = 1;
     newNodeIdenObj.parent = {};
-    newNodeIdenObj.parent.tag = 'html';  
+    newNodeIdenObj.parent.tag = 'html';
     /* Create a new rule/modification/details object */
     let newRuleObj = new HDLmMod(newModName, '', true, ruleType);
     newRuleObj.pathvalue = urlPathName;
@@ -662,17 +1541,17 @@ class HDLmBuildRules {
     newRuleObj.nodeiden = newNodeIdenObj;
     newRuleObj.parameter = 0;
     /* newRuleObj.scripts = ['let aaa = 3;\nlet bbb = 4;']; */
-    newRuleObj.scripts = [overallStr];  
+    newRuleObj.scripts = [overallStr];
     newRuleObj.updated = false;
     /* Create a new tree node object */
-    let treeNodeObj = new HDLmTree(nodeType, tooltipStr); 
-    treeNodeObj.details = newRuleObj 
+    let treeNodeObj = new HDLmTree(nodeType, tooltipStr);
+    treeNodeObj.details = newRuleObj
     treeNodeObj.type = nodeType
     treeNodeObj.nodePath = newRuleNodePath;
     /* Return the new tree node object to the caller */
     return [treeNodeObj, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];
   }
-  /* Get a set of headers for a fetch request. The headers are built 
+  /* Get a set of headers for a fetch request. The headers are built
      and returned to the caller as an object. */
   static getHeadersFetch(hostNameStr) {
     /* Create an empty headers object */
@@ -683,7 +1562,7 @@ class HDLmBuildRules {
     /* Return the headers object to the caller */
     return headersObj;
   }
-  /* Get a set of standard headers for any request. 
+  /* Get a set of standard headers for any request.
      The headers are built and returned as an object. */
   static getHeadersStandard(hostNameStr) {
     /* Create an empty headers object */
@@ -706,20 +1585,20 @@ class HDLmBuildRules {
   static main() {
     /* console.log('In HDLmBuildRules.main'); */
     /* console.log(window.location); */
-    /* console.log(window.location.pathname); */  
+    /* console.log(window.location.pathname); */
     /*
-    let testStr2 = "this don't string is a test of the new code j's user's won't i'd glasses' a cat's toys three cats' toys three cats's toys"; 
+    let testStr2 = "this don't string is a test of the new code j's user's won't i'd glasses' a cat's toys three cats' toys three cats's toys";
     */
     /* testStr2 = "a'ight"; */
     /* testStr2 = 'a\'b'; has a length of 3, not 4 */
-    /*                    
+    /*
     testStr2 = 'a\'b';
     testStr2 = 'var = \'abc user\'s guide\'';
-    let tokArray = HDLmString.getTokens(testStr2, "'", true); 
-    return; 
+    let tokArray = HDLmString.getTokens(testStr2, "'", true);
+    return;
     */
-    /* This routine may been invoked to build rules or it may have 
-       been invoked for some other reason. Check if the path shows 
+    /* This routine may been invoked to build rules or it may have
+       been invoked for some other reason. Check if the path shows
        that what the user really wants is to build rules. */
     let buildRules = false;
     let windowlocationPathName = window.location.pathname;
@@ -749,7 +1628,7 @@ class HDLmBuildRules {
     /* console.log(y2); */
     /* console.log(JSON.stringify(y1)); */
     /* console.log(JSON.stringify(y2)); */
-    let addTreeNodeStr = HDLmBuildRules.buildAddTreeNodeString(); 
+    let addTreeNodeStr = HDLmBuildRules.buildAddTreeNodeString();
     /*
     let addTreeNodeStrLen = addTreeNodeStr.length;
     for (let i = 0; i < addTreeNodeStrLen; i += 10) {
@@ -757,25 +1636,25 @@ class HDLmBuildRules {
       console.log(addTreeNodeStr.substring(i, i + 10));
     }
     */
-    let addTreeNodeObj = JSON.parse(addTreeNodeStr); 
+    let addTreeNodeObj = JSON.parse(addTreeNodeStr);
     /* let sendPromise = HDLmWebSockets.sendAddTreeNodeRequestTest1(addTreeNodeStr); */
-    if (1 == 1) 
-      HDLmWebSockets.sendAddTreeNodeRequest(addTreeNodeObj); 
-    if (windowlocationPathName.toLowerCase() == '/buildrules') 
-      buildRules = true; 
-    /* Check if the user wants to build rules under the debugger */     
+    if (1 == 1)
+      HDLmWebSockets.sendAddTreeNodeRequest(addTreeNodeObj);
+    if (windowlocationPathName.toLowerCase() == '/buildrules')
+      buildRules = true;
+    /* Check if the user wants to build rules under the debugger */
     if (windowlocationPathName.endsWith('index.html'))
-      buildRules = true;        
+      buildRules = true;
     /* Check if we really want to build rules */
     if (!buildRules)
-      return; 
-    /* 
-    HDLmConfig.getConfigMissing();    
+      return;
+    /*
+    HDLmConfig.getConfigMissing();
     */
     /* If we are here, then we are starting to build one or more rules */
-    let stage = HDLmBuildRulesStageTypes.setTitle; 
+    let stage = HDLmBuildRulesStageTypes.setTitle;
     /* stage = HDLmBuildRulesStageTypes.sendWebPageRules */
-    HDLmBuildRules.nextStage(stage, '');                                 
+    HDLmBuildRules.nextStage(stage, '');
     /* Return to the caller */
     return;
     /* Remove divs we don't need */
@@ -783,12 +1662,12 @@ class HDLmBuildRules {
       HDLmBuildRules.removeDivs();
   }
   /* The input done function is invoked (called) when the user
-     has provided the needed input using the UI. This function 
-     is static and is always invoked. However, a variable 
-     associated with this JavaScript file is used to locate 
+     has provided the needed input using the UI. This function
+     is static and is always invoked. However, a variable
+     associated with this JavaScript file is used to locate
      the function called by this routine. The user is prompted
-     for a web page URL or a set of buttons are displayed. 
-     Eventually, we can try to use the URL to get a copy of 
+     for a web page URL or a set of buttons are displayed.
+     Eventually, we can try to use the URL to get a copy of
      the web page. */
   static inputDone(currentValue) {
     /* console.log('In HDLmBuildRules.inputDone'); */
@@ -796,11 +1675,11 @@ class HDLmBuildRules {
     let promiseResolveFunction = HDLmBuildRules.promiseResolveFunction;
     promiseResolveFunction(currentValue);
   }
-  /* This function runs the next stage of build processing. 
+  /* This function runs the next stage of build processing.
      The next stage is determined by many things, not the least of
      which is whether the prior stage worked or not. Note that this
      routine is highly recursive and calls itself to wait in many
-     cases. */ 
+     cases. */
   static nextStage(stage, varNext) {
     /* console.log('In HDLmBuildRules.nextStage'); */
     /* Handle the next stage of build processing. The next
@@ -815,30 +1694,30 @@ class HDLmBuildRules {
       if (typeof(stage) == 'undefined') {
         stage = stage
       }
-      switch (stage) { 
+      switch (stage) {
         /* Set the title for the current web page */
-        case HDLmBuildRulesStageTypes.setTitle: {   
+        case HDLmBuildRulesStageTypes.setTitle: {
           /* Set the title */
           let newTitle = 'Headlamp Build Rules';
           window.document.title = newTitle;
-          HDLmUtility.setHeader(newTitle);    
+          HDLmUtility.setHeader(newTitle);
           stage = HDLmBuildRulesStageTypes.getModifications;
-          break          
+          break
         }
         /* Get the rules/modifications from the server */
         case HDLmBuildRulesStageTypes.getModifications: {
-          /* console.log('In HDLmBuildRules.nextStage before get modifications'); */         
+          /* console.log('In HDLmBuildRules.nextStage before get modifications'); */
           let getModificationsPromise = HDLmWebSockets.getModifications();
           /* console.log('In HDLmBuildRules.nextStage after get modifications', getModificationsPromise); */
           getModificationsPromise.then(function (responseText) {
             /* console.log(responseText); */
-            /* Convert the JSON string passed to this routine 
+            /* Convert the JSON string passed to this routine
                back into set of objects */
             HDLmTree.addToTree(responseText);
             /* console.log(responseText); */
             /* We now have the rules. We need to turn test mode on. */
             stage = HDLmBuildRulesStageTypes.setTestModeOn;
-            HDLmBuildRules.nextStage(stage, '');          
+            HDLmBuildRules.nextStage(stage, '');
           }, function (error) {
             /* console.log(error); */
             let errorText = '';
@@ -847,11 +1726,11 @@ class HDLmBuildRules {
             /* Terminate the next stage loop and terminate the switch */
             nextStageLoop = false;
             /* break */
-          });      
+          });
           /* Terminate the next stage loop and terminate the switch */
           /* console.log('Here'); */
           nextStageLoop = false;
-          break; 
+          break;
         }
         case HDLmBuildRulesStageTypes.setTestModeOn: {
           /* Turn test mode on for the current user */
@@ -861,15 +1740,15 @@ class HDLmBuildRules {
         }
         /* Handle the initial web page UI case. This UI is used
            to obtain the initial URL. */
-        case HDLmBuildRulesStageTypes.showWebPageUi: {   
+        case HDLmBuildRulesStageTypes.showWebPageUi: {
           /* Get the web page URL */
-          HDLmBuildRules.buildWebPageUi(); 
+          HDLmBuildRules.buildWebPageUi();
           stage = HDLmBuildRulesStageTypes.waitForUrlInput;
-          break          
+          break
         }
         /* Handle the initial web page UI case. This UI is used
            to obtain the initial URL. */
-        case HDLmBuildRulesStageTypes.waitForUrlInput: {   
+        case HDLmBuildRulesStageTypes.waitForUrlInput: {
           let webUrlRejectFunction;
           let webUrlResolveFunction;
           /* Create a local promise */
@@ -885,9 +1764,9 @@ class HDLmBuildRules {
           /* console.log(new Date()); */
           webUrlPromise.then(function (responseText) {
             /* console.log(new Date()); */
-            /* Convert the JSON string passed to this routine 
+            /* Convert the JSON string passed to this routine
                back into an object. */
-            /* Get the URL from the response text. We need 
+            /* Get the URL from the response text. We need
                to get the current value. */
             let responseObj = JSON.parse(responseText);
             /* Get and check the URL obtained from the user */
@@ -895,7 +1774,7 @@ class HDLmBuildRules {
             /* Check if the URL is valid */
             let errorText = HDLmBuildRules.checkUrlValid(urlStr);
             if (errorText != '') {
-              HDLmUtility.setErrorText(errorText); 
+              HDLmUtility.setErrorText(errorText);
               stage = HDLmBuildRulesStageTypes.waitForUrlInput;
               HDLmBuildRules.nextStage(stage, '');
             }
@@ -913,17 +1792,17 @@ class HDLmBuildRules {
             /* Try to get a new URL from the user */
             stage = HDLmBuildRulesStageTypes.waitForUrlInput;
             HDLmBuildRules.nextStage(stage, '');
-          });      
+          });
           /* Terminate the next stage loop and terminate the switch */
           nextStageLoop = false;
-          break; 
+          break;
         }
         /* Try to run fetch on the input URL. This may or may not work.
            A proxy is used to bypass CORS issues. This code is no longer
-           in use. The webpage-improver service does the actual work of 
+           in use. The webpage-improver service does the actual work of
            fetching the URL. */
-        case HDLmBuildRulesStageTypes.executeFetch: {  
-          /* Get the name of the proxy routine on the server */ 
+        case HDLmBuildRulesStageTypes.executeFetch: {
+          /* Get the name of the proxy routine on the server */
           let proxyName = HDLmConfigInfo.getProxyName();
           /* Get the name of the server that is used to run the proxy routine */
           let serverName = HDLmConfigInfo.getServerName();
@@ -933,15 +1812,15 @@ class HDLmBuildRules {
           urlStr += '://';
           urlStr += serverName;
           urlStr += '/';
-          urlStr += proxyName;   
-          /* Get the host name string from the URL */      
+          urlStr += proxyName;
+          /* Get the host name string from the URL */
           let hostNameStr = HDLmHtml.getHostName(varNext);
           /* Build the headers for the fetch request */
           let buildHeaders = HDLmBuildRules.getHeadersFetch(hostNameStr);
-          /* Build the post payload string passed to the host 
+          /* Build the post payload string passed to the host
              server. This is the actual URL we are trying to
-             fetch. We are using a proxy because of CORS 
-             probelms. */ 
+             fetch. We are using a proxy because of CORS
+             probelms. */
           let postPayloadStr = "";
           postPayloadStr += 'requesttype=URL';
           postPayloadStr += '&URL=';
@@ -949,12 +1828,12 @@ class HDLmBuildRules {
           postPayloadStr += '&userid=&password=&type=get';
           /* console.log('In HDLmBuildRules.executeFetch'); */
           /* console.log(varNext); */
-          /* Execute the fetch request. This call returns a promise. 
-             The promise is resolved when the fetch request is complete. 
+          /* Execute the fetch request. This call returns a promise.
+             The promise is resolved when the fetch request is complete.
              The promise is rejected if the fetch request fails. */
-          let buildPromise = fetch(urlStr, {  
-                                             "method": "POST", 
-                                             "headers": buildHeaders, 
+          let buildPromise = fetch(urlStr, {
+                                             "method": "POST",
+                                             "headers": buildHeaders,
                                              "body": postPayloadStr
                                            }
                                   );
@@ -972,15 +1851,15 @@ class HDLmBuildRules {
             let statusCode = response.status;
             let statusOk = response.ok;
             let statusType = response.type;
-            let statusBody = response.body; 
+            let statusBody = response.body;
             /* console.log(statusCode); */
             /* The fetch will work in (almost) all cases. The fetch
-               may return a web page or it may return some type of 
+               may return a web page or it may return some type of
                error. The response may contain a web page or it may
-               contain an error message. */ 
+               contain an error message. */
             if (statusOk || !statusOk) {
               /* Save the web page URL in a global variable.
-                 We need to save the URL so we can use it 
+                 We need to save the URL so we can use it
                  later. */
               /* console.log(varNext); */
               HDLmBuildRules.webPageUrl = varNext;
@@ -990,7 +1869,7 @@ class HDLmBuildRules {
             }
             /* The URL did not work. Report the error to the user.
                Get a new URL from the user. The above code is run
-               in all cases. This code is never used. */ 
+               in all cases. This code is never used. */
             else {
               let errorText = '';
               errorText = `The URL failed with a status code of ${statusCode}`;
@@ -999,7 +1878,7 @@ class HDLmBuildRules {
               stage = HDLmBuildRulesStageTypes.waitForUrlInput;
               HDLmBuildRules.nextStage(stage, '');
             }
-          }, 
+          },
           function(error) {
             /* console.log('In HDLmBuildRules.executeFetch - errors'); */
             /* console.log(error); */
@@ -1012,12 +1891,12 @@ class HDLmBuildRules {
           });
           /* Terminate the next stage loop and terminate the switch */
           nextStageLoop = false;
-          break; 
+          break;
         }
-        /* Try to convert the response. This may or may not work. 
-           This code is no longer in use. The webpage-improver 
+        /* Try to convert the response. This may or may not work.
+           This code is no longer in use. The webpage-improver
            service does the actual work of fetching the URL.*/
-        case HDLmBuildRulesStageTypes.convertResponse: { 
+        case HDLmBuildRulesStageTypes.convertResponse: {
           /* Try to wait on the promise. If the promise is resolved,
              then check the response. If the promise is rejected, then
              report an error and return to the caller. This promise is
@@ -1036,7 +1915,7 @@ class HDLmBuildRules {
             errorPosition = response.indexOf(HDLmDefines.getString('HDLMSIMULATEPROXYERROR'));
             if (errorPosition != -1) {
               errorDetected = true;
-              let statusCodeStr = response.substring(errorPosition-4, errorPosition-1);             
+              let statusCodeStr = response.substring(errorPosition-4, errorPosition-1);
               let errorText = `The URL failed with a status code of ${statusCodeStr}`;
               HDLmUtility.setErrorText(errorText);
               /* Try to get a new URL from the user */
@@ -1045,14 +1924,14 @@ class HDLmBuildRules {
             }
             /* Check for a URL failure (probably a domain name error) */
             errorPosition = response.indexOf(HDLmDefines.getString('HDLMSIMULATEPROXYFAILURE'));
-            if (errorPosition != -1) {  
-              errorDetected = true; 
+            if (errorPosition != -1) {
+              errorDetected = true;
               /* console.log(response); */
               let errorText = `The URL failed`;
               /* Try to get more information about the failure from the response */
               let skipLength = HDLmDefines.getString('HDLMSIMULATEPROXYFAILURE').length +
                                1 +
-                               HDLmDefines.getString('HDLMURLFAILEDTEXT').length + 
+                               HDLmDefines.getString('HDLMURLFAILEDTEXT').length +
                                2;
               let additionalErrorText = response.substring(errorPosition+skipLength);
               /* Look for the end of the title */
@@ -1074,7 +1953,7 @@ class HDLmBuildRules {
               /* console.log('Before buildWebPageRules'); */
               /* console.log(response); */
               /* Try to build some rules */
-              stage = HDLmBuildRulesStageTypes.webpageImproverServices; 
+              stage = HDLmBuildRulesStageTypes.webpageImproverServices;
               /* stage = HDLmBuildRulesStageTypes.buildWebPageRules; */
               HDLmBuildRules.nextStage(stage, '');
             }
@@ -1084,19 +1963,19 @@ class HDLmBuildRules {
             let errorText = '';
             errorText = 'Response conversion (the promise) was rejected';
             /* console.log(errorText); */
-            HDLmUtility.setErrorText(errorText); 
+            HDLmUtility.setErrorText(errorText);
             /* Try to get a new URL from the user */
             stage = HDLmBuildRulesStageTypes.waitForUrlInput;
             HDLmBuildRules.nextStage(stage, '');
           });
           /* Terminate the next stage loop and terminate the switch */
           nextStageLoop = false;
-          break; 
-        } 
-        /* Try to get the web page using the input URL. This 
-           may or may not work. This case does not appear to 
+          break;
+        }
+        /* Try to get the web page using the input URL. This
+           may or may not work. This case does not appear to
            be in use. */
-        case HDLmBuildRulesStageTypes.getWebPage: {  
+        case HDLmBuildRulesStageTypes.getWebPage: {
           /* console.log('In HDLmBuildRules.nextStage.getWebPage'); */
           /* Declare and define a few variables */
           let ajaxPromise;
@@ -1105,9 +1984,9 @@ class HDLmBuildRules {
           let userid = HDLmConfigInfo.getEntriesBridgeUserid();
           let password = HDLmConfigInfo.getEntriesBridgePassword();
           let requestAJAXAsyncTrue = true;
-          ajaxPromise = HDLmAJAX.runAJAX('URL', 
-                                         requestAJAXAsyncTrue, 
-                                         varNext); 
+          ajaxPromise = HDLmAJAX.runAJAX('URL',
+                                         requestAJAXAsyncTrue,
+                                         varNext);
           /* console.log(ajaxPromise); */
           /* console.log(varNext); */
           /* Try to wait on the promise. If the promise is resolved,
@@ -1118,7 +1997,7 @@ class HDLmBuildRules {
             /* console.log('In HDLmBuildRules.nextStage.getWebPage - then'); */
             /* console.log(response); */
             /* Save the web page URL in a global variable.
-               We need to save the URL so we can use it 
+               We need to save the URL so we can use it
                later. */
             HDLmBuildRules.webPageUrl = varNext;
             /* Try to build some rules from the web page */
@@ -1131,45 +2010,45 @@ class HDLmBuildRules {
             let errorText = '';
             errorText = 'Ajax (the promise) was rejected';
             /* console.log(errorText); */
-            HDLmUtility.setErrorText(errorText); 
+            HDLmUtility.setErrorText(errorText);
             /* Try to get a new URL from the user */
             stage = HDLmBuildRulesStageTypes.waitForUrlInput;
             HDLmBuildRules.nextStage(stage, '');
           });
           /* Terminate the next stage loop and terminate the switch */
           nextStageLoop = false;
-          break;  
+          break;
         }
-        /* The URL provided by the user is used with some of the 
+        /* The URL provided by the user is used with some of the
            new AI code */
         case HDLmBuildRulesStageTypes.webpageImproverServices: {
           /* Save the web page URL in a global variable.
-             We need to save the URL so we can use it 
+             We need to save the URL so we can use it
              later. */
           HDLmBuildRules.suggestionText = varNext.suggestionText;
           HDLmBuildRules.webPageUrl = varNext.webPageUrl;
           /* Build some rules for the current web page. This is actually
-             an async routine, which means that invoking it, produces a 
+             an async routine, which means that invoking it, produces a
              promise. */
           let webpageImproverPromise = HDLmBuildRules.webpageImproverRunServices(HDLmBuildRules.suggestionText,
                                                                                  HDLmBuildRules.webPageUrl);
-          /* Try to wait on the promise. If the promise is resolved 
+          /* Try to wait on the promise. If the promise is resolved
              without an error, then we have the rules. If the promise
              is rejected, then we have an error. */
           webpageImproverPromise.then(function(webpageImproverRv) {
             /* console.log(webpageImproverRv); */
             /* Check if the return value show that no problems were
-               encountered. */ 
+               encountered. */
             if (webpageImproverRv == true) {
-              /* Run the next stage */                
+              /* Run the next stage */
               stage = HDLmBuildRulesStageTypes.buildWebPageRules;
               HDLmBuildRules.nextStage(stage, '');
-            }  
+            }
             else {
               /* console.log(webpageImproverRv); */
               stage = HDLmBuildRulesStageTypes.waitForUrlInput;
               HDLmBuildRules.nextStage(stage, '');
-            }             
+            }
           }, function(webpageImproverError) {
             /* console.log(webpageImproverError); */
             stage = HDLmBuildRulesStageTypes.waitForUrlInput;
@@ -1192,25 +2071,25 @@ class HDLmBuildRules {
         case HDLmBuildRulesStageTypes.showWebPageRules: {
           /* This is the base React code. This code runs
              the rest of the React code. */
-          /* Run a timer. When the timer completes, it will 
+          /* Run a timer. When the timer completes, it will
              run some more React code. This timer gives Babel
-             some time to finish modifying the JSX code. */ 
-          setTimeout(() => {            
+             some time to finish modifying the JSX code. */
+          setTimeout(() => {
                               /* Run the later part of React */
                               stage = HDLmBuildRulesStageTypes.reactLater;
                               HDLmBuildRules.nextStage(stage, '');
-                            }, 
-                            20); 
+                            },
+                            20);
           /* Terminate the next stage loop and terminate the switch */
           nextStageLoop = false;
-          break;          
-        }  
+          break;
+        }
         /* This case does not appear to be in use. */
         case HDLmBuildRulesStageTypes.reactBase: {
           /* console.log('In HDLmBuildRules.reactBase'); */
           /* Terminate the next stage loop and terminate the switch */
           nextStageLoop = false;
-          break; 
+          break;
         }
         case HDLmBuildRulesStageTypes.reactLater: {
           /* console.log('In HDLmBuildRules.reactLater'); */
@@ -1227,23 +2106,23 @@ class HDLmBuildRules {
           /* Store the location of the resolve function */
           HDLmBuildRules.promiseResolveFunction = reactResolveFunction;
           /* Get the rules array for use below */
-          let rulesArray = HDLmBuildRules.webpageImproverRules; 
+          let rulesArray = HDLmBuildRules.webpageImproverRules;
           /* Invoke some React code. The code is in a function
              so that we can control when we run it. */
           HDLmReactThree.startReact(rulesArray);
-          /* Wait for the user to finish making changes 
+          /* Wait for the user to finish making changes
              to the rules. The user will click a button
              to finish making changes. The user may not
              make any changes. */
           reactPromise.then(function (responseText) {
-            /* The following statement doesn't do anything. 
+            /* The following statement doesn't do anything.
                It was added to remove a warning message. */
             responseText = responseText;
             /* console.log(responseText); */
             let newRulesArray = responseText;
-            /* The user appears to have finished the changes */            
+            /* The user appears to have finished the changes */
             stage = HDLmBuildRulesStageTypes.sendWebPageRules;
-            HDLmBuildRules.nextStage(stage, newRulesArray);            
+            HDLmBuildRules.nextStage(stage, newRulesArray);
           }, function (error) {
             let errorText = '';
             errorText = HDLmError.buildError('Error', 'React failure', 52, error);
@@ -1253,7 +2132,7 @@ class HDLmBuildRules {
             /* The user appears to have finished the changes */
             stage = HDLmBuildRulesStageTypes.sendWebPageRules;
             HDLmBuildRules.nextStage(stage, newRulesArray);
-          });      
+          });
           /* Terminate the next stage loop and terminate the switch */
           nextStageLoop = false;
           break;
@@ -1266,7 +2145,7 @@ class HDLmBuildRules {
           let newRulesArray = [];
           /* Get the rules array for use below. The rules
              array may (or may not) have been modified by
-             the React code. The possibly updated rules 
+             the React code. The possibly updated rules
              array is passed to this routine. */
           /* let newRulesArray = varNext; */
           for (let key in Object.keys(newRulesObject)) {
@@ -1276,16 +2155,16 @@ class HDLmBuildRules {
           /* Process each of the rules */
           for (let ruleStr of newRulesArray) {
             let ruleObj = JSON.parse(ruleStr);
-            /* At this point we have the rule as a object. 
-               We need to either add the rule to the tree 
-               or update the rule in the tree. */ 
+            /* At this point we have the rule as a object.
+               We need to either add the rule to the tree
+               or update the rule in the tree. */
             HDLmTree.storeTreeNode(ruleObj);
           }
-          /* Build a JSON string from the rules array */          
+          /* Build a JSON string from the rules array */
           let newRulesStr = newRulesArray.toString();
           newRulesStr = '{"rules": ' + '[' + newRulesStr + ']' + '}';
           /* console.log(newRulesArray); */
-          /* console.log(newRulesStr); */ 
+          /* console.log(newRulesStr); */
           /* console.log(newRulesStr); */
           /* Try to send the rule to the server */
           /* */
@@ -1298,7 +2177,7 @@ class HDLmBuildRules {
           sendPromise.then(function(response) {
             stage = HDLmBuildRulesStageTypes.openWebPage;
             HDLmBuildRules.nextStage(stage, '');
-          }, 
+          },
           function(error) {
             let errorText = '';
             errorText = 'Send request (the promise) was rejected';
@@ -1309,19 +2188,19 @@ class HDLmBuildRules {
           });
           /* Terminate the next stage loop and terminate the switch */
           nextStageLoop = false;
-          break;          
-        }        
-        /* Try to open a web page using input URL. This 
+          break;
+        }
+        /* Try to open a web page using input URL. This
            may or may not work. */
         case HDLmBuildRulesStageTypes.openWebPage: {
           /* console.log('In HDLmBuildRules.nextStage.openWebPage'); */
-          window.open(HDLmBuildRules.webPageUrl);  
+          window.open(HDLmBuildRules.webPageUrl);
           stage = HDLmBuildRulesStageTypes.beforeUnload;
-          break;  
+          break;
         }
         /* Wait for the user to close the browser.
            This may happen quite soon or it may take
-           a while. */  
+           a while. */
         case HDLmBuildRulesStageTypes.beforeUnload: {
           /* console.log('In HDLmBuildRules.beforeUnload'); */
           /* Add an event listener to the window object. The event
@@ -1330,7 +2209,7 @@ class HDLmBuildRules {
           HDLmBuildRules.beforeUnloadAdd();
           /* Define a few variables */
           let beforeUnloadRejectFunction;
-          let beforeUnloadResolveFunction;  
+          let beforeUnloadResolveFunction;
           /* Create a local promise */
           let beforeUnloadPromise = new Promise(function (resolve, reject) {
             /* Save references to the reject and resolve functions */
@@ -1339,14 +2218,14 @@ class HDLmBuildRules {
           });
           /* Store the location of the resolve function */
           HDLmBuildRules.beforeUnloadResolveFunction = beforeUnloadResolveFunction;
-          /* Wait for a browser close event */        
+          /* Wait for a browser close event */
           beforeUnloadPromise.then(function(responseText) {
             /* console.log(document.visibilityState); */
             responseText = responseText;
             /* Turn off test mode  */
             stage = HDLmBuildRulesStageTypes.setTestModeOff;
             HDLmBuildRules.nextStage(stage, '');
-          },          
+          },
           function(error) {
             let errorText = '';
             errorText = 'Before unload (the promise) was rejected';
@@ -1357,11 +2236,11 @@ class HDLmBuildRules {
           });
           /* Terminate the next stage loop and terminate the switch */
           nextStageLoop = false;
-          break;          
+          break;
         }
         /* Wait for the user to close the browser.
            This may happen quite soon or it may take
-           a while. */  
+           a while. */
         case HDLmBuildRulesStageTypes.visibilityChange: {
           /* console.log('In HDLmBuildRules.visibilityChange'); */
           /* Add an event listener to the window object. The event
@@ -1370,7 +2249,7 @@ class HDLmBuildRules {
           HDLmBuildRules.visibilityChangeAdd();
           /* Define a few variables */
           let visibilityChangeRejectFunction;
-          let visibilityChangeResolveFunction;  
+          let visibilityChangeResolveFunction;
           /* Create a local promise */
           let visibilityChangePromise = new Promise(function (resolve, reject) {
             /* Save references to the reject and resolve functions */
@@ -1379,14 +2258,14 @@ class HDLmBuildRules {
           });
           /* Store the location of the resolve function */
           HDLmBuildRules.visibilityChangeResolveFunction = visibilityChangeResolveFunction;
-          /* Wait for a visibility change event */        
+          /* Wait for a visibility change event */
           visibilityChangePromise.then(function(responseText) {
             /* console.log(document.visibilityState); */
             responseText = responseText;
             /* Turn off test mode  */
             stage = HDLmBuildRulesStageTypes.setTestModeOff;
             HDLmBuildRules.nextStage(stage, '');
-          },          
+          },
           function(error) {
             let errorText = '';
             errorText = 'Visibility change (the promise) was rejected';
@@ -1397,7 +2276,7 @@ class HDLmBuildRules {
           });
           /* Terminate the next stage loop and terminate the switch */
           nextStageLoop = false;
-          break;          
+          break;
         }
         case HDLmBuildRulesStageTypes.setTestModeOff: {
           /* Turn test mode off for the current user */
@@ -1405,8 +2284,8 @@ class HDLmBuildRules {
           /* Terminate the next stage loop and terminate the switch */
           nextStageLoop = false;
           break;
-        }        
-        /* Report an error if the current stage did not match one 
+        }
+        /* Report an error if the current stage did not match one
            of the expected choices */
         default: {
           /* console.log(stage); */
@@ -1429,10 +2308,10 @@ class HDLmBuildRules {
     /* console.log('In HDLmBuildRules.removeDivs'); */
     /* Get the name of the header div. We are not going
        to remove the header div. We are going to remove
-       the children of the header div. */     
+       the children of the header div. */
     let divName = HDLmDefines.getString('HDLMLEFTANDRIGHTPAGE');
     /* console.log('divName = ' + divName); */
-    const divHtml = document.getElementById(divName);  
+    const divHtml = document.getElementById(divName);
     /* console.log('divHtml = ' + divHtml); */
     divHtml.replaceChildren();
   }
@@ -1445,7 +2324,7 @@ class HDLmBuildRules {
     currentWidget.render(treeIdValue, divValues);
   }
   /* This routine is used to turn test mode off for a user.
-     In test mode, the user gets all of the rules, even 
+     In test mode, the user gets all of the rules, even
      the test rules. In non-test mode, the user only gets
      the production rules. */
   static setTestModeOff() {
@@ -1456,17 +2335,17 @@ class HDLmBuildRules {
     urlStr += '://';
     urlStr += HDLmConfigInfo.getServerName();
     urlStr += '/';
-    urlStr += HDLmDefines.getString('HDLMBUILDRULESSETTESTOFF');   
+    urlStr += HDLmDefines.getString('HDLMBUILDRULESSETTESTOFF');
     /* Send the URL to the server */
-    let setPromise = fetch(urlStr, {  
+    let setPromise = fetch(urlStr, {
                                      "method": "POST",
                                      "headers": [],
                                      "body": {}
                                    }
-                          ); 
+                          );
   }
   /* This routine is used to turn test mode on for a user.
-     In test mode, the user gets all of the rules, even 
+     In test mode, the user gets all of the rules, even
      the test rules. In non-test mode, the user only gets
      the production rules. */
   static setTestModeOn() {
@@ -1477,16 +2356,16 @@ class HDLmBuildRules {
     urlStr += '://';
     urlStr += HDLmConfigInfo.getServerName();
     urlStr += '/';
-    urlStr += HDLmDefines.getString('HDLMBUILDRULESSETTESTON');   
+    urlStr += HDLmDefines.getString('HDLMBUILDRULESSETTESTON');
     /* Send the URL to the server */
-    let setPromise = fetch(urlStr, {  
+    let setPromise = fetch(urlStr, {
                                      "method": "POST",
                                      "headers": [],
                                      "body": {}
                                    }
-                          ); 
+                          );
   }
-  /* This routine when called, adds an event listener to the window 
+  /* This routine when called, adds an event listener to the window
      object. The event listener is used to detect when the user
      changes the visibility of the browser. */
   static visibilityChangeAdd() {
@@ -1495,30 +2374,30 @@ class HDLmBuildRules {
       HDLmBuildRules.visibilityChangeDone(event);
     });
   }
-  /* This routine is called when the user change the visibility 
+  /* This routine is called when the user change the visibility
      of the browser. This routine handles the visibility change
-     event. The routine is used to resolve the promise that was 
+     event. The routine is used to resolve the promise that was
      created before the user changed the visibility of the browser. */
   static visibilityChangeDone(event) {
     /* console.log('In HDLmBuildRules.visibilityChangeDone'); */
-    /* console.log(event); */ 
+    /* console.log(event); */
     /* Show the document visibility state */
     /* console.log(document.visibilityState); */
     /* Count the number of times the user makes the browser hidden */
-    if (document.visibilityState == 'hidden') 
-      HDLmBuildRules.visibilityChangeHiddenCount++;  
+    if (document.visibilityState == 'hidden')
+      HDLmBuildRules.visibilityChangeHiddenCount++;
     /* Count the number of times the user makes the browser visible */
-    if (document.visibilityState == 'visible') 
+    if (document.visibilityState == 'visible')
       HDLmBuildRules.visibilityChangeVisibleCount++;
     /* Show the hidden and visible counts */
     /* console.log(HDLmBuildRules.visibilityChangeHiddenCount); */
-    /* console.log(HDLmBuildRules.visibilityChangeVisibleCount); */ 
+    /* console.log(HDLmBuildRules.visibilityChangeVisibleCount); */
     if (document.visibilityState == 'hidden'      &&
         HDLmBuildRules.visibilityChangeHiddenCount > 1 &&
-        HDLmBuildRules.visibilityChangeHiddenCount > HDLmBuildRules.visibilityChangeVisibleCount) 
-      HDLmBuildRules.visibilityChangeResolveFunction('The vibility of the browser was hidden'); 
+        HDLmBuildRules.visibilityChangeHiddenCount > HDLmBuildRules.visibilityChangeVisibleCount)
+      HDLmBuildRules.visibilityChangeResolveFunction('The vibility of the browser was hidden');
   }
-  /* Get a set of standard headers for any webpage-improver service. 
+  /* Get a set of standard headers for any webpage-improver service.
      The headers are built and returned as an object. */
   static webpageImproverGetHeadersStandard(hostNameStr, contentLength) {
     /* Create an empty headers object */
@@ -1537,13 +2416,13 @@ class HDLmBuildRules {
     headersObj = Object.assign(headersObj, lengthHeader);
     /* Return the headers object to the caller */
     return headersObj;
-  } 
+  }
   /* Get some JSON for a get improvements service request */
   static webpageImproverGetImprovementsJson(sessionUuid, improvementsQuantity) {
     /* Build the initially empty get improvements service object */
     let getObj = {};
     /* Set a few values in the get improvements service object */
-    getObj.sessionId = sessionUuid; 
+    getObj.sessionId = sessionUuid;
     getObj.quantity = improvementsQuantity;
     /* Convert the get improvements service object to JSON and return
        the JSON to the caller */
@@ -1555,7 +2434,7 @@ class HDLmBuildRules {
     /* Build the initially empty get LLM service object */
     let getObj = {};
     /* Set a few values in the get LLM service object */
-    getObj.sessionId = sessionUuid; 
+    getObj.sessionId = sessionUuid;
     getObj.provider = llmName;
     /* Convert the get LLM service object to JSON and return
         the JSON to the caller */
@@ -1567,7 +2446,7 @@ class HDLmBuildRules {
     /* Build the initially empty get markup service object */
     let getObj = {};
     /* Set a few values in the get markup service object */
-    getObj.sessionId = sessionUuid; 
+    getObj.sessionId = sessionUuid;
     getObj.improvement = improvementStr;
     /* Convert the get markup service object to JSON and return
        the JSON to the caller */
@@ -1579,7 +2458,7 @@ class HDLmBuildRules {
     /* Build the initially empty get session service object */
     let getObj = {};
     /* Set a few values in the get session service object */
-    getObj.name = sessionName; 
+    getObj.name = sessionName;
     /* Convert the get session service object to JSON and return
         the JSON to the caller */
     let outJson = JSON.stringify(getObj);
@@ -1606,12 +2485,12 @@ class HDLmBuildRules {
     let urlStr = '';
     urlStr += HDLmConfigInfo.getFetchInternetMethodNoSsl();
     urlStr += '://';
-    
+
     urlStr += HDLmConfigInfo.getServerName();
-    
+
     /*
-    urlStr += '127.0.0.1';  
-    */ 
+    urlStr += '127.0.0.1';
+    */
     urlStr += ':';
     urlStr += HDLmConfigInfo.getWebpageImproverPort();
     urlStr += '/';
@@ -1624,22 +2503,22 @@ class HDLmBuildRules {
     serviceHeadersJsonKeys.forEach((item) => { /* console.log('Key name is', item, */
                                                /*             'Key value is', serviceHeaders[item]); */ });
     /* Send the URL to the service */
-    webPromise = fetch(urlStr, {  
+    webPromise = fetch(urlStr, {
                                   "method": "POST",
                                   "headers": serviceHeaders,
                                   "body": serviceJson
                                 }
-                      ); 
+                      );
     /* Return the promise to the caller */
     return webPromise
   }
   /* This routine is used to run a set of services */
   static async webpageImproverRunServices(suggestionText, webpageUrl) {
     let serviceData,
-        serviceHeaders, 
-        serviceJson, 
-        serviceLength, 
-        servicePath, 
+        serviceHeaders,
+        serviceJson,
+        serviceLength,
+        servicePath,
         servicePromise,
         serviceQuantity,
         serviceResponse,
@@ -1650,55 +2529,55 @@ class HDLmBuildRules {
       /* Get the JSON string for the session service */
       serviceJson = HDLmBuildRules.webpageImproverGetSessionJson('Testing');
       serviceLength = serviceJson.length;
-      serviceHeaders = HDLmBuildRules.webpageImproverGetHeadersStandard(null, 
+      serviceHeaders = HDLmBuildRules.webpageImproverGetHeadersStandard(null,
                                                                         serviceLength);
       servicePath = HDLmConfigInfo.getWebpageImproverSessionPath();
       /* Invoke the session service */
-      servicePromise = HDLmBuildRules.webpageImproverInvokeService(servicePath, 
+      servicePromise = HDLmBuildRules.webpageImproverInvokeService(servicePath,
                                                                    serviceHeaders,
                                                                    serviceJson);
       /* Wait for the session service to complete */
       serviceResponse = await servicePromise;
       /* Convert the response to a JSON object */
       servicePromise = serviceResponse.json();
-      serviceData = await servicePromise;  
+      serviceData = await servicePromise;
       HDLmBuildRules.webpageImproverSessionId = serviceData.sessionId;
       /* Get the JSON string for the LLM service */
-      let llmName = HDLmConfigInfo.getOpenaiName();
+      let llmName = HDLmConfigInfo.getOpenAIName();
       serviceSessionId = HDLmBuildRules.webpageImproverSessionId;
       serviceJson = HDLmBuildRules.webpageImproverGetLlmJson(serviceSessionId, llmName);
       serviceLength = serviceJson.length;
-      serviceHeaders = HDLmBuildRules.webpageImproverGetHeadersStandard(null, 
+      serviceHeaders = HDLmBuildRules.webpageImproverGetHeadersStandard(null,
                                                                         serviceLength);
       servicePath = HDLmConfigInfo.getWebpageImproverLlmPath();
       /* Invoke the LLM service */
-      servicePromise = HDLmBuildRules.webpageImproverInvokeService(servicePath, 
+      servicePromise = HDLmBuildRules.webpageImproverInvokeService(servicePath,
                                                                    serviceHeaders,
                                                                    serviceJson);
       /* Wait for the LLM service to complete */
       serviceResponse = await servicePromise;
       /* Convert the response to a JSON object */
       servicePromise = serviceResponse.json();
-      serviceData = await servicePromise;  
+      serviceData = await servicePromise;
       /* Get some values from the JSON object */
-      HDLmBuildRules.webpageImproverProvider = serviceData.provider;  
-      HDLmBuildRules.webpageImproverModel = serviceData.model;    
+      HDLmBuildRules.webpageImproverProvider = serviceData.provider;
+      HDLmBuildRules.webpageImproverModel = serviceData.model;
       /* Get the JSON string for the webpage service */
-      serviceJson = HDLmBuildRules.webpageImproverGetWebpageJson(serviceSessionId, 
+      serviceJson = HDLmBuildRules.webpageImproverGetWebpageJson(serviceSessionId,
                                                                  webpageUrl);
       serviceLength = serviceJson.length;
-      serviceHeaders = HDLmBuildRules.webpageImproverGetHeadersStandard(null, 
+      serviceHeaders = HDLmBuildRules.webpageImproverGetHeadersStandard(null,
                                                                         serviceLength);
       servicePath = HDLmConfigInfo.getWebpageImproverWebpagePath();
       /* Invoke the webpage service */
-      servicePromise = HDLmBuildRules.webpageImproverInvokeService(servicePath, 
+      servicePromise = HDLmBuildRules.webpageImproverInvokeService(servicePath,
                                                                    serviceHeaders,
                                                                    serviceJson);
       /* Wait for the webpage service to complete */
       serviceResponse = await servicePromise;
       /* Convert the response to a JSON object */
       servicePromise = serviceResponse.json();
-      serviceData = await servicePromise;  
+      serviceData = await servicePromise;
       /* Check if the URL was valid */
       if (!serviceData.hasOwnProperty('webpage')) {
         let errorText = serviceData;
@@ -1706,24 +2585,24 @@ class HDLmBuildRules {
         return false;
       }
       /* Get some values from the JSON object */
-      HDLmBuildRules.webpageImproverWebpage = serviceData.webpage;  
+      HDLmBuildRules.webpageImproverWebpage = serviceData.webpage;
       /* Get the JSON string for the improvements service */
       serviceQuantity = 3;
-      serviceJson = HDLmBuildRules.webpageImproverGetImprovementsJson(serviceSessionId, 
+      serviceJson = HDLmBuildRules.webpageImproverGetImprovementsJson(serviceSessionId,
                                                                       serviceQuantity);
       serviceLength = serviceJson.length;
-      serviceHeaders = HDLmBuildRules.webpageImproverGetHeadersStandard(null, 
+      serviceHeaders = HDLmBuildRules.webpageImproverGetHeadersStandard(null,
                                                                         serviceLength);
       servicePath = HDLmConfigInfo.getWebpageImproverImprovementsPath();
       /* Invoke the improvements service */
-      servicePromise = HDLmBuildRules.webpageImproverInvokeService(servicePath, 
+      servicePromise = HDLmBuildRules.webpageImproverInvokeService(servicePath,
                                                                    serviceHeaders,
                                                                    serviceJson);
       /* Wait for the improvements service to complete */
       serviceResponse = await servicePromise;
       /* Convert the response to a JSON object */
       servicePromise = serviceResponse.json();
-      serviceData = await servicePromise;  
+      serviceData = await servicePromise;
       /* Check if we got any actual improvements */
       if (!serviceData.hasOwnProperty('improvements')) {
         let errorText = 'No improvements were found';
@@ -1731,41 +2610,41 @@ class HDLmBuildRules {
         return false;
       }
       /* Get some values from the JSON object */
-      HDLmBuildRules.webpageImproverImprovements = serviceData.improvements;  
-      /* The user may or may not have provided a suggestion. The 
-         suggestion (if it exists) is used to build some markup. 
+      HDLmBuildRules.webpageImproverImprovements = serviceData.improvements;
+      /* The user may or may not have provided a suggestion. The
+         suggestion (if it exists) is used to build some markup.
          The markup is used to build some rules. */
       if (HDLmBuildRules.suggestionText != null) {
       }
-      /* Process each of the improvements. Convert the improvement to a 
+      /* Process each of the improvements. Convert the improvement to a
          set of markup. */
-      let improvementsCount = HDLmBuildRules.webpageImproverImprovements.length; 
+      let improvementsCount = HDLmBuildRules.webpageImproverImprovements.length;
       for (let i = 0; i < improvementsCount; i++) {
         let improvementObj = HDLmBuildRules.webpageImproverImprovements[i];
         /* console.log(improvementObj); */
         let improvementWhat = improvementObj.what;
         let improvementWhy = improvementObj.why;
-        /* Get the JSON string for the improvements service */ 
-        serviceJson = HDLmBuildRules.webpageImproverGetMarkupJson(serviceSessionId, 
+        /* Get the JSON string for the improvements service */
+        serviceJson = HDLmBuildRules.webpageImproverGetMarkupJson(serviceSessionId,
                                                                   improvementWhat);
         serviceLength = serviceJson.length;
-        serviceHeaders = HDLmBuildRules.webpageImproverGetHeadersStandard(null, 
+        serviceHeaders = HDLmBuildRules.webpageImproverGetHeadersStandard(null,
                                                                           serviceLength);
         servicePath = HDLmConfigInfo.getWebpageImproverMarkupPath();
         /* Invoke the markup service */
-        servicePromise = HDLmBuildRules.webpageImproverInvokeService(servicePath, 
+        servicePromise = HDLmBuildRules.webpageImproverInvokeService(servicePath,
                                                                      serviceHeaders,
                                                                      serviceJson);
         /* Wait for the markup service to complete */
         serviceResponse = await servicePromise;
         /* Convert the response to a JSON object */
         servicePromise = serviceResponse.json();
-        serviceData = await servicePromise;  
+        serviceData = await servicePromise;
         /* Get some values from the JSON object */
-        HDLmBuildRules.webpageImproverMarkups.push(serviceData);  
-      }   
+        HDLmBuildRules.webpageImproverMarkups.push(serviceData);
+      }
       /* Convert each of the markup objects to a rule */
-      let markupsCount = HDLmBuildRules.webpageImproverMarkups.length; 
+      let markupsCount = HDLmBuildRules.webpageImproverMarkups.length;
       for (let i = 0; i < markupsCount; i++) {
         let improvementObj = HDLmBuildRules.webpageImproverImprovements[i];
         /* console.log(improvementObj); */
@@ -1774,8 +2653,8 @@ class HDLmBuildRules {
         let markupObj = HDLmBuildRules.webpageImproverMarkups[i];
         /* console.log(markupObj); */
         /* Build a tree node object from each of the markups */
-        let constructList = HDLmBuildRules.constructTreeNode(HDLmBuildRules.webPageUrl, 
-                                                             improvementWhy, 
+        let constructList = HDLmBuildRules.constructTreeNode(HDLmBuildRules.webPageUrl,
+                                                             improvementWhy,
                                                              markupObj);
         let treeNodeObj = constructList[0];
         let overallValid = constructList[1];
@@ -1794,7 +2673,7 @@ class HDLmBuildRules {
           let treeNodeStr = JSON.stringify(treeNodeObj);
           HDLmBuildRules.webpageImproverRules.push(treeNodeStr);
         }
-        /* Some type of error was detected. Report the error 
+        /* Some type of error was detected. Report the error
            and continue processing. */
         else {
           /* console.log('Information from constructTreeNode()', treeNodeObj, improvementWhy, markupObj, HDLmBuildRules.webPageUrl); */
@@ -1802,13 +2681,13 @@ class HDLmBuildRules {
           /* console.log(scriptStr); */
           /* console.log(stylesStr); */
           let errorText = 'The generated script or style value(s) is/are not valid';
-          HDLmUtility.setErrorText(errorText); 
+          HDLmUtility.setErrorText(errorText);
           return false
         }
       }
       /* Return to the caller */
       return true;
-    } 
+    }
     /* Handle some sort of error condition */
     catch (error) {
       console.error(error);
@@ -1818,21 +2697,21 @@ class HDLmBuildRules {
       return false;
     }
   }
-} 
-/* The function saved in the field below is invoked 
+}
+/* The function saved in the field below is invoked
    when a promise is rejected */
 HDLmBuildRules.promiseRejectFunction = null;
-/* The function saved in the field below is invoked 
+/* The function saved in the field below is invoked
    when a promise is resolved */
 HDLmBuildRules.promiseResolveFunction = null;
 /* The suggestion text is stored in the field below */
 HDLmBuildRules.suggestionText = null;
-/* The following promise is used to wait for the user to 
+/* The following promise is used to wait for the user to
    hide the browser. This promise is resolved when the
    user hides the browser. */
 HDLmBuildRules.visibilityChangeResolveFunction = null;
 /* The following counts are used to keep track of the number
-   of times the user hides the browser or makes the browser 
+   of times the user hides the browser or makes the browser
    visible */
 HDLmBuildRules.visibilityChangeHiddenCount = 0;
 HDLmBuildRules.visibilityChangeVisibleCount = 0;
@@ -1851,6 +2730,6 @@ HDLmBuildRules.webpageImproverRules = [];
 HDLmBuildRules.webpageImproverSessionId = null;
 /* The webpage-improver webpage string is stored in the field below */
 HDLmBuildRules.webpageImproverWebpage = null;
-/* After a number of tests have been sucessfully completed, 
-   the web page URL is stored in the field below */ 
+/* After a number of tests have been sucessfully completed,
+   the web page URL is stored in the field below */
 HDLmBuildRules.webPageUrl = null;

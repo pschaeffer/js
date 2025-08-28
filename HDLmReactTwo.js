@@ -52,9 +52,9 @@ class HDLmReactTwo {
      that I have not been able to find. */
   static underscoreJsx() { 
     /* The function below returns some HTML. This is possible
-        because the function is transpiled using Babel. Babel
-        converts the JSX to ordinary JavaScript. This doesn't 
-        really work because the _jsx entry point is unknown. */
+       because the function is transpiled using Babel. Babel
+       converts the JSX to ordinary JavaScript. This doesn't 
+       really work because the _jsx entry point is unknown. */
     function Hello() {
       return /*#__PURE__*/_jsx("h1", {
         children: "Hello World!"

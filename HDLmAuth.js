@@ -25,7 +25,7 @@ const HDLmAuthInfoData =
                            "description":   "Password",
                            "source":        "password",
                            "fieldtype":     "iotext",
-                           "subtype":       "password"
+                           "subtype":       "generalpassword"
                          }
                        ]
                      }
@@ -43,7 +43,7 @@ class HDLmAuth {
     let authenticationObject = {};
     authenticationObject['entriesUserid'] = responseObject['userid']; 
     authenticationObject['entriesPassword'] = responseObject['password'];
-    HDLmConfig.addConfig(JSON.stringify(authenticationObject));
+    HDLmConfig.addConfigs(JSON.stringify(authenticationObject));
   }
   /* Build an authentication definition object from the values passed 
      by the caller */
@@ -53,6 +53,7 @@ class HDLmAuth {
     let modificationExtraEmpty = '';
     let newAuth = new HDLmMod(name, modificationExtraEmpty, 
                               modificationEnabledTrue, type);
+    HDLmMod.addMissingFieldsModObject(newAuth, HDLmAuth.HDLmAuthInfo, 'auth');
     return newAuth;
   }
   /* Display the request for authentication information */

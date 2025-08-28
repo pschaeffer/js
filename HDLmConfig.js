@@ -28,6 +28,12 @@ const HDLmConfigConstants =
     "clustersSampleSize":                  "100",
     "clustersThreshold":                   "0.10",
     "companyName":                         "example.com",
+    /* The maximum age in seconds for a cookie. A positive value indicates that the cookie will 
+		   expire after that many seconds have passed. Note that the value is the maximum age when 
+		   the cookie will expire, not the cookie's current age. A negative value means that the 
+		   cookie is not stored persistently and will be deleted when the Web browser exits. 
+		   A zero value causes the cookie to be deleted. */		  
+		"cookieMaxAge":                        "28800",
     "currentEnvironment":                  "prod",
     "currentEnvironmentProd":              "prod",
     "currentEnvironmentTest":              "test",
@@ -53,7 +59,8 @@ const HDLmConfigConstants =
     "fixWebSockets":                       "true",
     "logFileName":                         "info.log",
     "logRuleMatching":                     "false",
-    "openaiName":                          "openai",
+    "openAIApiGptModel":                   "gpt-4-turbo",	
+    "openAIName":                          "openai",
     "parametersAccessMethod":              "cgi-bin/get-set.py?get",
     "parametersInternetMethodNoSsl":       "http",
     "parametersUpdateMethod":              "cgi-bin/get-set.py?set",
@@ -66,10 +73,15 @@ const HDLmConfigConstants =
     "portNumberWebSocket":                 "8102",
     "proxyName":                           "HDLmProxy.php",
     "requestTypeName":                     "HDLmRequestType",
+    /* The secret key must be exactly 16 bytes long. Apparently, AES requires this */
+    "secretEncryptionKey":                 "abcd1234efgh5678",
     "serverName":                          "javaproxya.dnsalias.com",
     "serverNameProd":                      "javaproxya.dnsalias.com",
     "serverNameTest":                      "javaproxya.dnsalias.com",
-    "supportHTTP2":                        "true",		
+    "supportHTTP2":                        "true",	
+    /* The Jetty folks say that HTTP/3 is not ready for production use. We
+       are going to have to wait a while for a production version of HTTP/3. */	 	
+    "supportHTTP3":                        "false",	
     "urlValueName":                        "HDLmUrlValue",
     "userPoolClientAppId":                 "4aa1bqd057v64omjq84hc4pnvl",
     "userPoolId":                          "us-east-2_xTvIIRtgB",
@@ -166,7 +178,7 @@ const HDLmConfigFields =
       "description": "Entries Bridge Password",
       "source":      "entriesBridgePassword",
       "fieldtype":   "iotext",
-      "subtype":     "password"
+      "subtype":     "generalpassword"
     },
     {
       "description": "Entries Bridge Use Cache",
@@ -340,7 +352,7 @@ class HDLmConfig {
 
      The above comment is no longer true. The standard configuration
      data is now stored locally in this routine. */
-  static addConfig(jsonStr) {
+  static addConfigs(jsonStr) {
     /* Create a local configuration object from the JSON provided
        by the caller */
     let localConfigValues = JSON.parse(jsonStr);
@@ -353,49 +365,18 @@ class HDLmConfig {
     for (const key of localConfigValuesKeys)
       HDLmConfig.HDLmConfigValues[key] = localConfigValues[key];
   }
-  /* This routine adds any missing fields to a configuration object.
-     A configuration object in this case means a modification object
-     being used to build a configuration. */
-  static addMissingConfigObject(newConfig) {
-    /* Add any missing fields to the configuration object (actually
-       a modification object) passed by the caller */
-    let typeInfo = HDLmConfig.HDLmConfigInfo;
-    let configInfo = typeInfo['config'];
-    let configInfoArray = configInfo['fields'];
-    let configArrayLength = configInfoArray.length;
-    /* Process each of the entries in the array. Check if the field
-       already exists or not. */
-    for (let i = 0; i < configArrayLength; i++) {
-      let fieldSource = configInfoArray[i].source;
-      let fieldType = configInfoArray[i].fieldtype;
-      /* Add a default (empty or false) value, if need be */
-      if (!newConfig.hasOwnProperty(fieldSource)) {
-        if (fieldType == 'checkbox')
-          newConfig[fieldSource] = false;
-        else
-          newConfig[fieldSource] = '';
-      }
-      /* Since the field already has a value, check the value
-         in some cases */
-      else {
-        if (fieldType == 'checkbox' &&
-            newConfig[fieldSource] == '') 
-          newConfig[fieldSource] = false;
-      }
-    }
-  }
   /* Build a configuration definition object from the values passed 
      by the caller */
   static buildConfigObject(name, extraStr, enabled, type) {
     /* Construct the new configuration definition. This is actually
        a modification object used to build a configuration definition. */
     let newConfig = new HDLmMod(name, extraStr, enabled, type);
-    HDLmConfig.addMissingConfigObject(newConfig);
+    HDLmMod.addMissingFieldsModObject(newConfig, HDLmConfig.HDLmConfigInfo, 'config');
     return newConfig;
   }
   /* Get the JSON configuration string from the above config
      constants */
-  static getConfig() {
+  static getConfigs() {
     /* Build the required Promise for return to the caller */
     let configPromise = new Promise(function (resolve, reject) {
       let resolveValue = JSON.stringify(HDLmConfigConstants);
@@ -458,65 +439,7 @@ class HDLmConfig {
   static getConfigTypeList() {
     return []; 
   }
-  /* Return the configuration definition information to the caller */
-  static get HDLmConfigInfo() {
-    /* Check if this routine has already been run. Use the saved 
-       configuration value if possible. */
-    if (HDLmConfig.HDLmConfigInfoData != null)
-      return HDLmConfig.HDLmConfigInfoData;
-    /* Get the number of configuration fields */
-    let configFieldsLength = HDLmConfigFields.length;
-    let field = {};
-    /* Create a few arrays for field definitions */
-    let configArray = [];
-    let newConfigArray = [];
-    /* Add each field to the field arrays */
-    for (let i = 0; i < configFieldsLength; i++) {
-      field.description = HDLmConfigFields[i].description;
-      field.source = HDLmConfigFields[i].source;
-      /* Get the field type and check if it is actually two values */
-      let fieldTypeConfig;
-      let fieldTypeNewConfig;
-      let fieldTypeStr = HDLmConfigFields[i].fieldtype;
-      let fieldTypeSplit = fieldTypeStr.split(' ');
-      if (fieldTypeSplit.length == 2) {
-        fieldTypeConfig = fieldTypeSplit[0];
-        fieldTypeNewConfig = fieldTypeSplit[1];
-      }
-      else
-        fieldTypeConfig = fieldTypeNewConfig = fieldTypeStr;
-      /* Get the field sub type and check if it is actually two values */
-      let fieldSubTypeConfig;
-      let fieldSubTypeNewConfig;
-      let fieldSubTypeStr = HDLmConfigFields[i].subtype;
-      let fieldSubTypeSplit = fieldSubTypeStr.split(' ');
-      if (fieldSubTypeSplit.length == 2) {
-        fieldSubTypeConfig = fieldSubTypeSplit[0];
-        fieldSubTypeNewConfig = fieldSubTypeSplit[1];
-      }
-      else
-        fieldSubTypeConfig = fieldSubTypeNewConfig = fieldSubTypeStr;
-      /* Finish the field configuration object and store it in the array */
-      field.fieldtype = fieldTypeConfig;
-      field.subtype = fieldSubTypeConfig;
-      configArray.push(Object.assign({}, field));
-      /* Finish the field new configuration object and store it in the array */
-      field.fieldtype = fieldTypeNewConfig;
-      field.subtype = fieldSubTypeNewConfig;
-      newConfigArray.push(Object.assign({}, field));
-    }
-    /* Build the configuration object */
-    let configObj = {};
-    configObj['fields'] = configArray
-    /* Build the new configuration object */
-    let newConfigObj = {};
-    newConfigObj['fields'] = newConfigArray
-    /* Build the configuration object that is returned to the caller */
-    HDLmConfig.HDLmConfigInfoData = {};
-    HDLmConfig.HDLmConfigInfoData['config'] = configObj;
-    HDLmConfig.HDLmConfigInfoData['newconfig'] = newConfigObj;
-    return HDLmConfig.HDLmConfigInfoData;
-  }
+
 	/* This static method returns the numeric value of a config value
 		 if the config value is valid (exists) and if the config value
 		 is actually a number (not a string) */
@@ -604,17 +527,78 @@ class HDLmConfig {
        the server. */
     /* console.log(configName); */
     if (HDLmConfig.missingConfigRequested) {
-      HDLmConfig.missingConfigRequested = false;
-      HDLmConfig.getConfigMissing();
+        HDLmConfig.missingConfigRequested = false;
+        HDLmConfig.getConfigMissing();
     }
 		/* Get the value from the object */
     let rv = HDLmConfig.HDLmConfigValues[configName];
     return rv;
   }
   /* This static method handles configuration initialization. 
-     Some secret values are obtained from the AWS Secrets Manager. */
+     Some secret values are obtained from the AWS Secrets Manager. 
+     This code does not appear to be in use. The AWS Secrets 
+     manager is not invoked by the code below. */
   static handleInitialization() {
-    /* console.log('In HDLmConfig.handleInitialization'); */        
+    /* console.log('In HDLmConfig.handleInitialization'); */
+  }
+  /* Return the configuration definition information to the caller */
+  static get HDLmConfigInfo() {
+    /* Check if this routine has already been run. Use the saved 
+       configuration value if possible. */
+    if (HDLmConfig.HDLmConfigInfoData != null)
+      return HDLmConfig.HDLmConfigInfoData;
+    /* Get the number of configuration fields */
+    let configFieldsLength = HDLmConfigFields.length;
+    let field = {};
+    /* Create a few arrays for field definitions */
+    let configArray = [];
+    let newConfigArray = [];
+    /* Add each field to the field arrays */
+    for (let i = 0; i < configFieldsLength; i++) {
+      field.description = HDLmConfigFields[i].description;
+      field.source = HDLmConfigFields[i].source;
+      /* Get the field type and check if it is actually two values */
+      let fieldTypeConfig;
+      let fieldTypeNewConfig;
+      let fieldTypeStr = HDLmConfigFields[i].fieldtype;
+      let fieldTypeSplit = fieldTypeStr.split(' ');
+      if (fieldTypeSplit.length == 2) {
+        fieldTypeConfig = fieldTypeSplit[0];
+        fieldTypeNewConfig = fieldTypeSplit[1];
+      }
+      else
+        fieldTypeConfig = fieldTypeNewConfig = fieldTypeStr;
+      /* Get the field sub type and check if it is actually two values */
+      let fieldSubTypeConfig;
+      let fieldSubTypeNewConfig;
+      let fieldSubTypeStr = HDLmConfigFields[i].subtype;
+      let fieldSubTypeSplit = fieldSubTypeStr.split(' ');
+      if (fieldSubTypeSplit.length == 2) {
+        fieldSubTypeConfig = fieldSubTypeSplit[0];
+        fieldSubTypeNewConfig = fieldSubTypeSplit[1];
+      }
+      else
+        fieldSubTypeConfig = fieldSubTypeNewConfig = fieldSubTypeStr;
+      /* Finish the field configuration object and store it in the array */
+      field.fieldtype = fieldTypeConfig;
+      field.subtype = fieldSubTypeConfig;
+      configArray.push(Object.assign({}, field));
+      /* Finish the field new configuration object and store it in the array */
+      field.fieldtype = fieldTypeNewConfig;
+      field.subtype = fieldSubTypeNewConfig;
+      newConfigArray.push(Object.assign({}, field));
+    }
+    /* Build the configuration object */
+    let configObj = {};
+    configObj['fields'] = configArray
+    /* Build the new configuration object */
+    let newConfigObj = {};
+    newConfigObj['fields'] = newConfigArray
+    /* Build the configuration object that is returned to the caller */
+    HDLmConfig.HDLmConfigInfoData = {};
+    HDLmConfig.HDLmConfigInfoData['config'] = configObj;
+    HDLmConfig.HDLmConfigInfoData['newconfig'] = newConfigObj;
+    return HDLmConfig.HDLmConfigInfoData;
   }
   /* Set a configuration value to a new value. The configuration
      name is the name of the configuration value to set. The 

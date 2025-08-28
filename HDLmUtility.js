@@ -1950,8 +1950,8 @@ class HDLmUtility {
     let userid = HDLmConfigInfo.getEntriesBridgeUserid();
     let password = HDLmConfigInfo.getEntriesBridgePassword();
     let requestAJAXAsyncTrue = true;
-    let newPromise = HDLmAJAX.runAJAX('URL', requestAJAXAsyncTrue, URL, userid, password, 'post', newStr);
-    return newPromise;
+    let ajaxPromise = HDLmAJAX.runAJAX('URL', requestAJAXAsyncTrue, URL, userid, password, 'post', newStr);
+    return ajaxPromise;
   }
   /* This routine returns a single character that will be used to 
      build keys for obtaining data. For javaproxyx.dnsalias.com,

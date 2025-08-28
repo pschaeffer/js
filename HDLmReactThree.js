@@ -238,9 +238,11 @@ class HDLmReactThree {
       setEventKey(3);
     else 
       setEventKey(-1);
-    /* Check for a very special case. Check if the 
-       user clicked the Done button. If so, then
-       a special function is called. */
+    /* Check for a very special case. Check if the user 
+       clicked the Done button. If so, thena special 
+       function is called. This code may need to be
+       changed to support manage rules in addition to 
+       build rules. */
     if (eventText.toLowerCase() == 'done') {
       /* console.log('Done clicked', rulesStringArray); */
       HDLmBuildRules.inputDone(rulesStringArray);

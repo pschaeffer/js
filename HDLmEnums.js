@@ -135,6 +135,69 @@ HDLmEditorTypes.toString = function (enumVl) {
   return Object.keys(HDLmEditorTypes).filter(key => (HDLmEditorTypes[key] == enumVl))[0];  
 }
 Object.freeze(HDLmEditorTypes);
+/* The enum below provides values showing if a cookie should be
+   HTTP only or not. Some cookies are marked as HTTP only. This
+   means that JavaScript can not access (or modify) these cookies. */
+let HDLmHttpOnly = {
+  "none":                            0,
+  "HttpOnlyTrue":                    1,
+  "HttpOnlyFalse":                   2
+};
+HDLmHttpOnly.toString = function (enumVl) {
+  return Object.keys(HDLmHttpOnly).filter(key => (HDLmHttpOnly[key] == enumVl))[0];  
+}
+Object.freeze(HDLmHttpOnly);
+/* The enum below defines the stages of manage (rules) processing. 
+   Manage (rules) processing takes many stages. They are defined 
+   below. */
+let HDLmManageRulesStageTypes = {
+  "none":                            0,
+  "getConfigs":                      1,
+  "setTitle":                        2,
+  "sendBuildCookie":                 3,
+  /* The next entry does not appear to be in use. */
+  "sendBuildCookieResponse":         4, 
+  "getAccessCookie":                 5,
+  "getUseridPassword":               6,
+  "checkUseridPassword":             7,
+  "checkUseridPasswordResponse":     8,
+  "getNewPassword":                  9,
+  "setNewPassword":                  10,
+  /* The next entry does not appear to be in use. */
+  "setNewPasswordResponse":          11,
+  "getVerificationCode":             12,
+  "sendVerificationCode":            13,
+  /* The next entry does not appear to be in use. */
+  "sendVerificationCodeResponse":    14,
+  "setAccessCookie":                 15,
+  "getModifications":                16,
+  "setTestModeOn":                   17,
+  "showWebPageUi":                   18,
+  "waitForUrlInput":                 19,
+  /* The next entry does not appear to be in use. */
+  "executeFetch":                    20,
+  /* The next entry does not appear to be in use. */
+  "convertResponse":                 21,
+  /* The next entry does not appear to be in use. */
+  "getWebPage":                      22, 
+  "webpageImproverServices":         23,
+  "buildWebPageRules":               24,
+  "showWebPageRules":                25,
+  /* The next entry does not appear to be in use. */
+  "reactBase":                       26,
+  "reactLater":                      27,
+  "sendWebPageRules":                28,
+  "openWebPage":                     29,
+  "beforeUnload":                    30,
+  "visibilityChange":                31,
+  "setTestModeOff":                  32
+};
+HDLmManageRulesStageTypes.toString = function (enumVl) {
+  /* console.log('In HDLmEnums.toString'); */
+  /* console.log(Object.keys(HDLmManageRulesStageTypes)); */
+  return Object.keys(HDLmManageRulesStageTypes).filter(key => (HDLmManageRulesStageTypes[key] == enumVl))[0];
+}
+Object.freeze(HDLmManageRulesStageTypes);
 /* The enum below defines the values for node identifier tracing. 
    We generally don't trace node identifier processing. However, 
    we can trace node identifier processing. These values control 
@@ -274,6 +337,20 @@ let HDLmOperationTypes = {
   "default": 1
 };
 Object.freeze(HDLmOperationTypes);
+/* The enum below provides values showing if a cookie should be
+   secure or not. Secure cookies are only send and received using
+   SSL/TLS. Of course, this value is optional. Cookies are not 
+   required to be secure. If practice, most cookies are secure
+   cookies. */
+let HDLmSecureCookie  = {
+  "none":                    0,
+  "SecureCookieTrue":        1,
+  "secureCookieFalse":       2
+};
+HDLmSecureCookie.toString = function (enumVl) {
+  return Object.keys(HDLmSecureCookie).filter(key => (HDLmSecureCookie[key] == enumVl))[0];
+}
+Object.freeze(HDLmSecureCookie);
 /* The enum below defines the current type of error text reset
    being done. There is more than one type of error text reset.
    Each type of error text reset is defined here. */

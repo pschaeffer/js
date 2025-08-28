@@ -648,7 +648,7 @@ class HDLmTree {
     parentTreeNode.children.splice(i, 0, childTreeNode);
     /* let temrChildrenArray = parentTreeNode.children.slice(); */
     /* console.log(temrChildrenArray); */
-    /* console.log(temrChildrenArray.length); */
+    /* console.log(temrChildrenA6rray.length); */
     rvBool = true;
     return rvBool;
   }
@@ -866,6 +866,16 @@ class HDLmTree {
         }
       }
     }
+    /* Check if we are handling a authorization data node or not.
+       We recursively call this routine for all nodes other than
+       authorization level nodes and a few other node types.
+       authorization data nodes are fixed, as need be. */
+    if (node.type === 'auth') {
+      /* Check if we are running the authorization editor. We may need to create
+         an additional set of fields, if we are running the authorization editor. */
+      if (HDLmGlobals.activeEditorType == HDLmEditorTypes.auth)
+        HDLmMod.addMissingFieldsModObject(node.details, HDLmAuth.HDLmAuthInfo, 'auth');
+    }
     /* Check if we are handling a configuration data node or not.
        We recursively call this routine for all nodes other than
        configuration level nodes and a few other node types.
@@ -874,7 +884,7 @@ class HDLmTree {
       /* Check if we are running the configuration editor. We may need to create
          an additional set of fields, if we are running the configuration editor. */
       if (HDLmGlobals.activeEditorType == HDLmEditorTypes.config)
-        HDLmConfig.addMissingConfigObject(node.details);
+        HDLmMod.addMissingFieldsModObject(node.details, HDLmConfig.HDLmConfigInfo, 'config');
     }
     /* Check if we are handling a data (zero, one, or more
        divisions) node or not. We recursively call this routine
@@ -1293,6 +1303,52 @@ class HDLmTree {
       let errorText = 'New tree node was not successfully added to the parent tree';
       HDLmAssert(false, errorText);
     }
+  }
+  /* This routine build a companies array from the current set 
+     of rules. The companies array has an entry for each company. 
+     The entry is (of course) a JSON object representing the
+     company's rules. If a company has no rules, it will not
+     have an entry in the array. */
+  static buildCompaniesArray(treeTop) {
+    /* Start the companies array */
+    let companiesArray = [];
+    /* Get the companies node */
+    let companiesNode = treeTop.children[0];
+    let companiesNodeChildren = companiesNode.children
+    /* Process each company */
+    for(let childNodeCompany of companiesNodeChildren) {
+      let rulesArray = [];
+      /* Get some information from the company node */
+      let nodePath = childNodeCompany.nodePath;
+      let nodePathLen = nodePath.length;
+      let companyName = nodePath[nodePathLen - 1];
+      /* Create a new company object */
+      let companyObj = new Object;
+      companyObj.name = companyName;
+      /* Get the company rules node */
+      let childNodeRules = childNodeCompany.children[3];
+      /* Process each division */
+      for(let childNodeDivision of childNodeRules.children) {
+        let divisionNodeChildren = childNodeDivision.children;
+        /* console.log(childNodeDivision); */
+        /* Process each site */
+        for(let childNodeSite of divisionNodeChildren) {
+          let siteNodeChildren = childNodeSite.children;
+          /* console.log(childNodeSite); */
+          /* console.log(siteNodeChildren); */
+          /* Process each rule */
+          for(let childNodeRule of siteNodeChildren) {
+            let ruleDetails = childNodeRule.details;
+            rulesArray.push(childNodeRule);
+          } 
+        }
+      }
+      /* Store all of the rules in the company object */
+      companyObj.rules = rulesArray;
+      /* Add the company object to the companies array */
+      companiesArray.push(companyObj);
+    }
+    return companiesArray;
   }
   /* This routine builds an information array with one entry for
      node in the node tree. Note that recursion is used to build
@@ -3931,6 +3987,26 @@ class HDLmTree {
     let requestAJAXAsyncTrue = true;
     return HDLmAJAX.runAJAX('URL', requestAJAXAsyncTrue, URL, userid, password);
   }
+  /* This code reads some of the rows from the database and returns
+     a Promise to the caller. When the Promise resolves all of the
+     rows will be in the response text. */
+  static passReadSomeRows(userid, password) {
+    /* We can now try to get the modifications or proxy definitions
+       or anything else */
+    let URL = HDLmConfigInfo.getentriesBridgeInternetMethodSsl() + "://" +
+                HDLmConfigInfo.getEntriesBridgeReadUrl(); 
+    /* The content type shows if we are handling modifications,
+       proxy definitions, or configurations. The value returned
+       below is a string, not a numeric value (such as enums
+       typically are). */
+    let queryStr = '';
+    queryStr += '?';
+    queryStr += HDLmUtility.buildBridgeRestQuery('content');
+    URL += queryStr;
+    /* Get the Promise used to load the modifications */
+    let requestAJAXAsyncTrue = true;
+    return HDLmAJAX.runAJAX('URL', requestAJAXAsyncTrue, URL, userid, password);
+  }
   /* This code updates all of the rows in a bucket that match
      the content string passed by the caller. The first step is
      to get all of the ID values for all of the rows in the bucket,
@@ -4139,7 +4215,17 @@ class HDLmTree {
         data != '') {
       if (newStr != '')
         newStr += ', ';
-      newStr += '"info": ' + data;
+      /* We may need to modify the data a bit before we send
+         it. Check for this very special case. This change is
+         only for script rules. We may need to change percent
+         signs into percent signs followed by '25'. This is the
+         correct hex code for a percent sign. On the host we 
+         are invoking the URL decode function which requires
+         the '25' after the percent sign. */
+      let tempData = data;
+      if (tempData.includes('"scripts"'))
+        tempData = tempData.replaceAll('%', '%25');
+      newStr += '"info": ' + tempData;
     }
     /* Check the data name string. A string is passed
        in this case. */

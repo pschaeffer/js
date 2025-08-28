@@ -75,6 +75,11 @@ class HDLmNodeIden {
       currentIndexOf = currentInnerText.indexOf('¦');
       if (currentIndexOf >= 0)
         currentInnerText = currentInnerText.substring(0, currentIndexOf);
+      /* Long and bad experience has shown that inner text sometimes 
+         begins with a new line character. The code below has the effect
+         of setting the inner text to an empty string in this case. The
+         trim call (also below) would do a better job of removing the 
+         new line character. */ 
       currentIndexOf = currentInnerText.indexOf('\n');
       if (currentIndexOf >= 0)
         currentInnerText = currentInnerText.substring(0, currentIndexOf);
@@ -104,6 +109,11 @@ class HDLmNodeIden {
         parentIndexOf = parentInnerText.indexOf('¦');
         if (parentIndexOf >= 0)
           parentInnerText = parentInnerText.substring(0, parentIndexOf);
+        /* Long and bad experience has shown that inner text sometimes 
+           begins with a new line character. The code below has the effect
+           of setting the inner text to an empty string in this case. The
+           trim call (also below) would do a better job of removing the 
+           new line character. */ 
         parentIndexOf = parentInnerText.indexOf('\n');
         if (parentIndexOf >= 0)
           parentInnerText = parentInnerText.substring(0, parentIndexOf);
@@ -134,6 +144,11 @@ class HDLmNodeIden {
         grandIndexOf = grandInnerText.indexOf('¦');
         if (grandIndexOf >= 0)
           grandInnerText = grandInnerText.substring(0, grandIndexOf);
+        /* Long and bad experience has shown that inner text sometimes 
+           begins with a new line character. The code below has the effect
+           of setting the inner text to an empty string in this case. The
+           trim call (also below) would do a better job of removing the 
+           new line character. */ 
         grandIndexOf = grandInnerText.indexOf('\n');
         if (grandIndexOf >= 0)
           grandInnerText = grandInnerText.substring(0, grandIndexOf);
@@ -222,6 +237,7 @@ class HDLmNodeIden {
     let nodeAttributes = nodeIden.attributes;
     let nodeCounts = nodeIden.counts;
     let nodeType = nodeIden.type;
+    let nodeValue = '';
     /* nodeIdenTracing = HDLmNodeIdenTracing.all; */
     /* We need to use a different function depending on the type
        of the node identifier */
@@ -230,6 +246,7 @@ class HDLmNodeIden {
          cases. */
       case 'tag': {
         let nodeTag = nodeAttributes.tag;
+        nodeValue = nodeTag;
         nodeElements = document.getElementsByTagName(nodeTag);
         break;
       }
@@ -239,6 +256,7 @@ class HDLmNodeIden {
          they can not be used. */
       case 'id': {
         let nodeId = nodeAttributes.id;
+        nodeValue = nodeId;
         nodeElement = document.getElementById(nodeId);
         if (nodeElement != null)
           nodeElements = [nodeElement];
@@ -259,6 +277,7 @@ class HDLmNodeIden {
         let nodeClassList = nodeAttributes.class;
           nodeClass = nodeClassList[0];
         }
+        nodeValue = nodeClass;
         nodeElements = document.getElementsByClassName(nodeClass);
         /* console.log(nodeClass); */
         /* console.log(nodeElements); */
@@ -268,6 +287,7 @@ class HDLmNodeIden {
       /* We may be searching by name. This will work in some cases. */
       case 'name': {
         let nodeName = nodeAttributes.name;
+        nodeValue = nodeName;
         nodeElements = document.getElementsByName(nodeName);
         break;
       }
@@ -283,7 +303,7 @@ class HDLmNodeIden {
     /* Check if node identifier tracing is active or not. Trace the
        number of nodes, if need be. */
     if (nodeIdenTracing == HDLmNodeIdenTracing.all) {
-      let errorText = `Node identifier - get for (${nodeType}) returned (${nodeElementsLength}) nodes`;
+      let errorText = `Node identifier - get for (${nodeType}) value(${nodeValue}) returned (${nodeElementsLength}) nodes`;
       HDLmError.buildError('Trace', 'NodeIden', 41, errorText);
     }
     /* Check for a very special case. If the original node identifier collection
@@ -379,8 +399,10 @@ class HDLmNodeIden {
     let numeratorIncrementValue;
     /* Check for a quick exit. If the tag name doesn't match, then
        we are done. We insist that the tag name match immediately
-       and exactly. */
-    if (nodeElement.tagName != nodeIdenAttributeTagUpper)
+       and exactly. The node element tag name should be returned
+       in uppercase. However, experience has shown that it is not
+       always in uppercase. This bug is fixed here.*/
+    if (nodeElement.tagName.toUppercase() != nodeIdenAttributeTagUpper)
       return 0.0;
     /* Check all of the attributes passed by the caller. Get the
        set of keys for each of the attributes. The keys are used
@@ -407,9 +429,11 @@ class HDLmNodeIden {
          A special call is needed to get the actual tag name of the
          DOM element. This call will always return the tag name in
          uppercase. As a consequence, the expected value must also be
-         changed to uppercase. */
+         changed to uppercase. This is not quite true. In some cases
+         the element tag is returned in lowercase. This bug is fixed
+         here.  */
       if (nodeIdenAttributeKey == 'tag') {
-        nodeActualValue = nodeElement.tagName;
+        nodeActualValue = nodeElement.tagName.toUpperCase();
         nodeIdenAttributeValue = nodeIdenAttributeValue.toUpperCase();
         /* Check if node identifier tracing is active or not. Trace the
            attribute values, if need be. */
@@ -417,7 +441,7 @@ class HDLmNodeIden {
           let errorText;
           let traceValue = 0.0;
           if (nodeActualValue != null &&
-            nodeIdenAttributeValue == nodeActualValue)
+              nodeIdenAttributeValue == nodeActualValue)
             traceValue = 1.0;
           errorText = `Node identifier - key (${nodeIdenAttributeKey}) actual (${nodeActualValue}) expected (${nodeIdenAttributeValue})`;
           HDLmError.buildError('Trace', 'NodeIden', 41, errorText);
@@ -492,6 +516,11 @@ class HDLmNodeIden {
           nodeIndexOf = nodeInnerText.indexOf('¦');
           if (nodeIndexOf >= 0)
             nodeInnerText = nodeInnerText.substring(0, nodeIndexOf);
+          /* Long and bad experience has shown that inner text sometimes 
+             begins with a new line character. The code below has the effect
+             of setting the inner text to an empty string in this case. The
+             trim call (also below) would do a better job of removing the 
+             new line character. */ 
           nodeIndexOf = nodeInnerText.indexOf('\n');
           if (nodeIndexOf >= 0)
             nodeInnerText = nodeInnerText.substring(0, nodeIndexOf);
@@ -510,18 +539,32 @@ class HDLmNodeIden {
             HDLmString.compareCaseInsensitive(nodeIdenAttributeValue,
                                               nodeActualValue))
             traceValue = 1.0;
+          /* We need to check for a very special case here. If both   
+             the actual and expected values are null, then we really
+             have a match. */
+          if (nodeActualvalue == null && nodeIdenAttributeValue == null) 
+            traceValue = 1.0;
           errorText = `Node identifier - key (${nodeIdenAttributeKey}) actual (${nodeActualValue}) expected (${nodeIdenAttributeValue})`;
           HDLmError.buildError('Trace', 'NodeIden', 41, errorText);
           errorText = `Node identifier - key (${nodeIdenAttributeKey}) comparison value (${traceValue})`;
           HDLmError.buildError('Trace', 'NodeIden', 41, errorText);
         }
-        /* If we don't have a value that we can compare, then we are done */
-        if (nodeActualValue == null)
-          continue;
+        /* If we don't have a value that we can compare, then we are done. 
+           This is not quite true. If we expected a null value then the 
+           values are really equal. */ 
+        let compareValues = true;
+        if (nodeActualValue == null) {
+          if (nodeIdenAttributeValue != null) 
+            continue;
+          else {
+            numeratorIncrementValue = 1.0;
+            compareValues = false;
+          }
+        }
         /* Compare the expected value and the actual value. If they are the
            same, then we can increment the numerator. */
-        if (HDLmString.compareCaseInsensitive(nodeIdenAttributeValue,
-                                              nodeActualValue))
+        if (compareValues && HDLmString.compareCaseInsensitive(nodeIdenAttributeValue,
+                                                               nodeActualValue))
           numeratorIncrementValue = 1.0;
       }
       /* For all other attributes, we can just extract the actual

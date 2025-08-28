@@ -18,12 +18,29 @@ class HDLmReactOne {
        because the function is transpiled using Babel. Babel
        converts the JSX to ordinary JavaScript. */
     function Hello() {
+      return React.createElement("h1", null, 'HelloWordl!');   
+      /*
       return <h1>Hello World!</h1>;
+      */
     }
+  function Greeting() {
+    var name = 'abcd';
+    return React.createElement(
+      'h1',
+      null,
+      'Hello ',
+      React.createElement('i', null, name),
+      '. Welcome!'
+    );
+  }
     /* console.log('s1'); */
     const container = document.getElementById('entryValues');
     /* console.log('s2'); */
     const root = ReactDOM.createRoot(container);
-    root.render(<Hello />);
+    let temph1 = Greeting();
+    root.render(temph1); 
+    /*
+    root.render(<Hello />);S
+    */
   }  
 } 

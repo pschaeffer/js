@@ -16,10 +16,15 @@ class HDLmMain {
   static handleInitialization() {    
     /* This routine may been invoked to build rules or it may have 
        been invoked for some other reason */
-    /* HDLmExecuteEditor.main();  */     
-    if (1 == 1) 
-      HDLmBuildRules.main();
-    else   
+    /* HDLmExecuteEditor.main();  */  
+    /* console.log('In HDLmMain()'); */
+    if (1 == 1) { 
+      if (1 == 2)
+        HDLmBuildRules.main();
+      else
+        HDLmManageRules.main();
+    }
+    else
       HDLmIndexOne.main();   
   } 
 } 

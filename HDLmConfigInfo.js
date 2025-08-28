@@ -89,6 +89,11 @@ class HDLmConfigInfo {
   static getClustersThreshold() {
     return Number(HDLmConfig.getValue('clustersThreshold'));
   }
+  /* Get the maximum age for a cookie. This value is 
+	   applied to some cookies that we create. */  
+	static getCookieMaxAge() {
+    return Number(HDLmConfig.getValue('cookieMaxAge'));  
+	}
   /* Get the current environment. The current environment will 
 	   be set to values such as  "prod" or "production" or "test" 
 	   (without the quotes). Other values may be added later. */
@@ -221,9 +226,13 @@ class HDLmConfigInfo {
   static getFetchInternetMethodNoSsl() {
     return HDLmConfig.getValue('fetchInternetMethodNoSsl');
   }
+  /* Get the Open AI API GPT model */  
+  static getOpenAIApiGptModel() {
+    return HDLmConfig.getValue("openAIApiGptModel");
+  }
   /* Return the name of the Open AI service */
-  static getOpenaiName() {
-    return HDLmConfig.getValue('openaiName');
+  static getOpenAIName() {
+    return HDLmConfig.getValue('openAIName');
   }
   /* Get the pass-through limit value abd return it to the caller. The
      pass-through limit value determines the fraction of events that are
@@ -256,6 +265,12 @@ class HDLmConfigInfo {
   static getRequestTypeName() {
     return HDLmConfig.getValue('requestTypeName');
   }
+  /* Get the secret encryption key used for cookies and perhaps
+     other things. Return the secret encryption key to the caller
+     as a string. */ 
+  static getSecretEncryptionKey() {
+  	return HDLmConfig.getValue('secretEncryptionKey');
+  }
   /* Get the current server name used to handle POST requests
      and perhaps other things. Return the server name to the 
      caller as a string. */
@@ -271,6 +286,18 @@ class HDLmConfigInfo {
      value can be copied into the main current server name field. */ 
   static getServerNameTest() {
     return HDLmConfig.getValue('serverNameTest');
+  }
+  /* Get a true/false value showing if HTTP/2 should be supported 
+     or not. Note that this value is an actual JavaScript true or
+     false, not "TRUE" or "FALSE". */
+  static getSupportHttp2() {
+    return HDLmConfig.getValue('supportHTTP2');
+  }
+  /* Get a true/false value showing if HTTP/3 should be supported 
+     or not. Note that this value is an actual JavaScript true or
+     false, not "TRUE" or "FALSE". */
+  static getSupportHttp3() {
+    return HDLmConfig.getValue('supportHTTP3');
   }
   /* Get the name of of the field that contains the current URL value */
   static getUrlValueName() {

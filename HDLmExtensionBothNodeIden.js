@@ -298,6 +298,12 @@ class HDLmExtensionBothNodeIden {
             currentElement = HDLmExtensionBothNodeIden.contentEventTarget;
           /* console.log('s5'); */
           /* console.log(currentElement); */
+          /* Check if the current element is null. This can really 
+             happend. Why is not so clear. */
+          if (currentElement == null) {
+		        HDLmExtensionBothNodeIden.resetNodeValues();
+            break;
+	        }
           let jsonStr = HDLmNodeIden.getNodeIdentifier(currentElement);
           /* console.log('s6'); */
           /* console.log(jsonStr); */

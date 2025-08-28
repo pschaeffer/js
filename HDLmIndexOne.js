@@ -22,11 +22,9 @@ class HDLmIndexOne {
     let windowlocationPathName = window.location.pathname;
     if (windowlocationPathName == '/') 
       editRules = true; 
-    /* Check if the user wants to edit rules under the debbuger */
-    
+    /* Check if the user wants to edit rules under the debbuger */    
     if (windowlocationPathName.endsWith('index.html'))
-      editRules = true;
-    
+      editRules = true;    
     /* Check if we really want to edit rules */
     if (!editRules)
       return; 
@@ -54,12 +52,12 @@ class HDLmIndexOne {
     }).then(function (responseText) {
       HDLmDefines.addDefines(responseText);
       /* Get the Promise used to obtain the configuration information */
-      return HDLmConfig.getConfig();
+      return HDLmConfig.getConfigs();
     }, function (error) {
       HDLmError.buildError('Error', 'Defines failure', 14, error);
     /* Handle the Promise used to obtain configuration information */
     }).then(function (responseText) {
-      HDLmConfig.addConfig(responseText);
+      HDLmConfig.addConfigs(responseText);
       /*
       HDLmConfig.getConfigMissing();  
       */
@@ -263,12 +261,13 @@ class HDLmIndexOne {
 
          In at least one important case, we aren't really going
          to build and run an editor. We may want to build and
-         run the pass-through display mechanism. */         
-      /* HDLmGlobals.activeEditorType = HDLmEditorTypes.simple; */
-      /* HDLmGlobals.activeEditorType = HDLmEditorTypes.popup; */
-      /* HDLmGlobals.activeEditorType = HDLmEditorTypes.proxy; */
-      /* HDLmGlobals.activeEditorType = HDLmEditorTypes.config; */
+         run the pass-through display mechanism. */      
       /* HDLmGlobals.activeEditorType = HDLmEditorTypes.auth; */
+      /* HDLmGlobals.activeEditorType = HDLmEditorTypes.config; */
+      /* HDLmGlobals.activeEditorType = HDLmEditorTypes.popup; */
+      /* HDLmGlobals.activeEditorType = HDLmEditorTypes.proxy; */ 
+      /* HDLmGlobals.activeEditorType = HDLmEditorTypes.simple; */
+      /* HDLmGlobals.activeEditorType = HDLmEditorTypes.store; */
       /* Check if we are using one of the inline editors. If we are, 
          then we need to send a message to a server to get the tree
          of modifications. */
