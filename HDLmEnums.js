@@ -171,26 +171,9 @@ let HDLmManageRulesStageTypes = {
   "sendVerificationCodeResponse":    14,
   "setAccessCookie":                 15,
   "getModifications":                16,
-  "setTestModeOn":                   17,
-  "showWebPageUi":                   18,
-  "waitForUrlInput":                 19,
-  /* The next entry does not appear to be in use. */
-  "executeFetch":                    20,
-  /* The next entry does not appear to be in use. */
-  "convertResponse":                 21,
-  /* The next entry does not appear to be in use. */
-  "getWebPage":                      22, 
-  "webpageImproverServices":         23,
-  "buildWebPageRules":               24,
-  "showWebPageRules":                25,
-  /* The next entry does not appear to be in use. */
-  "reactBase":                       26,
-  "reactLater":                      27,
-  "sendWebPageRules":                28,
-  "openWebPage":                     29,
-  "beforeUnload":                    30,
-  "visibilityChange":                31,
-  "setTestModeOff":                  32
+  "getSpecificCompany":              17,
+  "setTestModeOn":                   18,
+  "showWebPageUi":                   19
 };
 HDLmManageRulesStageTypes.toString = function (enumVl) {
   /* console.log('In HDLmEnums.toString'); */
@@ -294,11 +277,11 @@ Object.freeze(HDLmMatchTypes);
    
    Rules nodes represent a set of divisions. Each division has zero,
    one, or mode site nodes. Site nodes have zero, one, or more actual
-   modifications. Each rules not is a direct child of a company node.   
+   modifications. Each rules node is a direct child of a company node.   
    
    Data nodes represent a set of divisions. Each division has zero,
    one, or mode site nodes. Site nodes have zero, one, or more actual
-   values. Each rules not is a direct child of a company node.
+   values. Each data node is a direct child of a company node.
    
    Values (value nodes) are leaf nodes that contain exactualy one value.
    The value is typically a JSON string, but does not have to be a JSON 
@@ -384,64 +367,82 @@ Object.freeze(HDLmTokenTypes);
    for each change type. The saved data must be sufficient to undo
    a given change and then (potentially) redo a change as well. */
 let HDLmUnReTypes = {
-  "none":     0,
+  "none":           0,
   /* Activate occurs when a node is activated. This generally 
      occurs when a Fancytree node is clicked on. */
-  "activate": 1,
-  /* Check occurs when a node is enabled or disabled. This event
-     only occurs when a disabled node is enabled or an enabled 
-     node is disabled. 
-     
+  "activate":       1,
+  /* Check occurs when a node is marked as executable or not executable.
+     This event only occurs when a non-executable node is made executable 
+     or an executable node is made non-executable.
+
      Note that this event type is not in use at this time. It turns
-     output that using the context menus to change the enablement 
-     status of a modification causes a very conventional keyboard
-     operation to be simulated. The keyboard operation can be undone
-     and redone as need be. */
-  "check":    2,
+     output that using the context menus to change the run status
+     of a modification causes a very conventional keyboard operation 
+     to be simulated. The keyboard operation can be undone and redone 
+     as need be. */
+  "check":          2,
   /* Collapse occurs when the minus sign to the left of a 
      Fancytree node is clicked on. This causes all of the 
      subnodes to disappear. */
-  "collapse": 3,
+  "collapse":       3,
   /* Copy occurs (and only occurs) when the Copy option of
      a context menu is used to copy something */
-  "copy":     4,
+  "copy":           4,
   /* Cut occurs (and only occurs) when a cut (ctrl-x) operation
      is successfully completed */
-  "cut":      5,
+  "cut":            5,
   /* Delete occurs when a node (that may or may not
      be a modification node) is deleted */
-  "delete":   6,
+  "delete":         6,
   /* Drag-and-Drop occurs (and only occurs) when a Drag-and-Drop
      operation is successfully completed */
-  "dnd":      7,
+  "dnd":            7,
   /* Edit occurs when a Fancytree node is renamed. It turns 
      out that you can not rename a Fancytree node by changing
      the Modification Name field. However, a Fancytree node 
      can be renamed by updating the node name inline. */
-  "edit":     8,
+  "edit":           8,
   /* Escape is not supported at this time */
-  "escape":   9,
+  "escape":         9,
   /* Expand occurs when the plus sign to the left of a 
      Fancytree node is clicked on. This causes all of the 
      subnodes to appear. */
-  "expand":   10,
+  "expand":         10,
   /* Force occurs when a double-click event is received for an
      entry in a list of values for a modification node. It turns
      out that Force is not really needed. A double-click event
      causes standard content changes that are hanbled by the
      modify event. */
-  "force":    11,
+  "force":          11,
   /* Insert occurs (and only occurs) when the Insert option of
      a context menu is used to successfully insert a new node 
      of some type */
-  "insert":   12,
+  "insert":         12,
   /* Modify occurs when the details (contents) of a modification
      node are changed. Note that the modification name can only
      be changed by changing the name of the associated Fancytree
      node. This is considered to be an edit, not a modify. */
-  "modify":   13,
+  "modify":         13,
   /* Paste occurs (and only occurs) when the Paste option of
      a context menu is used to paste the currect copy buffer */
-  "paste":    14
+  "paste":          14,
+  /* Show occurs when a set of rules are shown. All of the 
+     rules may be shown or just some of them. */
+  "actionShow":     15,  
+  /* Delete occurs when a set of rules are deleted */
+  "actionDelete":   16, 
+  /* Production occurs when a set of rules are moved into 
+     production */
+  "actionProd":     17, 
+  /* Test occurs when a set of rules are moved into test */
+  "actionTest":     18, 
+  /* Generate occurs when a set of rules are generated */
+  "actionGenerate": 19, 
+  /* Select occurs when a row or rows is activated (by clicking) */
+  "actionSelect":   20, 
+  /* Unselect occurs when a row or rows is deactivated (by clicking) */
+  "actionUnselect": 21,
+  /* NewName occurs when a row is renamed (by entering a new name) */
+  "actionNewName":  22,
 };
 Object.freeze(HDLmUnReTypes);

@@ -212,7 +212,7 @@ class HDLmButtonWidget {
     /* Generate a new unique id value (note the use of lower case)
        for the new HTML elements. Associate the new unique id value
        with the current class instance. */
-    this.newUnique = HDLmUtility.generateId();
+    this.newUnique = HDLmUtility.uniqueGenerateId();
     /* The top margin property is always set for this type of widget,
        but not for some other widget types. This value is used later
        to move the description text down by the same amount as the
@@ -590,7 +590,7 @@ class HDLmCheckBoxWidget {
     /* Generate a new unique id value (note the use of lower case)
        for the new HTML elements. Associate the new unique id value
        with the current class instance. */
-    this.newUnique = HDLmUtility.generateId();
+    this.newUnique = HDLmUtility.uniqueGenerateId();
   }
   /* This static method is invoked when an input event occurs. An
      input event occurs whenever an input field is changed in any
@@ -1447,7 +1447,7 @@ class HDLmGridWidget {
     /* Generate a new unique id value (note the use of lower case)
        for the new HTML elements. Associate the new unique id value
        with the current class instance. */
-    this.newUnique = HDLmUtility.generateId();
+    this.newUnique = HDLmUtility.uniqueGenerateId();
   }
   /* This class instance method is invoked to add the contents of the
      new entry fields to the array of values. This method can be triggered
@@ -2517,7 +2517,7 @@ class HDLmListWidget {
     /* Generate a new unique id value (note the use of lower case)
        for the new HTML elements. Associate the new unique id value
        with the current class instance. */
-    this.newUnique = HDLmUtility.generateId();
+    this.newUnique = HDLmUtility.uniqueGenerateId();
   }
   /* This class instance method is invoked to add the contents of the
      new entry field to the array of values. This method is triggered
@@ -4344,7 +4344,7 @@ class HDLmNumberWidget {
     /* Generate a new unique id value (note the use of lower case)
        for the new HTML elements. Associate the new unique id value
        with the current class instance. */
-    this.newUnique = HDLmUtility.generateId();
+    this.newUnique = HDLmUtility.uniqueGenerateId();
   }
   /* This class instance method is invoked validate an input field. The
      caller provids the field type and the field value. This routine
@@ -5008,7 +5008,7 @@ class HDLmSelectWidget {
     /* Generate a new unique id value (note the use of lower case)
        for the new HTML elements. Associate the new unique id value
        with the current class instance. */
-    this.newUnique = HDLmUtility.generateId();
+    this.newUnique = HDLmUtility.uniqueGenerateId();
   }
   /* This class instance method is invoked to validate an input field.
      The caller provids the field type and the field value. This routine
@@ -5816,7 +5816,7 @@ class HDLmTableWidget {
     /* Generate a new unique id value (note the use of lower case)
        for the new HTML elements. Associate the new unique id value
        with the current class instance. */
-    this.newUnique = HDLmUtility.generateId();
+    this.newUnique = HDLmUtility.uniqueGenerateId();
   }
   /* This class instance method is invoked to validate an input field.
      The caller provides the field type and the field value. This routine
@@ -6438,7 +6438,7 @@ class HDLmTextWidget {
     /* Generate a new unique id value (note the use of lower case)
        for the new HTML elements. Associate the new unique id value
        with the current class instance. */
-    this.newUnique = HDLmUtility.generateId();
+    this.newUnique = HDLmUtility.uniqueGenerateId();
     /* The top margin property is always set for this type of widget,
        but not for some other widget types. This value is used later
        to move the description text down by the same amount as the 

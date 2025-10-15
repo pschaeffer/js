@@ -107,6 +107,169 @@ class HDLmUnRe {
       newChange.oldPath = HDLmUnRe.changesLastActiveNodePath.slice();
     HDLmUnRe.addChange(newChange);
   }
+  /* The method below adds a delete event to the changes array. This 
+     code constructs an undo / redo event (for a delete) and then adds
+     it to the changes array using a common routine. A delete event
+     occurs when a delete menu entry is invoked. */
+  static addActionDelete(passedRuleList) {
+    /* console.log('In HDLmUnRe.addActionDelete'); */
+    /* Write a debugging message to the console, if need be */
+    if (HDLmGlobals.activeDebugging.showInfo) {
+      /* 
+      let changesLength = HDLmUnRe.changesArray.length;
+      let changesIndex = HDLmUnRe.changesIndex;
+      let errorText = `Add Delete - Changes Length (${changesLength}) Changes Index (${changesIndex})`;
+      console.log(errorText);
+      */
+    }
+    let newChange = new HDLmUnReChange(HDLmUnReTypes.actionDelete);
+    newChange.rulesArray = passedRuleList;
+    HDLmUnRe.addChange(newChange);
+  }
+  /* The method below adds a generate event to the changes array. This 
+     code constructs an undo / redo event (for a generate) and then adds
+     it to the changes array using a common routine. A generate event
+     occurs when a generate menu entry is invoked. */
+  static addActionGenerate(passedRuleList) {
+    /* console.log('In HDLmUnRe.addActionGenerate'); */
+    /* Write a debugging message to the console, if need be */
+    if (HDLmGlobals.activeDebugging.showInfo) {
+      /* 
+      let changesLength = HDLmUnRe.changesArray.length;
+      let changesIndex = HDLmUnRe.changesIndex;
+      let errorText = `Add Generate - Changes Length (${changesLength}) Changes Index (${changesIndex})`;
+      console.log(errorText);
+      */
+    }
+    let newChange = new HDLmUnReChange(HDLmUnReTypes.actionGenerate);
+    newChange.rulesArray = passedRuleList;
+    HDLmUnRe.addChange(newChange);
+  }
+  /* The method below adds a new name event to the changes array. This 
+     code constructs an undo / redo event (for a new name) and then adds
+     it to the changes array using a common routine. A new name event
+     occurs when a rule is renamed. This typically happens when a rule
+     name is overtyped. */
+  static addActionNewName(oldRuleName,
+                          newRuleName,
+                          companyNumber,
+                          oldRuleNumber,
+                          newRuleNumber)
+  {
+    /* console.log('In HDLmUnRe.addActionNewName'); */
+    /* Write a debugging message to the console, if need be */
+    if (HDLmGlobals.activeDebugging.showInfo) {
+      /* 
+      let changesLength = HDLmUnRe.changesArray.length;
+      let changesIndex = HDLmUnRe.changesIndex;
+      let errorText = `Add NewName - Changes Length (${changesLength}) Changes Index (${changesIndex})`;
+      console.log(errorText);
+      */
+    }
+    let newChange = new HDLmUnReChange(HDLmUnReTypes.actionNewName);
+    newChange.rulesArray = [oldRuleName,
+                            newRuleName,
+                            companyNumber,
+                            oldRuleNumber,
+                            newRuleNumber];
+    HDLmUnRe.addChange(newChange);
+  }
+  /* The method below adds a move into production event to the changes array. This 
+     code constructs an undo / redo event (for a move into production) and then adds
+     it to the changes array using a common routine. A move into production event
+     occurs when a move into production menu entry is invoked. */
+  static addActionProd(passedRuleList) {
+    /* console.log('In HDLmUnRe.addActionProd'); */
+    /* Write a debugging message to the console, if need be */
+    if (HDLmGlobals.activeDebugging.showInfo) {
+      /* 
+      let changesLength = HDLmUnRe.changesArray.length;
+      let changesIndex = HDLmUnRe.changesIndex;
+      let errorText = `Add Prod - Changes Length (${changesLength}) Changes Index (${changesIndex})`;
+      console.log(errorText);
+      */
+    }
+    let newChange = new HDLmUnReChange(HDLmUnReTypes.actionProd);
+    newChange.rulesArray = passedRuleList;
+    HDLmUnRe.addChange(newChange);
+  }
+  /* The method below adds a select event to the changes array. This 
+     code constructs an undo / redo event (for a select) and then adds
+     it to the changes array using a common routine. A select event
+     occurs when a row or rows is activated (by clicking). */
+  static addActionSelect(passedRow) {
+    /* console.log('In HDLmUnRe.addActionSelect'); */
+    /* Write a debugging message to the console, if need be */
+    if (HDLmGlobals.activeDebugging.showInfo) {
+      /* 
+      let changesLength = HDLmUnRe.changesArray.length;
+      let changesIndex = HDLmUnRe.changesIndex;
+      let errorText = `Add Select - Changes Length (${changesLength}) Changes Index (${changesIndex})`;
+      console.log(errorText);
+      */
+    }
+    let newChange = new HDLmUnReChange(HDLmUnReTypes.actionSelect);
+    newChange.rulesArray = passedRow;
+    HDLmUnRe.addChange(newChange);
+  }
+  /* The method below adds a show event to the changes array. This 
+     code constructs an undo / redo event (for a show) and then adds
+     it to the changes array using a common routine. A show event
+     occurs when a show menu entry is invoked. */
+  static addActionShow(oldDisplayRulesValue, newDisplayRulesValue) {
+    /* console.log('In HDLmUnRe.addActionShow'); */
+    /* Write a debugging message to the console, if need be */
+    if (HDLmGlobals.activeDebugging.showInfo) {
+      /* 
+      let changesLength = HDLmUnRe.changesArray.length;
+      let changesIndex = HDLmUnRe.changesIndex;
+      let errorText = `Add Show - Changes Length (${changesLength}) Changes Index (${changesIndex})`;
+      console.log(errorText); 
+      */
+    }
+    let newChange = new HDLmUnReChange(HDLmUnReTypes.actionShow);
+    newChange.oldDisplayRulesValue = oldDisplayRulesValue;
+    newChange.newDisplayRulesValue = newDisplayRulesValue;
+    HDLmUnRe.addChange(newChange);
+  }
+  /* The method below adds a move into test event to the changes array. This 
+     code constructs an undo / redo event (for a move into test) and then adds
+     it to the changes array using a common routine. A move into test event
+     occurs when a move into test menu entry is invoked. */
+  static addActionTest(passedRuleList) {
+    /* console.log('In HDLmUnRe.addActionTest'); */
+    /* Write a debugging message to the console, if need be */
+    if (HDLmGlobals.activeDebugging.showInfo) {
+      /* 
+      let changesLength = HDLmUnRe.changesArray.length;
+      let changesIndex = HDLmUnRe.changesIndex;
+      let errorText = `Add Test - Changes Length (${changesLength}) Changes Index (${changesIndex})`;
+      console.log(errorText);
+      */
+    }
+    let newChange = new HDLmUnReChange(HDLmUnReTypes.actionTest);
+    newChange.rulesArray = passedRuleList;
+    HDLmUnRe.addChange(newChange);
+  }
+  /* The method below adds an unselect event to the changes array. This 
+     code constructs an undo / redo event (for a unselect) and then adds
+     it to the changes array using a common routine. A unselect event
+     occurs when a row or rows is deactivated (by clicking). */
+  static addActionUnselect(passedRow) {
+    /* console.log('In HDLmUnRe.addActionUnselect'); */
+    /* Write a debugging message to the console, if need be */
+    if (HDLmGlobals.activeDebugging.showInfo) {
+      /* 
+      let changesLength = HDLmUnRe.changesArray.length;
+      let changesIndex = HDLmUnRe.changesIndex;
+      let errorText = `Add Unselect - Changes Length (${changesLength}) Changes Index (${changesIndex})`;
+      console.log(errorText);
+      */
+    }
+    let newChange = new HDLmUnReChange(HDLmUnReTypes.actionUnselect);
+    newChange.rulesArray = passedRow;
+    HDLmUnRe.addChange(newChange);
+  }
   /* The method below adds a change to the changes array. We really 
      need to consider three cases. First, the changes array amy be 
      empty. Second, the changes array may be full. Third, we may be
@@ -183,11 +346,12 @@ class HDLmUnRe {
   /* The method below adds an check event to the changes array. This 
      code constructs an undo / redo event (for a check) and then adds
      it to the changes array using a common routine. A check event
-     occurs when a modification node that was disabled, is enabled 
-     or when a modification node that was enabled, is disabled. 
+     occurs when a modification node that was not executable, is executable
+     or when a modification node that was executable, is marked as 
+     not executable.
      
      Note that this event type is not in use at this time. It turns
-     output that using the context menus to change the enablement
+     output that using the context menus to change the executable
      status of a modification causes a very conventional keyboard
      operation to be simulated. The keyboard operation can be undone
      and redone as need be. */
@@ -772,7 +936,8 @@ class HDLmUnRe {
         }
         /* Invoke a standard routine to do all of the actual work of deleting 
            the tree node and the Fancytree node */
-        HDLmTree.deleteTreeNode(childFancytreeNode, childTreeNode);
+        let updateDatabaseTrue = true;   
+        HDLmTree.deleteTreeNode(childFancytreeNode, childTreeNode, updateDatabaseTrue);
         break;
       }
       /* Redo a delete event */
@@ -798,7 +963,8 @@ class HDLmUnRe {
         }
         /* Invoke a standard routine to do all of the actual work of deleting 
            the tree node and the Fancytree node */
-        HDLmTree.deleteTreeNode(childFancytreeNode, childTreeNode);
+        let updateDatabaseTrue = true;   
+        HDLmTree.deleteTreeNode(childFancytreeNode, childTreeNode, updateDatabaseTrue);
         break;
       }
       /* Redo a DND event */
@@ -846,7 +1012,8 @@ class HDLmUnRe {
            the Fancytree node are deleted. Note that tree node, may actually have
            nodes under it. Of course, this also applies to the Fancytree node. 
            However, the Fancytree code should take care of this. */
-        HDLmTree.deleteTreeNode(oldFromFancytreeNode, fromTreeNode);
+        let updateDatabaseTrue = true;   
+        HDLmTree.deleteTreeNode(oldFromFancytreeNode, fromTreeNode, updateDatabaseTrue);
         let handlingCmdInsertFalse = false;
         let processSubNodesTrue = true;
         let updateDatabase = true;
@@ -1004,6 +1171,46 @@ class HDLmUnRe {
                                       usePendingInsertsTrue, processSubNodesTrue, updateDatabase,
                                       handlingCmdInsertFalse);
         HDLmTree.processPendingInserts();
+        break;
+      }
+      /* Redo a show rules event */
+      case HDLmUnReTypes.actionShow: {
+        HDLmManageRules.displayRulesValue = currentChange.newDisplayRulesValue;
+        break;
+      }
+      /* Redo a delete rules event */
+      case HDLmUnReTypes.actionDelete: {
+        HDLmManageRules.actionUnRe('redo', HDLmUnReTypes.actionDelete, currentChange.rulesArray);
+        break;
+      }
+      /* Redo a move into production rules event */
+      case HDLmUnReTypes.actionProd: {
+        HDLmManageRules.actionUnRe('redo', HDLmUnReTypes.actionProd, currentChange.rulesArray);
+        break;
+      }
+      /* Redo a move into test rules event */
+      case HDLmUnReTypes.actionTest: {
+        HDLmManageRules.actionUnRe('redo', HDLmUnReTypes.actionTest, currentChange.rulesArray);
+        break;
+      }
+      /* Redo a generate rules event */
+      case HDLmUnReTypes.actionGenerate: {
+        HDLmManageRules.actionUnRe('redo', HDLmUnReTypes.actionGenerate, currentChange.rulesArray);
+        break;
+      }
+      /* Redo a select event */
+      case HDLmUnReTypes.actionSelect: {
+        HDLmManageRules.actionUnRe('redo', HDLmUnReTypes.actionSelect, currentChange.rulesArray);
+        break;
+      }
+      /* Redo an un-select event */
+      case HDLmUnReTypes.actionUnselect: {
+        HDLmManageRules.actionUnRe('redo', HDLmUnReTypes.actionUnselect, currentChange.rulesArray);
+        break;
+      }
+      /* Redo a new name event */
+      case HDLmUnReTypes.actionNewName: {
+        HDLmManageRules.actionUnRe('redo', HDLmUnReTypes.actionNewName, currentChange.rulesArray);
         break;
       }
       /* Report an error if the undo / redo change type did not match one 
@@ -1303,7 +1510,8 @@ class HDLmUnRe {
         }
         /* Invoke a standard routine to do all of the actual work of deleting 
            the tree node and the Fancytree node */
-        HDLmTree.deleteTreeNode(childFancytreeNode, childTreeNode);
+        let updateDatabaseTrue = true;   
+        HDLmTree.deleteTreeNode(childFancytreeNode, childTreeNode, updateDatabaseTrue);
         let handlingCmdInsertFalse = false;
         let processSubNodesTrue = true;
         let updateDatabase = true;
@@ -1391,7 +1599,8 @@ class HDLmUnRe {
         }
         /* Invoke a standard routine to do all of the actual work of deleting 
            the tree node and the Fancytree node */
-        HDLmTree.deleteTreeNode(childFancytreeNode, childTreeNode);
+        let updateDatabaseTrue = true;
+        HDLmTree.deleteTreeNode(childFancytreeNode, childTreeNode, updateDatabaseTrue);
         break;
       }
       /* Undo a node modify event */
@@ -1457,7 +1666,48 @@ class HDLmUnRe {
         }  
         /* Invoke a standard routine to do all of the actual work of deleting 
            the tree node and the Fancytree node */
-        HDLmTree.deleteTreeNode(childFancytreeNode, childTreeNode);
+        let updateDatabaseTrue = true;
+        HDLmTree.deleteTreeNode(childFancytreeNode, childTreeNode, updateDatabaseTrue);
+        break;
+      }
+      /* Undo a show rules event */
+      case HDLmUnReTypes.actionShow: {
+        HDLmManageRules.displayRulesValue = currentChange.oldDisplayRulesValue;
+        break;
+      }
+      /* Undo a delete rules event */
+      case HDLmUnReTypes.actionDelete: {
+        HDLmManageRules.actionUnRe('undo', HDLmUnReTypes.actionDelete, currentChange.rulesArray);
+        break;
+      }
+      /* Undo a move into production rules event */
+      case HDLmUnReTypes.actionProd: {
+        HDLmManageRules.actionUnRe('undo', HDLmUnReTypes.actionProd, currentChange.rulesArray);
+        break;
+      }
+      /* Undo a move into test rules event */
+      case HDLmUnReTypes.actionTest: {
+        HDLmManageRules.actionUnRe('undo', HDLmUnReTypes.actionTest, currentChange.rulesArray);
+        break;
+      }
+      /* Undo a generate rules event */
+      case HDLmUnReTypes.actionGenerate: {
+        HDLmManageRules.actionUnRe('undo', HDLmUnReTypes.actionGenerate, currentChange.rulesArray);
+        break;
+      }
+      /* Undo a select event */
+      case HDLmUnReTypes.actionSelect: {
+        HDLmManageRules.actionUnRe('undo', HDLmUnReTypes.actionSelect, currentChange.rulesArray);
+        break;
+      }
+      /* Undo an un-select event */
+      case HDLmUnReTypes.actionUnselect: {
+        HDLmManageRules.actionUnRe('undo', HDLmUnReTypes.actionUnselect, currentChange.rulesArray);
+        break;
+      }
+      /* Undo a new name event */
+      case HDLmUnReTypes.actionNewName: {
+        HDLmManageRules.actionUnRe('undo', HDLmUnReTypes.actionNewName, currentChange.rulesArray);
         break;
       }
       /* Report an error if the undo / redo change type did not match one 
@@ -1489,9 +1739,10 @@ HDLmUnRe.changesIndex = -1;
    certain events to be ignored. */
 HDLmUnRe.changesIgnoreActivate = 0;
 /* Note that the check event type is not in use at this time. It turns
-   output that using the context menus to change the enablement status
+   output that using the context menus to change the executable status
    of a modification causes a very conventional keyboard operation to
-   be simulated.The keyboard operation can be undone and redone as need be. */
+   be simulated. The keyboard operation can be undone and redone as need
+   be. */
 HDLmUnRe.changesIgnoreCheck = 0; 
 HDLmUnRe.changesIgnoreCollapse = 0; 
 HDLmUnRe.changesIgnoreCopy = 0; 

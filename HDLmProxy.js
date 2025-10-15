@@ -67,12 +67,6 @@ const HDLmProxyInfoData =
                            "subtype":       "secureserver"
                          },
                          {
-                           "description":   "Company Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
-                         },
-                         {
                            "description":   "Proxy Type",
                            "source":        "type",
                            "fieldtype":     "typelist",
@@ -137,12 +131,6 @@ const HDLmProxyInfoData =
                            "subtype":       "secureserver"
                          },
                          {
-                           "description":   "Company Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
-                         },
-                         {
                            "description":   "Proxy Type",
                            "source":        "type",
                            "fieldtype":     "typelist",
@@ -195,12 +183,6 @@ const HDLmProxyInfoData =
                            "subtype":       "secureserver"
                          },
                          {
-                           "description":   "Company Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
-                         },
-                         {
                            "description":   "Proxy Type",
                            "source":        "type",
                            "fieldtype":     "typelist",
@@ -220,11 +202,11 @@ const HDLmProxyTypeInfo = {
 class HDLmProxy {
   /* Build a proxy definition object from the values passed by the
      caller */
-  static buildProxyObject(name, extraStr, enabled, 
+  static buildProxyObject(name, extraStr, 
                           type, backendType, backendServer, 
                           secureServer, matchStr) {
     /* Construct the new proxy definition */
-    let newProxy = new HDLmMod(name, extraStr, enabled, type);
+    let newProxy = new HDLmMod(name, extraStr, type);
     /* Add a few additional fields */
     newProxy.backendType = backendType;
     newProxy.backendServer = backendServer;

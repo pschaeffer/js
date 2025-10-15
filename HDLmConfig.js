@@ -12,88 +12,92 @@
    values are used in many places in the code. Note that the Java 
    code has another copy of these values. */
 const HDLmConfigConstants =
-  { "applicationJsonType":                 "application/json",
-    "AWSCognitoAcceptEncoding":            "identity",
-    "AWSCognitoApiGetUser":                "AWSCognitoIdentityProviderService.GetUser",
-    "AWSCognitoApiInitiateAuth":           "AWSCognitoIdentityProviderService.InitiateAuth",
-    "AWSCognitoApiRespondToAuthChallenge": "AWSCognitoIdentityProviderService.RespondToAuthChallenge",
-    "AWSCognitoContentType":               "application/x-amz-json-1.1",
-    "AWSCognitoHost":                      "cognito-idp.us-east-2.amazonaws.com",
+  { "applicationJsonType":                  "application/json",
+    "AWSCognitoAcceptEncoding":             "identity",
+    "AWSCognitoApiGetUser":                 "AWSCognitoIdentityProviderService.GetUser",
+    "AWSCognitoApiInitiateAuth":            "AWSCognitoIdentityProviderService.InitiateAuth",
+    "AWSCognitoApiRespondToAuthChallenge":  "AWSCognitoIdentityProviderService.RespondToAuthChallenge",
+    "AWSCognitoContentType":                "application/x-amz-json-1.1",
+    "AWSCognitoHost":                       "cognito-idp.us-east-2.amazonaws.com",
     /* The user agent value below is not accurate (at all). However, AWS Cognito
        demands a user agent value and the value below actually works. */
-    "AWSCognitoUserAgent":                 "Boto3/1.26.83 Python/3.9.13 Windows/10 Botocore/1.29.83",
-    "buildAcceptEncoding":                 "gzip, deflate, br, zstd",
-    "buildUserAgent":                      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
-    "clustersMaxCount":                    "10",
-    "clustersSampleSize":                  "100",
-    "clustersThreshold":                   "0.10",
-    "companyName":                         "example.com",
+    "AWSCognitoUserAgent":                  "Boto3/1.26.83 Python/3.9.13 Windows/10 Botocore/1.29.83",
+    "buildAcceptEncoding":                  "gzip, deflate, br, zstd",
+    "buildUserAgent":                       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+    "clustersMaxCount":                     "10",
+    "clustersSampleSize":                   "100",
+    "clustersThreshold":                    "0.10",
+    "companyName":                          "example.com",
     /* The maximum age in seconds for a cookie. A positive value indicates that the cookie will 
 		   expire after that many seconds have passed. Note that the value is the maximum age when 
 		   the cookie will expire, not the cookie's current age. A negative value means that the 
 		   cookie is not stored persistently and will be deleted when the Web browser exits. 
 		   A zero value causes the cookie to be deleted. */		  
-		"cookieMaxAge":                        "28800",
-    "currentEnvironment":                  "prod",
-    "currentEnvironmentProd":              "prod",
-    "currentEnvironmentTest":              "test",
-    "entriesBridgeApi":                    "bucket",
-    "entriesBridgeCompanyPrefix":          "",
-    "entriesBridgeContentSuffix":          "java",
-    "entriesBridgeDeleteUrl":              "/io/bucket/delete/",
-    "entriesBridgeInsertUrl":              "/io/bucket/insert/",
-    "entriesBridgeInternetMethodSsl":      "https",
-    "entriesBridgePartialPath":            "io/bucket",
-    "entriesBridgePassword":               null,
-    "entriesBridgeReadUrl":                "/io/bucket/search/",
-    "entriesBridgeUpdateUrl":              "/io/bucket/update/",
-    "entriesBridgeUseCache":               "false",
-    "entriesBridgeUserid":                 null,
-    "entriesDatabaseCompanyPrefix":        "",
-    "entriesDatabaseContentSuffix":        "java",
-    "entriesDatabaseInternetMethodSsl":    "https",
-    "entriesDatabaseTableNameProd":        "main_9",
-    "entriesDatabaseTableNameTest":        "test_1",
-    "entriesDatabaseUseCache":             "false",
-    "fetchInternetMethodNoSsl":            "http",
-    "fixWebSockets":                       "true",
-    "logFileName":                         "info.log",
-    "logRuleMatching":                     "false",
-    "openAIApiGptModel":                   "gpt-4-turbo",	
-    "openAIName":                          "openai",
-    "parametersAccessMethod":              "cgi-bin/get-set.py?get",
-    "parametersInternetMethodNoSsl":       "http",
-    "parametersUpdateMethod":              "cgi-bin/get-set.py?set",
-    "parametersUrl":                       "headlamp-software.com",
-    "passThroughLimit":                    "5.0",
-    "phashName":                           "HDLmPHash",
+		"cookieMaxAge":                         "28800",
+    "currentEnvironment":                   "prod",
+    "currentEnvironmentProd":               "prod",
+    "currentEnvironmentTest":               "test",
+    "entriesBridgeApi":                     "bucket",
+    "entriesBridgeCompanyPrefix":           "",
+    "entriesBridgeContentSuffix":           "java",
+    "entriesBridgeDeleteUrl":               "/io/bucket/delete/",
+    "entriesBridgeInsertUrl":               "/io/bucket/insert/",
+    "entriesBridgeInternetMethodNoSsl":     "http",
+    "entriesBridgeInternetMethodWithSsl":   "https",
+    "entriesBridgePartialPath":             "io/bucket",
+    "entriesBridgePassword":                null,
+    "entriesBridgeReadUrl":                 "/io/bucket/search/",
+    "entriesBridgeUpdateUrl":               "/io/bucket/update/",
+    "entriesBridgeUseCache":                "false",
+    "entriesBridgeUserid":                  null,
+    "entriesDatabaseCompanyPrefix":         "",
+    "entriesDatabaseContentSuffix":         "java",
+    "entriesDatabaseInternetMethodNoSsl":   "http",
+    "entriesDatabaseInternetMethodWithSsl": "https",
+    "entriesDatabaseTableNameProd":         "main_9",
+    "entriesDatabaseTableNameTest":         "test_1",
+    "entriesDatabaseUseCache":              "false",
+    "fetchInternetMethodNoSsl":             "http",
+    "fetchInternetMethodWithSsl":           "https",
+    "fixWebSockets":                        "true",
+    "logFileName":                          "info.log",
+    "logRuleMatching":                      "false",
+    "openAIApiGptModel":                    "gpt-4-turbo",	
+    "openAIName":                           "openai",
+    "parametersAccessMethod":               "cgi-bin/get-set.py?get",
+    "parametersInternetMethodNoSsl":        "http",
+    "parametersInternetMethodWithSsl":      "https",
+    "parametersUpdateMethod":               "cgi-bin/get-set.py?set",
+    "parametersUrl":                        "headlamp-software.com",
+    "passThroughLimit":                     "5.0",
+    "phashName":                            "HDLmPHash",
     /* The port number below is hard-coded into the browser extension
        that uses WebSockets to send node identifier values to the 
        Electron JS application */
-    "portNumberWebSocket":                 "8102",
-    "proxyName":                           "HDLmProxy.php",
-    "requestTypeName":                     "HDLmRequestType",
+    "portNumberWebSocket":                  "8102",
+    "proxyName":                            "HDLmProxy.php",
+    "requestTypeName":                      "HDLmRequestType",
     /* The secret key must be exactly 16 bytes long. Apparently, AES requires this */
-    "secretEncryptionKey":                 "abcd1234efgh5678",
-    "serverName":                          "javaproxya.dnsalias.com",
-    "serverNameProd":                      "javaproxya.dnsalias.com",
-    "serverNameTest":                      "javaproxya.dnsalias.com",
-    "supportHTTP2":                        "true",	
+    "secretEncryptionKey":                  "abcd1234efgh5678",
+    "serverName":                           "javaproxya.dnsalias.com",
+    "serverNameProd":                       "javaproxya.dnsalias.com",
+    "serverNameTest":                       "javaproxya.dnsalias.com",
+    "supportHTTP2":                         "true",	
     /* The Jetty folks say that HTTP/3 is not ready for production use. We
        are going to have to wait a while for a production version of HTTP/3. */	 	
-    "supportHTTP3":                        "false",	
-    "urlValueName":                        "HDLmUrlValue",
-    "userPoolClientAppId":                 "4aa1bqd057v64omjq84hc4pnvl",
-    "userPoolId":                          "us-east-2_xTvIIRtgB",
-    "userPoolName":                        "HeadlampUserPool1",
-    "userPoolRegion":                      "us-east-2",
-    "webpageImproverDescriptionPath":      "scalar/v1",
-    "webpageImproverImprovementsPath":     "improvements",
-    "webpageImproverLlmPath":              "llm",
-    "webpageImproverMarkupPath":           "markup",
-    "webpageImproverSessionPath":          "session",
-    "webpageImproverWebpagePath":          "webpage",
-    "webpageImproverPort":                 "5005",
+    "supportHTTP3":                         "false",	
+    "urlValueName":                         "HDLmUrlValue",
+    "userPoolClientAppId":                  "4aa1bqd057v64omjq84hc4pnvl",
+    "userPoolId":                           "us-east-2_xTvIIRtgB",
+    "userPoolName":                         "HeadlampUserPool1",
+    "userPoolRegion":                       "us-east-2",
+    "webpageImproverDescriptionPath":       "scalar/v1",
+    "webpageImproverImprovementsPath":      "improvements",
+    "webpageImproverLlmPath":               "llm",
+    "webpageImproverMarkupPath":            "markup",
+    "webpageImproverSessionPath":           "session",
+    "webpageImproverWebpagePath":           "webpage",
+    "webpageImproverPort":                  "5005",
   };
 /* The following JSON data struture defines all of the fields that
    can be configured. For each field, the JSON structure gives the
@@ -170,7 +174,7 @@ const HDLmConfigFields =
     },
     {
       "description": "Entries Bridge Internet Method",
-      "source":      "entriesBridgeInternetMethodSsl",
+      "source":      "entriesBridgeInternetMethodWithSsl",
       "fieldtype":   "protocollist",
       "subtype":     "editableprotocollist"
     },
@@ -206,7 +210,7 @@ const HDLmConfigFields =
     },
     {
       "description": "Entries Database Internet Method",
-      "source":      "entriesDatabaseInternetMethodSsl",
+      "source":      "entriesDatabaseInternetMethodWithSsl",
       "fieldtype":   "protocollist",
       "subtype":     "editableprotocollist"
     },
@@ -367,10 +371,10 @@ class HDLmConfig {
   }
   /* Build a configuration definition object from the values passed 
      by the caller */
-  static buildConfigObject(name, extraStr, enabled, type) {
+  static buildConfigObject(name, extraStr, type) {
     /* Construct the new configuration definition. This is actually
        a modification object used to build a configuration definition. */
-    let newConfig = new HDLmMod(name, extraStr, enabled, type);
+    let newConfig = new HDLmMod(name, extraStr, type);
     HDLmMod.addMissingFieldsModObject(newConfig, HDLmConfig.HDLmConfigInfo, 'config');
     return newConfig;
   }

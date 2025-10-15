@@ -1067,9 +1067,25 @@ class HDLmUtility {
       HDLmAssert(false, errorText);
     }
     if (urlStr.startsWith('http:') ||
-      urlStr.startsWith('https:'))
+        urlStr.startsWith('https:'))
       return urlStr;
     return 'https:' + urlStr;
+  }
+  /* Add a 'https://' prefix to a URL if need be. If the URL already starts
+     with 'http://' or 'https://' it is not modified. However, if it does not
+     have either 'http://' or 'https://', then 'https://' is added to the URL. 
+     Note that a prefix such as 'file:' will not be recognized. This means
+     that 'https://' will be added in front of 'file:'. */
+  static addHttpsPrefixDoubleSlash(urlStr) {
+    /* Make sure the argument passed by the caller is a string */
+    if (typeof urlStr != 'string') {
+      let errorText = `URL value passed to addHttpsPrefixDoubleSlash is not a string`;
+      HDLmAssert(false, errorText);
+    }
+    if (urlStr.startsWith('http://') ||
+        urlStr.startsWith('https://'))
+      return urlStr;
+    return 'https://' + urlStr;
   }
   /* Add a specific CSS property to the inline style for an HTML
      element. If the HTML element already has a style, then the
@@ -1079,7 +1095,7 @@ class HDLmUtility {
      true. If the style property is not added, this routine returns
      false; */
   static addStyleProperty(targetElement, property) {
-    /* Declare and define a few variable */
+    /* Declare and define a few variables */
     let rv = false;
     /* Get the existing inline style, if any */
     let currentStyle = HDLmHtml.getStyleString(targetElement);
@@ -1748,13 +1764,6 @@ class HDLmUtility {
     }
     return JSON.stringify(newObj);
   }
-  /* Return a unique ID string to the caller. The caller will use 
-     this value as the id (note the use of lower case) in generated 
-     HTLM elements. */
-  static generateId() {
-    HDLmUtilityId++;
-    return "Unique" + HDLmUtilityId;
-  }
   /* Get the content string from the current configuation */
   static getContentString() {
     /* console.log('In HDLmUtility.getContentString'); */
@@ -1944,7 +1953,7 @@ class HDLmUtility {
   static getPerceptualHash(urlStr) {
     let hdlmPlusSign = HDLmDefines.getString('HDLMPLUSSIGN');
     let newStr = urlStr.replace(/\+/g, hdlmPlusSign);
-    let URL = HDLmConfigInfo.getentriesBridgeInternetMethodSsl() + "://" +
+    let URL = HDLmConfigInfo.getentriesBridgeInternetMethodWithSsl() + "://" +
       HDLmConfigInfo.getServerName() + "/" +
       HDLmConfigInfo.getPHashName();
     let userid = HDLmConfigInfo.getEntriesBridgeUserid();
@@ -3319,6 +3328,154 @@ class HDLmUtility {
     const numericalValue = parseFloat(passedStr);
     return !isNaN(numericalValue) && typeof numericalValue === 'number';
   }
+  /* This routine checks a string passesed by the caller and 
+     determines if it is a valid password or not. A valid password
+     must be at least 8 characters long and must contain at least
+     one uppercase letter, one lowercase letter, one number, and 
+     one special character. This routine returns 'bad' if the 
+     passed password is not valid. This routine returns 'good' if
+     the passed password is valid and strong. This routine returns
+     'weak' if the passed password is valid but not strong. The 
+     returned values do not have quotes. */
+  static isValidPassword(passwordStr) {
+    /* Check the values passed by the caller */
+		if (passwordStr == null) {
+		  let errorText = "String passed to isValidPassword is null";
+		  HDLmAssert(false, errorText);
+		}
+    /* Get the type of the value passed by the caller */
+    let passwordStrType = typeof(passwordStr);
+    /* Make sure the input string argument is not undefined */
+    if (passwordStrType == 'undefined') {
+      let errorText = `Input string value passed to isValidPassword is undefined`;
+      HDLmAssert(false, errorText);
+    }
+    /* Make sure the input string argument is a string */
+    if (passwordStrType != 'string') {
+      let errorText = `Input string value passed to isValidPassword is not a string`;
+      HDLmAssert(false, errorText);
+    }
+    /* Set a few values for use later */
+    let errorText = '';
+    let rv = 'bad';
+    let lowerCount = 0;
+    let minLength = 8;
+    let numberCount = 0;
+    let specialCount = 0;
+    let strongLength = 12;
+    let upperCount = 0;
+    let specialChars = "!@#$%^&*()-_=+[]{}|;:'\",.<>?/`~";
+    let passwordLength = passwordStr.length;
+    /* Check the length of the password */
+    if (passwordLength < minLength) {
+      errorText = `Password length (${passwordLength}) is too short`;
+      return [rv, errorText];
+    }
+    /* Check each character in the password */
+    for (let i = 0; i < passwordLength; i++) {
+      let curChar = passwordStr.charAt(i);
+      if (curChar >= 'a' && curChar <= 'z') {
+        lowerCount++;
+      } else if (curChar >= 'A' && curChar <= 'Z') {
+        upperCount++;
+      } else if (curChar >= '0' && curChar <= '9') {
+        numberCount++;
+      } else if (specialChars.indexOf(curChar) !== -1) {
+        specialCount++;
+      }
+    }
+    /* Check if we have at least one of each character types */
+    if (lowerCount == 0) {
+      errorText = 'Password does not have a lowercase letter';
+      return [rv, errorText];
+    }
+    if (upperCount == 0) {
+      errorText = 'Password does not have an uppercase letter';
+      return [rv, errorText];
+    }
+    if (numberCount == 0) {
+      errorText = 'Password does not have a number';
+      return [rv, errorText];
+    }
+    if (specialCount == 0) {
+      errorText = 'Password does not have a special character';
+      return [rv, errorText];
+    }
+    /* Check if the password is strong or weak */
+    if (passwordLength >= strongLength) {
+      rv = 'good';
+    } 
+    else {
+      rv = 'weak';
+    }
+    /* Return the final values to the caller */
+    return [rv, errorText];
+  }
+  /* This routine checks a string passesed by the caller and 
+     determines if it is a valid userid or not. A valid userid
+     must be at least 1 character long and must start with an 
+     alphabetic character (uppercase or lowercase). This routine
+     returns 'bad' if the passed userid is not valid. This routine
+     returns 'good' if the passed userid is valid. The returned 
+     values do not have quotes. */
+  static isValidUserid(passedStr) {
+    /* Check the values passed by the caller */
+		if (passedStr == null) {
+		  let errorText = "String passed to isValidUserid is null";
+		  HDLmAssert(false, errorText);
+		}
+    /* Get the type of the value passed by the caller */
+    let passedStrType = typeof(passedStr);
+    /* Make sure the input string argument is not undefined */
+    if (passedStrType == 'undefined') {
+      let errorText = `Input string value passed to isValidUserid is undefined`;
+      HDLmAssert(false, errorText);
+    }
+    /* Make sure the input string argument is a string */
+    if (passedStrType != 'string') {
+      let errorText = `Input string value passed to isValidUserid is not a string`;
+      HDLmAssert(false, errorText);
+    }
+    /* Set a few values for use later */
+    let errorText = '';
+    let rv = 'bad';
+    let minLength = 1;
+    let passedLength = passedStr.length;
+    /* Check the length of the passed string */
+    if (passedLength < minLength) {
+      errorText = `Userid length (${passedLength}) is too short`;
+      return [rv, errorText];
+    }
+    /* Check the first character in the passed string */
+    let curChar = passedStr.charAt(0);
+    /* See if the current character is an alphabetic character */
+    if (curChar >= 'a' && curChar <= 'z') {
+      rv = 'good';
+    } else if (curChar >= 'A' && curChar <= 'Z') {
+      rv = 'good';
+    }
+    /* Report an error if the first character is not alphabetic */
+    if (rv == 'bad') {
+      errorText = 'Userid does not start with an alphabetic character';
+      return [rv, errorText];
+    }
+    /* Return the final values to the caller */
+    return [rv, errorText];
+  }
+  /* Check if we are running under Visual Studio Code or not.
+     This code works only in a browser environment. */
+  static isVscode() {
+    /* console.log('In HDLmUtility.isVscode'); */
+    let rv = false;
+    let windowLocationHostName = window.location.hostname;
+    /* console.log(`windowLocationHostName is ${windowLocationHostName}`); */
+    /* Check if the location is an emtpy string or not */
+    if (windowLocationHostName == '') {
+      rv = true;
+    }
+    /* console.log(`isVscode returning ${rv}`); */
+    return rv;
+  }
   /* The method below determines if an HTML visit string is valid or not. 
      This method returns an error string, if an error is detected. This 
      method returns an empty string, if no errors are detected. Note that
@@ -3628,6 +3785,32 @@ class HDLmUtility {
       HDLmStateInfo.setEntriesSystemValue(HDLmStateInfo.getSystemValueTest());
     }
   } 
+  /* This routine adds a dot and a unique value to a 
+     string passed by the caller. The modified string
+     is returned to the caller. */
+  static uniqueAddValue(passedString) {
+    /* Return the modified string */
+    return passedString + '.' + HDLmUtility.uniqueGenerateId();
+  }
+  /* Return a unique ID string to the caller. The caller will use 
+     this value as the id (note the use of lower case) in generated 
+     HTLM elements. */
+  static uniqueGenerateId() {
+    HDLmUtilityId++;
+    return "Unique" + HDLmUtilityId;
+  }
+  /* This routine removes a dot and a unique value from 
+     a string passed by the caller. The modified string
+     is returned to the caller. */
+  static uniqueRemoveValue(passedString) {
+    let indexOf;
+    /* Remove the dot and suffix (if any) from the passed string */
+    indexOf = passedString.indexOf('.');
+    if (indexOf >= 0)
+      return passedString.substr(0, indexOf);
+    /* Return the passed string */
+    return passedString;
+  }
   /* This method tries to update a JSON string with a new value. The caller
      passes the old JSON string and the update values. This routine converts
      the JSON string to an object and then updates the object. The object is

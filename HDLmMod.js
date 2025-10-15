@@ -168,12 +168,6 @@ const HDLmModInfoData =
                            "subtype":       "nodeiden"
                          },
                          {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
-                         },
-                         {
                            "description":   "Modification Type",
                            "source":        "type",
                            "fieldtype":     "typelist",
@@ -254,12 +248,6 @@ const HDLmModInfoData =
                            "source":        "nodeiden",
                            "fieldtype":     "nodeiden",
                            "subtype":       "nodeiden"
-                         },
-                         {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
                          },
                          {
                            "description":   "Parameter Number",
@@ -357,12 +345,6 @@ const HDLmModInfoData =
                            "subtype":       "nodeiden"
                          },
                          {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
-                         },
-                         {
                            "description":   "Parameter Number",
                            "source":        "parameter",
                            "fieldtype":     "ionumber",
@@ -458,12 +440,6 @@ const HDLmModInfoData =
                            "subtype":       "nodeiden"
                          },
                          {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
-                         },
-                         {
                            "description":   "Modification Type",
                            "source":        "type",
                            "fieldtype":     "typelist",
@@ -544,12 +520,6 @@ const HDLmModInfoData =
                            "source":        "nodeiden",
                            "fieldtype":     "nodeiden",
                            "subtype":       "nodeiden"
-                         },
-                         {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
                          },
                          {
                            "description":   "Parameter Number",
@@ -647,12 +617,6 @@ const HDLmModInfoData =
                            "subtype":       "nodeiden"
                          },
                          {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
-                         },
-                         {
                            "description":   "Parameter Number",
                            "source":        "parameter",
                            "fieldtype":     "ionumber",
@@ -746,12 +710,6 @@ const HDLmModInfoData =
                            "source":        "nodeiden",
                            "fieldtype":     "nodeiden",
                            "subtype":       "nodeiden"
-                         },
-                         {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
                          },
                          {
                            "description":   "Parameter Number",
@@ -849,12 +807,6 @@ const HDLmModInfoData =
                            "subtype":       "nodeiden"
                          },
                          {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
-                         },
-                         {
                            "description":   "Parameter Number",
                            "source":        "parameter",
                            "fieldtype":     "ionumber",
@@ -948,12 +900,6 @@ const HDLmModInfoData =
                            "source":        "nodeiden",
                            "fieldtype":     "nodeiden",
                            "subtype":       "nodeiden"
-                         },
-                         {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
                          },
                          {
                            "description":   "Parameter Number",
@@ -1051,12 +997,6 @@ const HDLmModInfoData =
                            "subtype":       "nodeiden"
                          },
                          {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
-                         },
-                         {
                            "description":   "Parameter Number",
                            "source":        "parameter",
                            "fieldtype":     "ionumber",
@@ -1150,12 +1090,6 @@ const HDLmModInfoData =
                            "source":        "nodeiden",
                            "fieldtype":     "nodeiden",
                            "subtype":       "nodeiden"
-                         },
-                         {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
                          },
                          {
                            "description":   "Parameter Number",
@@ -1253,12 +1187,6 @@ const HDLmModInfoData =
                            "subtype":       "nodeiden"
                          },
                          {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
-                         },
-                         {
                            "description":   "Parameter Number",
                            "source":        "parameter",
                            "fieldtype":     "ionumber",
@@ -1354,12 +1282,6 @@ const HDLmModInfoData =
                            "subtype":       "nodeiden"
                          },
                          {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
-                         },
-                         {
                            "description":   "Modification Type",
                            "source":        "type",
                            "fieldtype":     "typelist",
@@ -1440,12 +1362,6 @@ const HDLmModInfoData =
                            "source":        "nodeiden",
                            "fieldtype":     "nodeiden",
                            "subtype":       "nodeiden"
-                         },
-                         {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
                          },
                          {
                            "description":   "Modification Type",
@@ -1535,12 +1451,6 @@ const HDLmModInfoData =
                            "source":        "nodeiden",
                            "fieldtype":     "nodeiden",
                            "subtype":       "nodeiden"
-                         },
-                         {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
                          },
                          {
                            "description":   "Parameter Number",
@@ -1638,12 +1548,6 @@ const HDLmModInfoData =
                            "subtype":       "nodeiden"
                          },
                          {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
-                         },
-                         {
                            "description":   "Parameter Number",
                            "source":        "parameter",
                            "fieldtype":     "ionumber",
@@ -1737,12 +1641,6 @@ const HDLmModInfoData =
                            "source":        "nodeiden",
                            "fieldtype":     "nodeiden",
                            "subtype":       "nodeiden"
-                         },
-                         {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
                          },
                          {
                            "description":   "Parameter Number",
@@ -1840,12 +1738,6 @@ const HDLmModInfoData =
                            "subtype":       "nodeiden"
                          },
                          {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
-                         },
-                         {
                            "description":   "Parameter Number",
                            "source":        "parameter",
                            "fieldtype":     "ionumber",
@@ -1939,12 +1831,6 @@ const HDLmModInfoData =
                            "source":        "nodeiden",
                            "fieldtype":     "nodeiden",
                            "subtype":       "nodeiden"
-                         },
-                         {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
                          },
                          {
                            "description":   "Parameter Number",
@@ -2042,12 +1928,6 @@ const HDLmModInfoData =
                            "subtype":       "nodeiden"
                          },
                          {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
-                         },
-                         {
                            "description":   "Parameter Number",
                            "source":        "parameter",
                            "fieldtype":     "ionumber",
@@ -2141,12 +2021,6 @@ const HDLmModInfoData =
                            "source":        "nodeiden",
                            "fieldtype":     "nodeiden",
                            "subtype":       "nodeiden"
-                         },
-                         {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
                          },
                          {
                            "description":   "Parameter Number",
@@ -2244,12 +2118,6 @@ const HDLmModInfoData =
                            "subtype":       "nodeiden"
                          },
                          {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
-                         },
-                         {
                            "description":   "Parameter Number",
                            "source":        "parameter",
                            "fieldtype":     "ionumber",
@@ -2345,12 +2213,6 @@ const HDLmModInfoData =
                            "subtype":       "nodeiden"
                          },
                          {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
-                         },
-                         {
                            "description":   "Parameter Number",
                            "source":        "parameter",
                            "fieldtype":     "ionumber",
@@ -2444,12 +2306,6 @@ const HDLmModInfoData =
                            "source":        "nodeiden",
                            "fieldtype":     "nodeiden",
                            "subtype":       "nodeiden"
-                         },
-                         {
-                           "description":   "Modification Enabled",
-                           "source":        "enabled",
-                           "fieldtype":     "checkbox",
-                           "subtype":       "checkbox"
                          },
                          {
                            "description":   "Parameter Number",
@@ -2687,10 +2543,9 @@ class HDLmMod {
 		 The type value below is a specific modification node type (such
 		 as 'attribute' or 'fontcolor'). The type value is not a tree node
      type (such as 'top' or 'mod'). */
-  constructor(name, extraStr, enabled, modType) {
+  constructor(name, extraStr, modType) {
     this.name = name;
     this.extra = extraStr;
-    this.enabled = enabled;
     this.type = modType;
     this.created = new Date();
     this.lastmodified = new Date();
@@ -2726,13 +2581,13 @@ class HDLmMod {
   }
   /* Build an HTML modification object from the values passed by the
      caller */
-  static buildModificationObject(name, pathStr, extraStr, enabled,
+  static buildModificationObject(name, pathStr, extraStr, 
                                  cssStr, xpathStr, finds, nodeStr, 
                                  modType, parameterNumber,
                                  commentsStr, useModeStr) {
     /* Construct the new modification */
     /* console.log(extraStr); */
-    let newModification = new HDLmMod(name, extraStr, enabled, modType);
+    let newModification = new HDLmMod(name, extraStr, modType);
     /* console.log(newModification); */
     /* Add a few additional fields */
     newModification.comments = commentsStr;
@@ -2765,8 +2620,7 @@ class HDLmMod {
      caller */
   static buildValueObject(name, extraStr, nodeType) {
     /* Construct the new data value object */
-    let modificationEnabledTrue = true; 
-    let newDataValueObject = new HDLmMod(name, extraStr, modificationEnabledTrue, nodeType);
+    let newDataValueObject = new HDLmMod(name, extraStr, nodeType);
     /* Add a few additional fields */    
     newDataValueObject.comments = '';  
     newDataValueObject.value = '';  
@@ -3202,8 +3056,7 @@ class HDLmMod {
     }
     /* Build an object from the JSON and copy some fields */
     let curObjInstance = Object.assign({}, infoJsonObj);
-    let curModInstance = new HDLmMod(curObjInstance.name, curObjInstance.extra, 
-                                     curObjInstance.enabled, curObjInstance.type);
+    let curModInstance = new HDLmMod(curObjInstance.name, curObjInstance.extra, curObjInstance.type);
     /* Copy all of the fields from the object to the HDLmMod instance */
     for (let key in curObjInstance) {
       curModInstance[key] = curObjInstance[key];
@@ -8422,11 +8275,6 @@ class HDLmMod {
      (an HDLmMod) using a value passed by the caller */
   setCssSelector(newCssSelector) {
     this.cssselector = newCssSelector;
-  }
-  /* This routine sets the enabled status (a boolean) of the current set 
-     of details (an HDLmMod) using a value passed by the caller */
-  setEnabled(newEnabled) {
-    this.enabled = newEnabled;
   }
   /* This routine sets the extra string of the current set of details 
      (an HDLmMod) using a value passed by the caller */

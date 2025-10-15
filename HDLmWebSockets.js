@@ -384,9 +384,9 @@ class HDLmWebSockets {
     let webSocketsMessageCallbackNull = null;
     let newWebSocket = HDLmWebSockets.openWebSocketConnection(webSocketsMessageCallbackNull, jsonStr);
     /* Close the WebSocket after a short delay. This is done
-        because the WebSocket may not have been used to send
-        any data yet. If the WebSocket is closed immediately,
-        then the server may not receive the data. */
+       because the WebSocket may not have been used to send
+       any data yet. If the WebSocket is closed immediately,
+       then the server may not receive the data. */
     if (newWebSocket != null) 
       setTimeout((newWebSocket) => newWebSocket.close(), 3000, newWebSocket);
     return;  

@@ -159,7 +159,6 @@ class HDLmPopup {
       let modificationCommentsEmpty = '';
       let modificationCssEmpty = '';
       let modificationExtraEmpty = '';
-      let modificationEnabledTrue = true;
       let modificationFindsEmpty = [];
       let modificationNodeIdenEmpty = '';
       let modificationParameterNumberNull = null;
@@ -167,7 +166,7 @@ class HDLmPopup {
       let modificationUseModeEmpty = '';
       let modificationXpathEmpty = '';
       let newMod = HDLmMod.buildModificationObject(name, modificationPathStringEmpty, 
-                                                   modificationExtraEmpty, modificationEnabledTrue, 
+                                                   modificationExtraEmpty, 
                                                    modificationCssEmpty, modificationXpathEmpty,
                                                    modificationFindsEmpty, modificationNodeIdenEmpty, 
                                                    type, modificationParameterNumberNull, 

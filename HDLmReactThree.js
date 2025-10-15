@@ -140,6 +140,7 @@ class HDLmReactThree {
      passed an object that has the rules in it. We must
      convert the object into an array of rules. */
   static buildRulesObj(overallObject) {    
+    /* console.log('In HDLmReactThree.buildRulesObj'); */
     /* Extract a value from the properties object */
     let rulesStringArray = overallObject['rulesArray'];
     /* console.log(rulesStringArray); */
@@ -152,7 +153,9 @@ class HDLmReactThree {
     /* Use the React useState hook. This hook
        is not really needed here. It is provided
        just for completeness. */
+    /* console.log(React, React.useState); */
     const [eventKey, setEventKey] = React.useState(-1);
+    /* console.log(eventKey, setEventKey); */
     /* Build the Done button, after all of 
        the rules have been built */
     let doneButtonAdditionalIndex = null;

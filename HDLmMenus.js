@@ -374,8 +374,6 @@ class HDLmMenus {
                 { title: "Copy", cmd: "copy", uiIcon: "ui-icon-copy", disabled: false },
                 { title: "Cut", cmd: "cut", uiIcon: "ui-icon-scissors", disabled: false },
                 { title: "Paste", cmd: "paste", uiIcon: "ui-icon-clipboard", disabled: false },
-                { title: "Enable", cmd: "enable", uiIcon: "ui-icon-check", disabled: false },
-                { title: "Disable", cmd: "disable", uiIcon: "ui-icon-radio-off", disabled: false },
                 { title: "Match", cmd: "match", uiIcon: "ui-icon-triangle-1-s", disabled: false },
                 { title: "Stats", cmd: "stats", uiIcon: "ui-icon-calculator", disabled: false }];
           /* The menu slightly depends of which editor is in use. We need an insert
@@ -469,7 +467,7 @@ class HDLmMenus {
           HDLmError.buildError('Error', 'Invalid type', 17, errorString);
           break;
         }
-        /* Enable, disable, and insert are not supported for store (stored value) nodes */
+        /* Insert is not supported for store (stored value) nodes */
         else {
           rv = [{ title: "Rename", cmd: "rename", uiIcon: "ui-icon-gear", disabled: false },
                 { title: "Delete", cmd: "delete", uiIcon: "ui-icon-trash", disabled: false },
@@ -1019,7 +1017,8 @@ class HDLmMenus {
     HDLmGlobals.activeCopyBuffer = currentObjStr;
     /* Invoke a standard routine to do all of the actual work of deleting 
        the tree node and the Fancytree node */
-    HDLmTree.deleteTreeNode(currentFancyNode, currentTreeNode);
+    let updateDatabaseTrue = true;
+    HDLmTree.deleteTreeNode(currentFancyNode, currentTreeNode, updateDatabaseTrue);
   }
   /* The next method handles a delete command for a specific Fancytree tree
      node. The caller passes the current Fancytree tree node and the current
@@ -1229,401 +1228,10 @@ class HDLmMenus {
     /* console.log('cmddeletecommon', 's3'); */
     /* Invoke a standard routine to do all of the actual work of deleting 
        the tree node and the Fancytree node */
-    HDLmTree.deleteTreeNode(currentFancyNode, currentTreeNode);
+    let updateDatabaseTrue = true;   
+    HDLmTree.deleteTreeNode(currentFancyNode, currentTreeNode, updateDatabaseTrue);
     /* console.log('cmddeletecommon', 's4'); */
-  }
-  /* The next method handles a disable command for a specific modifications tree
-     node. The caller passes the current modifications tree node and the current 
-     modifications tree node type. */ 
-  static cmdDisable(currentTreeNode, currentTreeType) {
-    switch (currentTreeType) {
-      /* Handle the current command for a Companies node */
-      case 'companies':
-        break;
-      /* Handle the current command for a Company node */
-      case 'company':
-        break;
-      /* Handle the current command for a Configuration node */
-      case 'config':
-        break;
-      /* Handle the current command for a Data node (a set of data values) */
-      case 'data':
-        break;
-      /* Handle the current command for a Division node */
-      case 'division':
-        break;
-      /* Handle the current command for an Ignore (ignore-list entry) node */
-      case 'ignore':
-        break;
-      /* Handle the current command for a Line (one line of a report) node */
-      case 'line':
-        break;
-      /* Handle the current command for a Lines (a set of lines) node */
-      case 'lines':
-        break;
-      /* Handle the current command for a List (ignore-list) node */
-      case 'list':
-        break;
-      /* Handle the current command for a Lists (a set of ignore-lists) node */
-      case 'lists':
-        break;
-      /* Build the correct menu for a Modification node */
-      case 'mod':
-        /* Report an error if the current tree type is not allowed for 
-           the current editor type */
-        if (HDLmGlobals.activeEditorType == HDLmEditorTypes.config) {
-          if (currentTreeType != 'config') {
-            let errorString = currentTreeType;
-            HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-            break;
-          }
-        }
-        else if (HDLmGlobals.checkForGemOrGxe()) {
-          if (currentTreeType == 'config'   ||
-              currentTreeType == 'division' ||
-              currentTreeType == 'site'     ||
-              currentTreeType == 'store') {
-            let errorString = currentTreeType;
-            HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-            break;
-          }
-        }
-        else if (HDLmGlobals.activeEditorType == HDLmEditorTypes.ignore) {
-          if (currentTreeType == 'config'   ||
-              currentTreeType == 'division' ||
-              currentTreeType == 'line'     ||
-              currentTreeType == 'lines'    ||
-              currentTreeType == 'lists'    ||
-              currentTreeType == 'mod'      ||
-              currentTreeType == 'report'   ||
-              currentTreeType == 'reports'  ||
-              currentTreeType == 'site'     ||
-              currentTreeType == 'store'    ||
-              currentTreeType == 'value') {
-            let errorString = currentTreeType;
-            HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-            break;
-          }
-        }
-        else if (HDLmGlobals.activeEditorType == HDLmEditorTypes.mod) {
-          if (currentTreeType == 'config'  ||
-              currentTreeType == 'ignore'  ||
-              currentTreeType == 'line'    ||
-              currentTreeType == 'lines'   ||
-              currentTreeType == 'list'    ||
-              currentTreeType == 'lists'   ||
-              currentTreeType == 'report'  ||
-              currentTreeType == 'reports' ||
-              currentTreeType == 'store'   ||
-              currentTreeType == 'value') {
-            let errorString = currentTreeType;
-            HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-            break;
-          }
-        }
-        else if (HDLmGlobals.activeEditorType == HDLmEditorTypes.pass) {
-          if (currentTreeType == 'config'   ||
-              currentTreeType == 'division' ||
-              currentTreeType == 'site'     ||
-              currentTreeType == 'store') {
-            let errorString = currentTreeType;
-            HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-            break;
-          }
-        }
-        else if (HDLmGlobals.activeEditorType == HDLmEditorTypes.popup) {
-          if (currentTreeType == 'config'  ||
-              currentTreeType == 'ignore'  ||
-              currentTreeType == 'line'    ||
-              currentTreeType == 'lines'   ||
-              currentTreeType == 'list'    ||
-              currentTreeType == 'lists'   ||
-              currentTreeType == 'report'  ||
-              currentTreeType == 'reports' ||
-              currentTreeType == 'store') {
-            let errorString = currentTreeType;
-            HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-            break;
-          }
-        }
-        else if (HDLmGlobals.activeEditorType == HDLmEditorTypes.proxy) {
-          if (currentTreeType != 'company') {
-            let errorString = currentTreeType;
-            HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-            break;
-          }
-        }
-        else if (HDLmGlobals.activeEditorType == HDLmEditorTypes.simple) {
-          if (currentTreeType == 'config'  ||
-              currentTreeType == 'ignore'  ||
-              currentTreeType == 'line'    ||
-              currentTreeType == 'lines'   ||
-              currentTreeType == 'list'    ||
-              currentTreeType == 'lists'   ||
-              currentTreeType == 'report'  ||
-              currentTreeType == 'reports' ||
-              currentTreeType == 'store') {
-            let errorString = currentTreeType;
-            HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-            break;
-          }
-        }
-        else if (HDLmGlobals.activeEditorType == HDLmEditorTypes.store) {
-          if (currentTreeType == 'config'  ||
-              currentTreeType == 'ignore'  ||
-              currentTreeType == 'line'    ||
-              currentTreeType == 'lines'   ||
-              currentTreeType == 'list'    ||
-              currentTreeType == 'lists'   ||
-              currentTreeType == 'mod'     ||
-              currentTreeType == 'report'  ||
-              currentTreeType == 'reports' ||
-              currentTreeType == 'value') {
-            let errorString = currentTreeType;
-            HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-            break;
-          }
-        }
-        /* Invoke the common routine to do the actual work */
-        HDLmMenus.cmdDisableCommon(currentTreeNode);
-        break;
-      /* Handle the current command for a Report (just one report) */
-      case 'report':
-        break;
-      /* Handle the current command for a Reports (a set of reports) */
-      case 'reports':
-        break;
-      /* Handle the current command for a Rules node (a set of rules) */
-      case 'rules':
-        break;
-      /* Handle the current command for a Site node */
-      case 'site':
-        break;      
-      /* Build the correct menu for a Store (stored value) node */
-      case 'store':
-        break;
-      /* Handle the current command for a Top node */
-      case 'top':
-        break;
-      /* Handle the current command for a Value node */
-      case 'value':
-        break;
-      /* Report an error if the node type did not match one of the expected choices */
-      default: {
-        let errorString = currentTreeType;
-        HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-        break;
-      }
-    }
-  }
-  /* This is the common code for disable processing. Most of the work needed
-     for a disable command is the same for all tree node types. The code below 
-     does the actual work. */
-  static cmdDisableCommon(currentTreeNode) {
-    /* Locate the correct widget and clear then enabled box */
-    let widget = currentTreeNode.containerWidget.associatedWidgets['enabled'];
-    widget.setChecked(false); 
-    /* We don't need to set update status or reload the window
-       here. The above code will cause the current tree node to
-       be updated which will cause the update status to be set,
-       and the window to be reloaded. */
-  }
-  /* The next method handles an enable command for a specific modifications tree
-     node. The caller passes the current modifications tree node and the current 
-     modifications tree node type. */
-  static cmdEnable(currentTreeNode, currentTreeType) {
-    switch (currentTreeType) {
-      /* Handle the current command for a Companies node */
-      case 'companies':
-        break;
-      /* Handle the current command for a Company node */
-      case 'company':
-        break;
-      /* Handle the current command for a Configuration node */
-      case 'config':
-        break;
-      /* Handle the current command for a Data node (a set of data values) */
-      case 'data':
-        break;
-      /* Handle the current command for a Division node */
-      case 'division':
-        break;
-      /* Handle the current command for an Ignore (ignore-list entry) node */
-      case 'ignore':
-        break;
-      /* Handle the current command for a Line (one line of a report) node */
-      case 'line':
-        break;
-      /* Handle the current command for a Lines (a set of lines) node */
-      case 'lines':
-        break;
-      /* Handle the current command for a List (ignore-list) node */
-      case 'list':
-        break;
-      /* Handle the current command for a Lists (a set of ignore-lists) node */
-      case 'lists':
-        break;
-      /* Build the correct menu for a Modification node */
-      case 'mod':
-        /* Report an error if the current tree type is not allowed for 
-           the current editor type */
-        if (HDLmGlobals.activeEditorType == HDLmEditorTypes.config) {
-          if (currentTreeType != 'config') {
-            let errorString = currentTreeType;
-            HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-            break;
-          }
-        }
-        else if (HDLmGlobals.checkForGemOrGxe()) {
-          if (currentTreeType == 'config'   ||
-              currentTreeType == 'division' ||
-              currentTreeType == 'site'     ||
-              currentTreeType == 'store') {
-            let errorString = currentTreeType;
-            HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-            break;
-          }
-        }
-        else if (HDLmGlobals.activeEditorType == HDLmEditorTypes.ignore) {
-          if (currentTreeType == 'config'   ||
-              currentTreeType == 'division' ||
-              currentTreeType == 'line'     ||
-              currentTreeType == 'lines'    ||
-              currentTreeType == 'lists'    ||
-              currentTreeType == 'mod'      ||
-              currentTreeType == 'report'   ||
-              currentTreeType == 'reports'  ||
-              currentTreeType == 'site'     ||
-              currentTreeType == 'store'    ||
-              currentTreeType == 'value') {
-            let errorString = currentTreeType;
-            HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-            break;
-          }
-        }
-        else if (HDLmGlobals.activeEditorType == HDLmEditorTypes.mod) {
-          if (currentTreeType == 'config'  ||
-              currentTreeType == 'ignore'  ||
-              currentTreeType == 'line'    ||
-              currentTreeType == 'lines'   ||
-              currentTreeType == 'list'    ||
-              currentTreeType == 'lists'   ||
-              currentTreeType == 'report'  ||
-              currentTreeType == 'reports' ||
-              currentTreeType == 'store'   ||
-              currentTreeType == 'value') {
-            let errorString = currentTreeType;
-            HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-            break;
-          }
-        }
-        else if (HDLmGlobals.activeEditorType == HDLmEditorTypes.pass) {
-          if (currentTreeType == 'config'   ||
-              currentTreeType == 'division' ||
-              currentTreeType == 'site'     ||
-              currentTreeType == 'store') {
-            let errorString = currentTreeType;
-            HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-            break;
-          }
-        }
-        else if (HDLmGlobals.activeEditorType == HDLmEditorTypes.popup) {
-          if (currentTreeType == 'config'  ||
-              currentTreeType == 'ignore'  ||
-              currentTreeType == 'line'    ||
-              currentTreeType == 'lines'   ||
-              currentTreeType == 'list'    ||
-              currentTreeType == 'lists'   ||
-              currentTreeType == 'report'  ||
-              currentTreeType == 'reports' ||
-              currentTreeType == 'store') {
-            let errorString = currentTreeType;
-            HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-            break;
-          }
-        }
-        else if (HDLmGlobals.activeEditorType == HDLmEditorTypes.proxy) {
-          if (currentTreeType != 'company') {
-            let errorString = currentTreeType;
-            HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-            break;
-          }
-        }
-        else if (HDLmGlobals.activeEditorType == HDLmEditorTypes.simple) {
-          if (currentTreeType == 'config'  ||
-              currentTreeType == 'ignore'  ||
-              currentTreeType == 'line'    ||
-              currentTreeType == 'lines'   ||
-              currentTreeType == 'list'    ||
-              currentTreeType == 'lists'   ||
-              currentTreeType == 'report'  ||
-              currentTreeType == 'reports' ||
-              currentTreeType == 'store') {
-            let errorString = currentTreeType;
-            HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-            break;
-          }
-        }
-        else if (HDLmGlobals.activeEditorType == HDLmEditorTypes.store) {
-          if (currentTreeType == 'config'  ||
-              currentTreeType == 'ignore'  ||
-              currentTreeType == 'line'    ||
-              currentTreeType == 'lines'   ||
-              currentTreeType == 'list'    ||
-              currentTreeType == 'lists'   ||
-              currentTreeType == 'mod'     ||
-              currentTreeType == 'report'  ||
-              currentTreeType == 'reports' ||
-              currentTreeType == 'value') {
-            let errorString = currentTreeType;
-            HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-            break;
-          }
-        }
-        /* Invoke the common routine to do the actual work */
-        HDLmMenus.cmdEnableCommon(currentTreeNode);
-        break;
-      /* Handle the current command for a Report (just one report) */
-      case 'report':
-        break;
-      /* Handle the current command for a Reports (a set of reports) */
-      case 'reports':
-        break;
-      /* Handle the current command for a Rules node (a set of rules) */
-      case 'rules':
-        break;
-      /* Handle the current command for a Site node */
-      case 'site':
-        break;
-      /* Build the correct menu for a Store (stored value) node */
-      case 'store':
-        break;
-      /* Handle the current command for a Top node */
-      case 'top':
-        break;
-      /* Handle the current command for a Value node */
-      case 'value':
-        break;
-      /* Report an error if the node type did not match one of the expected choices */
-      default: {
-        let errorString = currentTreeType;
-        HDLmError.buildError('Error', 'Invalid type', 17, errorString);
-        break;
-      }
-    }
-  }  
-  /* This is the common code for enable processing. Most of the work needed
-     for a enable command is the same for all tree node types. The code below 
-     does the actual work. */
-  static cmdEnableCommon(currentTreeNode) {
-    /* Locate the correct widget and set then enabled box */
-    let widget = currentTreeNode.containerWidget.associatedWidgets['enabled'];
-    widget.setChecked(true);
-    /* We don't need to set update status or reload the window
-       here. The above code will cause the current tree node to
-       be updated which will cause the update status to be set,
-       and the window to be reloaded. */
-  }
+  }    
   /* The next method handles an insert command for a specific Fancytree tree
      node. The caller passes the current Famcytree tree node and the current 
      Fancytree tree node type. */
@@ -2142,22 +1750,19 @@ class HDLmMenus {
     let newModNode;
     if (HDLmGlobals.activeEditorType == HDLmEditorTypes.config) {   
       let configExtraEmpty = '';
-      let configEnabledTrue = true;
-      newModNode = HDLmConfig.buildConfigObject(newName, configExtraEmpty, 
-                                                configEnabledTrue, newActiveType);  
+      newModNode = HDLmConfig.buildConfigObject(newName, configExtraEmpty, newActiveType);  
     }
     /* New GUI or GXE objects don't have any extra information
-       and they are always enabled (at least for now) */
+       and they are always ready to run (at least for now) */
     else if (HDLmGlobals.checkForGemOrGxe())
       newModNode = HDLmPass.buildPassObject(newName, newActiveType);
     /* New ignore objects don't have any extra information
-       and they are always enabled (at least for now) */
+       and they are always ready to run (at least for now) */
     else if (HDLmGlobals.activeEditorType == HDLmEditorTypes.ignore)
       newModNode = HDLmIgnore.buildIgnoreObject(newName, newActiveType);
     else if (HDLmGlobals.activeEditorType == HDLmEditorTypes.mod) {
       let modificationCommentsEmpty = '';
       let modificationCssEmpty = '';
-      let modificationEnabledTrue = true;
       let modificationExtraEmpty = '';
       let modificationFindsEmpty = [];
       let modificationNodeIdenEmpty = '';
@@ -2165,18 +1770,18 @@ class HDLmMenus {
       let modificationUseModeEmpty = '';
       let modificationXpathEmpty = '';
       newModNode = HDLmMod.buildModificationObject(newName, newPathString, 
-                                                   modificationExtraEmpty, modificationEnabledTrue,
+                                                   modificationExtraEmpty, 
                                                    modificationCssEmpty, modificationXpathEmpty, 
                                                    modificationFindsEmpty, modificationNodeIdenEmpty, 
                                                    newActiveType, modificationParameterNumberNull,
                                                    modificationCommentsEmpty, modificationUseModeEmpty);
     }
     /* New pass-through objects don't have any extra information
-       and they are always enabled (at least for now) */
+       and they are always ready to run (at least for now) */
     else if (HDLmGlobals.activeEditorType == HDLmEditorTypes.pass)
       newModNode = HDLmPass.buildPassObject(newName, newActiveType);
     /* New inline editor objects may have any extra information
-       and they are always enabled (at least for now) */
+       and they are always ready to run (at least for now) */
     else if (HDLmGlobals.checkForInlineEditor()) {
       /* Check if we have a valid node identifier to use or not. If 
          we don't have a vaild node identifier, then we really can't 
@@ -2202,17 +1807,16 @@ class HDLmMenus {
     else if (HDLmGlobals.activeEditorType == HDLmEditorTypes.proxy) {
       let proxyBackendServerEmpty = '';
       let proxyBackendTypeEmpty = '';
-      let proxyEnabledTrue = true;
       let proxyExtraEmpty = '';
       let proxyMatchEmpty = '';
       let proxySecureServerEmpty = '';
       newModNode = HDLmProxy.buildProxyObject(newName, proxyExtraEmpty, 
-                                              proxyEnabledTrue, newActiveType,
+                                              newActiveType,
                                               proxyBackendTypeEmpty, proxyBackendServerEmpty, 
                                               proxySecureServerEmpty, proxyMatchEmpty); 
     }
     /* New store (stored value) objects don't have any extra information
-       and they are always enabled (at least for now) */
+       and they are always ready to run (at least for now) */
     else if (HDLmGlobals.activeEditorType == HDLmEditorTypes.store)
       newModNode = HDLmStore.buildStoreObject(newName, newActiveType);
     newTreeNode.details = newModNode;
@@ -4438,14 +4042,6 @@ class HDLmMenus {
       case 'delete':
         HDLmMenus.cmdDelete(fancyNode, currentTreeNode, currentTreeType);
         break;
-      /* Handle an disable command */
-      case 'disable':
-        HDLmMenus.cmdDisable(currentTreeNode, currentTreeType);
-        break;
-      /* Handle an enable command */
-      case 'enable':
-        HDLmMenus.cmdEnable(currentTreeNode, currentTreeType);
-        break;
       /* Handle an insert command */
       case 'insert':
         let inlineStartupFlagFalse = false;
@@ -5050,7 +4646,7 @@ class HDLmMenus {
     currentTreeNode.details.passThru = passThru;
     /* convert the boolean value to a string that can be displayed */
     let passThruStr = (passThru) ? 'Yes' : 'No';
-    /* Locate the correct widget and set then enabled box */
+    /* Locate the correct widget and set the ready to run box */
     let widget = currentTreeNode.containerWidget.associatedWidgets['passThru'];
     /* console.log('In HDLmMenus.setPassThruStatus'); */
     widget.setTextValue(passThruStr);

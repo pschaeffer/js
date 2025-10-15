@@ -450,13 +450,12 @@ class HDLmGEM {
         let modificationCommentsEmpty = '';
         let modificationCssEmpty = '';
         let modificationExtraEmpty = '';
-        let modificationEnabledTrue = true;
         let modificationFindsEmpty = [];
         let modificationParameterNumberNull = null;
         let modificationUseModeEmpty = '';
         let modificationXpathEmpty = '';
         let ruleModInfo = HDLmMod.buildModificationObject(newName, pathValue,
-                                                          modificationExtraEmpty, modificationEnabledTrue,
+                                                          modificationExtraEmpty, 
                                                           modificationCssEmpty, modificationXpathEmpty,
                                                           modificationFindsEmpty, JSON.parse(nodeIdenStr),
                                                           'newmod', modificationParameterNumberNull,
@@ -513,8 +512,9 @@ class HDLmGEM {
         let ruleTreeInfo = HDLmGEM.findRule(fullRuleName, ruleType, pathValue);
         if (ruleTreeInfo == null)
           HDLmAssert(false, 'Rule not found in GEM extension for delete');
-        let currentFancyNode = null;
-        HDLmTree.deleteTreeNode(currentFancyNode, ruleTreeInfo);
+        let currentFancyNodeNull = null;
+        let updateDatabaseTrue = true;
+        HDLmTree.deleteTreeNode(currentFancyNodeNull, ruleTreeInfo, updateDatabaseTrue);
         /* Cleanup anything left over from extension processing */
         HDLmGEM.cleanup();
         break;

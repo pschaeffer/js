@@ -142,13 +142,12 @@ class HDLmExtensionBothManageRules {
     /* console.log(extraValue); */
     let modificationCommentsEmpty = '';
     let modificationCssEmpty = '';
-    let modificationEnabledTrue = true;
     let modificationFindsEmpty = [];
     let modificationParameterNumberNull = null;
     let modificationUseModeEmpty = '';
     let modificationXpathEmpty = '';
     let ruleModInfo = HDLmMod.buildModificationObject(newName, pathValue,
-                                                      modificationExtra, modificationEnabledTrue,
+                                                      modificationExtra,
                                                       modificationCssEmpty, modificationXpathEmpty,
                                                       modificationFindsEmpty, nodeIdenJsonObj,
                                                       newModType, modificationParameterNumberNull,

@@ -285,10 +285,8 @@ class HDLmIgnore {
     /* Construct the new ignore related object. This is actually
        a modification object used to build an ignore related 
        object. */
-    let modificationEnabledTrue = true;
     let modificationExtraEmpty = '';
-    let newIgnore = new HDLmMod(name, modificationExtraEmpty, 
-                                modificationEnabledTrue, type);
+    let newIgnore = new HDLmMod(name, modificationExtraEmpty, type);
     if (type == 'newignore') {
       newIgnore.comments = '';
       newIgnore.createdFromVerificationCheck = '';

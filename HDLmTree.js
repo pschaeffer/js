@@ -1312,12 +1312,15 @@ class HDLmTree {
   static buildCompaniesArray(treeTop) {
     /* Start the companies array */
     let companiesArray = [];
+    let companyNumber = 0;
     /* Get the companies node */
     let companiesNode = treeTop.children[0];
     let companiesNodeChildren = companiesNode.children
     /* Process each company */
     for(let childNodeCompany of companiesNodeChildren) {
       let rulesArray = [];
+      let ruleNumber = 0;
+      companyNumber++;
       /* Get some information from the company node */
       let nodePath = childNodeCompany.nodePath;
       let nodePathLen = nodePath.length;
@@ -1338,8 +1341,20 @@ class HDLmTree {
           /* console.log(siteNodeChildren); */
           /* Process each rule */
           for(let childNodeRule of siteNodeChildren) {
-            let ruleDetails = childNodeRule.details;
-            rulesArray.push(childNodeRule);
+            /* Create a new rule object */
+            let ruleObj = new Object;
+            /* Add some information to the rule object */
+            ruleObj.company = companyName;
+            ruleObj.actualRule = childNodeRule;
+            /* Increment the rule number */
+            ruleNumber++;
+            /* Build the array that contains the company number
+               and the rule number */
+            let identityArray = [];
+            identityArray.push(companyNumber);
+            identityArray.push(ruleNumber);
+            ruleObj.identity = identityArray;
+            rulesArray.push(ruleObj);
           } 
         }
       }
@@ -2103,7 +2118,7 @@ class HDLmTree {
      This code does not actually delete the node in question. References to 
      the node are deleted. The tree node may be garbage collected sooner or
      later. */
-  static deleteTreeNode(currentFancyNode, currentTreeNode) {
+  static deleteTreeNode(currentFancyNode, currentTreeNode, updateDatabase) {
     /* console.log('In deleteTreeNode', currentFancyNode, currentTreeNode); */
     /* The delete event must be saved in the undo / redo array. To undo
        a delete, the tree node (which might not be a modification node)
@@ -2134,7 +2149,8 @@ class HDLmTree {
     }
     else {
       /* Delete all of the rows (one or more) that make up the tree */
-      HDLmTree.passDeleteTreeFromDatabase(currentTreeNode);
+      if (updateDatabase == true)
+        HDLmTree.passDeleteTreeFromDatabase(currentTreeNode);
     }
     HDLmTree.clearChildren(currentTreeNode);
     /* Remove the current Fancytree node from the Fancytree. This is actually
@@ -2142,7 +2158,8 @@ class HDLmTree {
        actually created. */
     if (HDLmGlobals.activeEditorType != HDLmEditorTypes.gem &&
         HDLmGlobals.activeEditorType != HDLmEditorTypes.gxe)
-      currentFancyNode.remove();
+      if (currentFancyNode != null)
+        currentFancyNode.remove();
     /* Perform a set of update related operations */
     HDLmTree.updateRelatedOperations(deleteNodePath);
   }
@@ -2196,7 +2213,8 @@ class HDLmTree {
        the Fancytree node are deleted. Note that tree node, may actually have
        nodes under it. Of course, this also applies to the Fancytree node.
        However, the Fancytree code should take care of this. */
-    HDLmTree.deleteTreeNode(data.otherNode, dragNode);
+    let updateDatabaseTrue = true;
+    HDLmTree.deleteTreeNode(data.otherNode, dragNode, updateDatabaseTrue);
     HDLmMenus.cmdPasteCommonDnd(fancyDragNodePath, node, targetTreeNode, currentObj, HDLmUnReTypes.dnd);
     return;
   }
@@ -2660,7 +2678,6 @@ class HDLmTree {
           delete curDetails.lastmodified;
           delete curDetails.name; 
           delete curDetails.extra;
-          delete curDetails.enabled;
         }
         /* console.log(curInfo); */
         /* console.log(curInfoStr); */
@@ -2699,7 +2716,6 @@ class HDLmTree {
           delete tempDetails.lastmodified;
           delete tempDetails.name; 
           delete tempDetails.extra;
-          delete tempDetails.enabled;
           tempPos.details = tempDetails;
         }
         /* noIdsStr = noIdsStr.replace(/\"/g, '\\\"'); */
@@ -3766,7 +3782,7 @@ class HDLmTree {
     /* console.log(newStr); */
     /* Build the final deletion string */
     let inStr = '{ "data": [ ' + newStr + ' ] }';
-    let baseUrl = HDLmConfigInfo.getentriesBridgeInternetMethodSsl() + "://" +
+    let baseUrl = HDLmConfigInfo.getentriesBridgeInternetMethodWithSsl() + "://" +
                     HDLmConfigInfo.getEntriesBridgeDeleteUrl();
     /* The call below returns a Promise. The Promise is used to wait
        for the row deletion to complete. */
@@ -3839,7 +3855,7 @@ class HDLmTree {
     }
     /* We can now try to insert the new node */
     let API = HDLmConfigInfo.getEntriesBridgeApi();
-    let URL = HDLmConfigInfo.getentriesBridgeInternetMethodSsl() + "://" +
+    let URL = HDLmConfigInfo.getentriesBridgeInternetMethodWithSsl() + "://" +
                 HDLmConfigInfo.getEntriesBridgeInsertUrl(); 
     if (API === "bucket")
       URL += "";
@@ -3913,7 +3929,7 @@ class HDLmTree {
       newStr += ' }';
     }
     /* We can now try to insert the new nodes */
-    let URL = HDLmConfigInfo.getentriesBridgeInternetMethodSsl() + "://" +
+    let URL = HDLmConfigInfo.getentriesBridgeInternetMethodWithSsl() + "://" +
                 HDLmConfigInfo.getEntriesBridgeInsertUrl(); 
     let userid = HDLmConfigInfo.getEntriesBridgeUserid();
     let password = HDLmConfigInfo.getEntriesBridgePassword();
@@ -3966,7 +3982,7 @@ class HDLmTree {
   static passReadAllRows() {
     /* We can now try to get the modifications or proxy definitions
        or anything else */
-    let URL = HDLmConfigInfo.getentriesBridgeInternetMethodSsl() + "://" +
+    let URL = HDLmConfigInfo.getentriesBridgeInternetMethodWithSsl() + "://" +
                 HDLmConfigInfo.getEntriesBridgeReadUrl(); 
     /* The content type shows if we are handling modifications,
        proxy definitions, or configurations. The value returned
@@ -3993,7 +4009,7 @@ class HDLmTree {
   static passReadSomeRows(userid, password) {
     /* We can now try to get the modifications or proxy definitions
        or anything else */
-    let URL = HDLmConfigInfo.getentriesBridgeInternetMethodSsl() + "://" +
+    let URL = HDLmConfigInfo.getentriesBridgeInternetMethodWithSsl() + "://" +
                 HDLmConfigInfo.getEntriesBridgeReadUrl(); 
     /* The content type shows if we are handling modifications,
        proxy definitions, or configurations. The value returned
@@ -4244,7 +4260,7 @@ class HDLmTree {
     }
     /* We can now try to insert the new node */
     let API = HDLmConfigInfo.getEntriesBridgeApi();
-    let URL = HDLmConfigInfo.getentriesBridgeInternetMethodSsl() + "://" +
+    let URL = HDLmConfigInfo.getentriesBridgeInternetMethodWithSsl() + "://" +
                 HDLmConfigInfo.getEntriesBridgeUpdateUrl(); 
     if (API === "bucket")
       URL += "";
@@ -4323,7 +4339,7 @@ class HDLmTree {
     }
     /* We can now try to insert the new node */
     let API = HDLmConfigInfo.getEntriesBridgeApi();
-    let URL = HDLmConfigInfo.getentriesBridgeInternetMethodSsl() + "://" +
+    let URL = HDLmConfigInfo.getentriesBridgeInternetMethodWithSsl() + "://" +
                 HDLmConfigInfo.getEntriesBridgeUpdateUrl(); 
     if (API === "bucket")
       URL += "";

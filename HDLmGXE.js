@@ -389,14 +389,13 @@ class HDLmGXE {
     /* Build the details (the actual modification) for the new rule */
     let modificationCommentsEmpty = '';
     let modificationCssEmpty = '';
-    let modificationEnabledTrue = true; 
     let modificationExtraEmpty = '';
     let modificationFindsEmpty = [];
     let modificationParameterNumberNull = null;
     let modificationUseModeEmpty = '';
     let modificationXpathEmpty = '';
     let ruleModInfo = HDLmMod.buildModificationObject(newName, pathValue, 
-                                                      modificationExtraEmpty, modificationEnabledTrue,
+                                                      modificationExtraEmpty, 
                                                       modificationCssEmpty, modificationXpathEmpty, 
                                                       modificationFindsEmpty, JSON.parse(nodeIdenJsonStr),
                                                       newRuleType, modificationParameterNumberNull,
@@ -694,7 +693,8 @@ class HDLmGXE {
       HDLmGlobals.activeEditorType = HDLmEditorTypes.gxe;
       /* At this point we can actually delete the tree node */
       let currentFancyNodeNull = null;
-      HDLmTree.deleteTreeNode(currentFancyNodeNull, ruleTreeInfo)
+      let updateDatabaseTrue = true;
+      HDLmTree.deleteTreeNode(currentFancyNodeNull, ruleTreeInfo, updateDatabaseTrue)
     }
     catch (errorObj) {
       console.log(errorObj);
@@ -766,14 +766,13 @@ class HDLmGXE {
       /* Build the details (the actual modification) for the new rule */
       let modificationCommentsEmpty = '';
       let modificationCssEmpty = '';
-      let modificationEnabledTrue = true; 
       let modificationExtraEmpty = '';
       let modificationFindsEmpty = [];
       let modificationParameterNumberNull = null;
       let modificationUseModeEmpty = '';
       let modificationXpathEmpty = '';
       let ruleModInfo = HDLmMod.buildModificationObject(newName, pathValue, 
-                                                        modificationExtraEmpty, modificationEnabledTrue,
+                                                        modificationExtraEmpty, 
                                                         modificationCssEmpty, modificationXpathEmpty, 
                                                         modificationFindsEmpty, JSON.parse(nodeIdenJsonStr),
                                                         'newmod', modificationParameterNumberNull,

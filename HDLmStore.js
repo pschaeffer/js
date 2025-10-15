@@ -125,9 +125,8 @@ class HDLmStore {
   static buildStoreObject(name, type) {
     /* Construct the new store (stored value) object. This is actually
        a modification object used to build a store (stored value) object. */
-    let modificationEnabledTrue = true;
     let modificationExtraEmpty = '';
-    let newStore = new HDLmMod(name, modificationExtraEmpty, modificationEnabledTrue, type);
+    let newStore = new HDLmMod(name, modificationExtraEmpty, type);
     newStore.comments = '';
     newStore.value = '';
     return newStore;

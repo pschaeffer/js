@@ -147,8 +147,13 @@ class HDLmConfigInfo {
   }
   /* Get the method that is used to access the table that contains
      the modifications */
-  static getentriesBridgeInternetMethodSsl() {
-    return HDLmConfig.getValue('entriesBridgeInternetMethodSsl');
+  static getentriesBridgeInternetMethodNoSsl() {
+    return HDLmConfig.getValue('entriesBridgeInternetMethodNoSsl');
+  }
+  /* Get the method that is used to access the table that contains
+     the modifications */
+  static getentriesBridgeInternetMethodWithSsl() {
+    return HDLmConfig.getValue('entriesBridgeInternetMethodWithSsl');
   }
   /* Get part of the path that is used to access the table that contains
      the modifications */
@@ -203,8 +208,13 @@ class HDLmConfigInfo {
   }
   /* Get the method that is used to access the table that contains
      the modifications */
-  static getentriesDatabaseInternetMethodSsl() {
-    return HDLmConfig.getValue('entriesDatabaseInternetMethodSsl');
+  static getentriesDatabaseInternetMethodNoSsl() {
+    return HDLmConfig.getValue('entriesDatabaseInternetMethodNoSsl');
+  }
+  /* Get the method that is used to access the table that contains
+     the modifications */
+  static getentriesDatabaseInternetMethodWithSsl() {
+    return HDLmConfig.getValue('entriesDatabaseInternetMethodWithSsl');
   }
   /* Get the table name that contains the modifications. This is the
      table that has all of the rules as separate rows. This value 
@@ -226,6 +236,10 @@ class HDLmConfigInfo {
   static getFetchInternetMethodNoSsl() {
     return HDLmConfig.getValue('fetchInternetMethodNoSsl');
   }
+  /* Return the Internet method used by a non-local fetch */
+  static getFetchInternetMethodWithSsl() {
+    return HDLmConfig.getValue('fetchInternetMethodWithSsl');
+  }
   /* Get the Open AI API GPT model */  
   static getOpenAIApiGptModel() {
     return HDLmConfig.getValue("openAIApiGptModel");
@@ -233,6 +247,14 @@ class HDLmConfigInfo {
   /* Return the name of the Open AI service */
   static getOpenAIName() {
     return HDLmConfig.getValue('openAIName');
+  }
+  /* Return the Internet method used to get parameters */
+  static getParametersInternetMethodNoSsl() {
+    return HDLmConfig.getValue('parametersInternetMethodNoSsl');
+  }
+  /* Return the Internet method used to get parameters */
+  static getParametersInternetMethodWithSsl() {
+    return HDLmConfig.getValue('parametersInternetMethodWithSsl');
   }
   /* Get the pass-through limit value abd return it to the caller. The
      pass-through limit value determines the fraction of events that are

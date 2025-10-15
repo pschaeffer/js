@@ -52,7 +52,6 @@ class HDLmBuildRules {
                         '"type":"script",' +
                         '"name":"Script Modification 6/6/2025, 1:24:17 PM",' +
                         '"extra":"",' +
-                        '"enabled":true,' +
                         '"created":"2025-06-03T05:57:13.345Z",' +
                         '"lastModified":"2025-06-03T05:57:13.345Z",' +
                         '"pathvalue":"","comments":"From variant variant_1747833857020.js",' +
@@ -90,7 +89,6 @@ class HDLmBuildRules {
                         '"type":"script",' +
                         '"name":"Script Modification 6/6/2025, 1:24:17 PM",' +
                         '"extra":"",' +
-                        '"enabled":true,' +
                         '"created":"2025-06-03T05:57:13.345Z",' +
                         '"lastModified":"2025-06-03T05:57:13.345Z",' +
                         '"pathvalue":"","comments":"From variant variant_1747833857020.js",' +
@@ -131,8 +129,7 @@ class HDLmBuildRules {
                         '       begin\\\", \\\"<button style=\'position:fixed; top:10px; right:10px;' +
                         '       padding:10px; background-color:#007BFF; color:white; border:none; ' +
                         '       border-radius:5px;\'>Contact Us</button>\\\");\\n    }\\n});"' +
-                        '    ],' +
-                        '    "enabled": true,' +
+                        '    ],' + 
                         '    "pathre": false,' +
                         '    "type": "script",' +
                         '    "parameter": 0,' +
@@ -198,7 +195,6 @@ class HDLmBuildRules {
                         '        });' +
                         '      };"' +
                         '    ],' +
-                        '    "enabled": true,' +
                         '    "pathre": false,' +
                         '    "type": "script",' +
                         '    "parameter": 0,' +
@@ -269,7 +265,6 @@ class HDLmBuildRules {
                          '    }' +
                          '})();' +
                          '    "],' +
-                         '    "enabled": false,' +
                          '    "pathre": false,' +
                          '    "type": "script",' +
                          '    "parameter": 0,' +
@@ -324,7 +319,6 @@ class HDLmBuildRules {
                          '    }' +
                          '})();' +
                          '    "],' +
-                         '    "enabled": false,' +
                          '    "pathre": false,' +
                          '    "type": "script",' +
                          '    "parameter": 0,' +
@@ -380,7 +374,6 @@ class HDLmBuildRules {
                          '    }' +
                          '})();' +
                          '    "],' +
-                         '    "enabled": false,' +
                          '    "pathre": false,' +
                          '    "type": "script",' +
                          '    "parameter": 0,' +
@@ -467,7 +460,6 @@ class HDLmBuildRules {
                          '    });' +
                          '})();' +
                          '    "],' +
-                         '    "enabled": false,' +
                          '    "pathre": false,' +
                          '    "type": "script",' +
                          '    "parameter": 0,' +
@@ -544,7 +536,6 @@ class HDLmBuildRules {
                          '    });' +
                          '})();' +
                          '    "],' +
-                         '    "enabled": false,' +
                          '    "pathre": false,' +
                          '    "type": "script",' +
                          '    "parameter": 0,' +
@@ -613,7 +604,6 @@ class HDLmBuildRules {
                          '    });' +
                          '})();' +
                          '    "],' +
-                         '    "enabled": false,' +
                          '    "pathre": false,' +
                          '    "type": "script",' +
                          '    "parameter": 0,' +
@@ -682,7 +672,6 @@ class HDLmBuildRules {
                          '    });' +
                          '})();' +
                          '    "],' +
-                         '    "enabled": false,' +
                          '    "pathre": false,' +
                          '    "type": "script",' +
                          '    "parameter": 0,' +
@@ -751,7 +740,6 @@ class HDLmBuildRules {
                          '    });' +
                          '})();' +
                          '    "],' +
-                         '    "enabled": false,' +
                          '    "pathre": false,' +
                          '    "type": "script",' +
                          '    "parameter": 0,' +
@@ -817,7 +805,6 @@ class HDLmBuildRules {
                          '    }' +
                          '})();' +
                          '    "],' +
-                         '    "enabled": false,' +
                          '    "pathre": false,' +
                          '    "type": "script",' +
                          '    "parameter": 0,' +
@@ -894,7 +881,6 @@ class HDLmBuildRules {
                           '    }' +
                           '})();' +
                           '    "],' +
-                          '    "enabled": false,' +
                           '    "pathre": false,' +
                           '    "type": "script",' +
                           '    "parameter": 0,' +
@@ -962,7 +948,6 @@ class HDLmBuildRules {
                           '    }' +
                           '})();' +
                           '    "],' +
-                          '    "enabled": false,' +
                           '    "pathre": false,' +
                           '    "type": "script",' +
                           '    "parameter": 0,' +
@@ -1021,7 +1006,6 @@ class HDLmBuildRules {
                           '    });' +
                           '})();' +
                           '    "],' +
-                          '    "enabled": false,' +
                           '    "pathre": false,' +
                           '    "type": "script",' +
                           '    "parameter": 0,' +
@@ -1077,7 +1061,6 @@ class HDLmBuildRules {
                           '    });' +
                           '})();' +
                           '    "],' +
-                          '    "enabled": false,' +
                           '    "pathre": false,' +
                           '    "type": "script",' +
                           '    "parameter": 0,' +
@@ -1129,7 +1112,7 @@ class HDLmBuildRules {
     '"Rules","example.com","example.com","Mod Yoga Direct 1 4 Inch ' +
     'Yoga Mat.Html Textcheckee"],"details":{"name":"Mod Yoga Direct ' +
     '1 4 Inch Yoga Mat.Html Textcheckee","extra":"Quantity",' +
-    '"enabled":true,"type":"textchecked","created":' +
+    '"type":"textchecked","created":' +
     '"2024-07-06T05:11:07.058Z","lastmodified":' +
     '"2024-07-06T05:11:07.058Z","pathvalue":' +
     '"/yoga-direct-1-4-inch-yoga-mat.html","comments":"",' +
@@ -1153,7 +1136,7 @@ class HDLmBuildRules {
     '"Rules","example.com","example.com","Mod Yoga Direct 1 4 Inch ' +
     'Yoga Mat.Html Textcheckef"],"details":{"name":"Mod Yoga Direct ' +
     '1 4 Inch Yoga Mat.Html Textcheckef","extra":"Quantity",' +
-    '"enabled":true,"type":"textchecked","created":' +
+    '"type":"textchecked","created":' +
     '"2024-07-06T05:11:07.058Z","lastmodified":' +
     '"2024-07-06T05:11:07.058Z","pathvalue":' +
     '"/yoga-direct-1-4-inch-yoga-mat.html","comments":"",' +
@@ -1177,7 +1160,7 @@ class HDLmBuildRules {
     '"Rules","example.com","example.com","Mod Yoga Direct 1 4 Inch ' +
     'Yoga Mat.Html Textcheckeg"],"details":{"name":"Mod Yoga Direct ' +
     '1 4 Inch Yoga Mat.Html Textcheckeg","extra":"Quantity",' +
-    '"enabled":true,"type":"textchecked","created":' +
+    '"type":"textchecked","created":' +
     '"2024-07-06T05:11:07.058Z","lastmodified":' +
     '"2024-07-06T05:11:07.058Z","pathvalue":' +
     '"/yoga-direct-1-4-inch-yoga-mat.html","comments":"",' +
@@ -1530,7 +1513,7 @@ class HDLmBuildRules {
     newNodeIdenObj.parent = {};
     newNodeIdenObj.parent.tag = 'html';
     /* Create a new rule/modification/details object */
-    let newRuleObj = new HDLmMod(newModName, '', true, ruleType);
+    let newRuleObj = new HDLmMod(newModName, '', ruleType);
     newRuleObj.pathvalue = urlPathName;
     newRuleObj.comments = '';
     newRuleObj.probability = 100.0;
@@ -1808,7 +1791,7 @@ class HDLmBuildRules {
           let serverName = HDLmConfigInfo.getServerName();
           /* Build the URL that is sent to the server */
           let urlStr = '';
-          urlStr += HDLmConfigInfo.getentriesDatabaseInternetMethodSsl();
+          urlStr += HDLmConfigInfo.getentriesDatabaseInternetMethodWithSsl();
           urlStr += '://';
           urlStr += serverName;
           urlStr += '/';
@@ -2331,7 +2314,7 @@ class HDLmBuildRules {
     /* console.log('In HDLmBuildRules.setTestModeOff'); */
     /* Build the URL that is sent to the server */
     let urlStr = '';
-    urlStr += HDLmConfigInfo.getentriesDatabaseInternetMethodSsl();
+    urlStr += HDLmConfigInfo.getentriesDatabaseInternetMethodWithSsl();
     urlStr += '://';
     urlStr += HDLmConfigInfo.getServerName();
     urlStr += '/';
@@ -2352,7 +2335,7 @@ class HDLmBuildRules {
     /* console.log('In HDLmBuildRules.setTestModeOn'); */
     /* Build the URL that is sent to the server */
     let urlStr = '';
-    urlStr += HDLmConfigInfo.getentriesDatabaseInternetMethodSsl();
+    urlStr += HDLmConfigInfo.getentriesDatabaseInternetMethodWithSsl();
     urlStr += '://';
     urlStr += HDLmConfigInfo.getServerName();
     urlStr += '/';

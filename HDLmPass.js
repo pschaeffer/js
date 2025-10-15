@@ -645,12 +645,6 @@ const HDLmPassInfoData =
           "subtype":     "nodeiden"
         },
         {
-          "description": "Modification Enabled",
-          "source":      "enabled",
-          "fieldtype":   "checkbox",
-          "subtype":     "checkbox"
-        },
-        {
           "description": "Parameter Number",
           "source":      "parameter",
           "fieldtype":   "ionumber",
@@ -1090,9 +1084,6 @@ class HDLmPass {
         newPassTreeNode.details.name = lastNodePathValue;
       }
     }
-    if (!newPassTreeNode.details.hasOwnProperty('enabled')) {
-      newPassTreeNode.details.enabled = true;
-    }
     if (!newPassTreeNode.details.hasOwnProperty('comments')) {
       newPassTreeNode.details.comments = '';
     }
@@ -1131,9 +1122,8 @@ class HDLmPass {
     /* Check if the caller asked for a new modification object.
        This request is handled here. */
     if (firstThreeChars == 'new') {
-      let modificationEnabledTrue = true;
       let modificationExtraEmpty = '';
-      let newMod = new HDLmMod(name, modificationExtraEmpty, modificationEnabledTrue, type);
+      let newMod = new HDLmMod(name, modificationExtraEmpty, type);
       /* Check if we are creating some sort of new company object. 
          All company objects have certain fields in common. */
       if (firstSevenChars == 'newcomp') {
@@ -1151,7 +1141,6 @@ class HDLmPass {
         let modificationCommentsEmpty = '';
         let modificationCssEmpty = '';
         let modificationExtraEmpty = '';
-        let modificationEnabledTrue = true;
         let modificationFindsEmpty = [];
         let modificationName = name;
         let modificationNodeIdenEmpty = '';
@@ -1161,7 +1150,7 @@ class HDLmPass {
         let modificationUseModeEmpty = '';
         let modificationXpathEmpty = '';
         newMod = HDLmMod.buildModificationObject(modificationName, modificationPathStringEmpty, 
-                                                 modificationExtraEmpty, modificationEnabledTrue,
+                                                 modificationExtraEmpty, 
                                                  modificationCssEmpty, modificationXpathEmpty, 
                                                  modificationFindsEmpty, modificationNodeIdenEmpty, 
                                                  modificationType, modificationParameterNumberNull, 
@@ -1187,7 +1176,6 @@ class HDLmPass {
       let modificationCommentsEmpty = '';
       let modificationCssEmpty = '';
       let modificationExtraEmpty = '';
-      let modificationEnabledTrue = true;
       let modificationFindsEmpty = [];
       let modificationNodeIdenEmpty = '';
       let modificationParameterNumberNull = null;
@@ -1195,7 +1183,7 @@ class HDLmPass {
       let modificationUseModeEmpty = '';
       let modificationXpathEmpty = '';
       let newMod = HDLmMod.buildModificationObject(name, modificationPathStringEmpty, 
-                                                   modificationExtraEmpty, modificationEnabledTrue, 
+                                                   modificationExtraEmpty, 
                                                    modificationCssEmpty, modificationXpathEmpty, 
                                                    modificationFindsEmpty, modificationNodeIdenEmpty, 
                                                    type, modificationParameterNumberNull,

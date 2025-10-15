@@ -1106,6 +1106,7 @@ class HDLmString {
   /* Convert the first character of a string to uppercase and return the
      string to the caller. The original string is not modified. */ 
   static ucFirst(value) {
+    /* console.log('In HDLmString.ucFirst'); */
     /* Make sure the argument passed by the caller is a string */
     if (typeof value != 'string') {
       let errorText = `Value passed to ucFirst is not a string`;
@@ -1118,6 +1119,7 @@ class HDLmString {
   /* Convert the first character all of words in a string to uppercase
      and return the possibly modified sentence to the caller */
   static ucFirstSentence(inputValue, quoteChars = "'", ignoreSomeSingleQuotes = false) {
+    console.log('In HDLmString.ucFirstSentence');
     /* Make sure the argument passed by the caller is a string */
     if (typeof inputValue != 'string') {
       let errorText = `Input value passed to ucFirstSentence is not a string`;

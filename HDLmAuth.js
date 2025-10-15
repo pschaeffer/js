@@ -49,10 +49,8 @@ class HDLmAuth {
      by the caller */
   static buildAuthObject(name, type) {
     /* Construct the new authentication definition */
-    let modificationEnabledTrue = true;
     let modificationExtraEmpty = '';
-    let newAuth = new HDLmMod(name, modificationExtraEmpty, 
-                              modificationEnabledTrue, type);
+    let newAuth = new HDLmMod(name, modificationExtraEmpty, type);
     HDLmMod.addMissingFieldsModObject(newAuth, HDLmAuth.HDLmAuthInfo, 'auth');
     return newAuth;
   }

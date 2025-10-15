@@ -3,7 +3,7 @@
  *
  * HDLmMain description.
  *
- * @version 1.0
+ * @version 1.
  * @author Peter
  */
 "use strict";
@@ -14,10 +14,10 @@
 class HDLmMain {
   /* Handle overall initialization */
   static handleInitialization() {    
+    /* console.log('In HDLmMain.handleInitialization'); */
     /* This routine may been invoked to build rules or it may have 
        been invoked for some other reason */
     /* HDLmExecuteEditor.main();  */  
-    /* console.log('In HDLmMain()'); */
     if (1 == 1) { 
       if (1 == 2)
         HDLmBuildRules.main();

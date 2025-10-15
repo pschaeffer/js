@@ -533,7 +533,7 @@ class HDLmElectronOne {
     if (messageObj.hasOwnProperty(newOrderInfoKey)) {
       newOrderInfo = messageObj[newOrderInfoKey];
       delete messageObj[newOrderInfoKey];
-      let newOrderInfoLength = newOrderInfo.length();
+      let newOrderInfoLength = newOrderInfo.length;
       newOrderInfo = newOrderInfo.substring(1, newOrderInfoLength - 1);
     }
 	  /* We can now invoke a special routine to provide values for
@@ -660,7 +660,7 @@ class HDLmElectronOne {
     if (messageObj.hasOwnProperty(newOrderInfoKey)) {
       newOrderInfo = messageObj[newOrderInfoKey];
       delete messageObj[newOrderInfoKey];
-      let newOrderInfoLength = newOrderInfo.length();
+      let newOrderInfoLength = newOrderInfo.length;
       newOrderInfo = newOrderInfo.substring(1, newOrderInfoLength - 1);
     }
 	  /* We can now invoke a special routine to provide values for
@@ -755,7 +755,8 @@ class HDLmElectronOne {
       return;
     }
     /* Delete the tree node value from the node tree */
-    HDLmTree.deleteTreeNode(deleteFancytreeNode, deleteTreeNode);
+    let updateDatabaseTrue = true;
+    HDLmTree.deleteTreeNode(deleteFancytreeNode, deleteTreeNode, updateDatabaseTrue);
   }
   /* Handle a get mod part message. The reply to this message is a
      string with the exact format of the string returned by the
@@ -921,7 +922,6 @@ class HDLmElectronOne {
       newModNode.setComments('');
     if (!newModNode.hasOwnProperty('cssselector'))
       newModNode.setCssSelector('');
-    newModNode.setEnabled(true);
     newModNode.setExtra('');
     newModNode.setNodeIden(messageObj);
     if (!newModNode.hasOwnProperty('find'))

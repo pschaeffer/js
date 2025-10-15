@@ -237,8 +237,8 @@ class HDLmIndexOne {
         let id1 = '361dd20ea95f43758f9c46b0df551a91';
         let id2 = 'd19230b580774838b1e135f324f20427';
         let id3 = '54b6d5a08aa5460f839d67b06e543ea3';
-        let data1 = '{"tooltip":"Top node of the node tree","type":"top","details":{"created":"2020-12-14T23:24:37.408Z","lastmodified":"2020-12-14T23:24:37.408Z","name":"Top","extra":"","enabled":false,"type":"top","updated":false,"passThru":false},"nodePath":["Top"]}';
-        let data2 = '{"tooltip":"Companies node","type":"companies","details":{"created":"2020-12-14T23:24:37.408Z","lastmodified":"2021-01-04T18:12:28.757343100Z","countCompanies":8,"name":"Companies","extra":"","enabled":false,"type":"companies","updated":false},"nodePath":["Top","Companies"]}';
+        let data1 = '{"tooltip":"Top node of the node tree","type":"top","details":{"created":"2020-12-14T23:24:37.408Z","lastmodified":"2020-12-14T23:24:37.408Z","name":"Top","extra":"","type":"top","updated":false,"passThru":false},"nodePath":["Top"]}';
+        let data2 = '{"tooltip":"Companies node","type":"companies","details":{"created":"2020-12-14T23:24:37.408Z","lastmodified":"2021-01-04T18:12:28.757343100Z","countCompanies":8,"name":"Companies","extra":"","type":"companies","updated":false},"nodePath":["Top","Companies"]}';
         let data3 = '{"tooltip":"Company node","type":"company","details":{"type":"company","name":"bskinz.com","created":"2021-01-05T21:42:38.150Z","lastmodified":"2021-01-05T21:42:38.150Z","passThru":false,"updated":false},"nodePath":["Top","Companies","bskinz.com"]}';
         let idArray = [];
         idArray.push(id1);
@@ -430,7 +430,7 @@ class HDLmIndexOne {
     HDLmConfig.setValue('serverName', 'javaproxya.dnsalias.com');    
     /* console.log('getServerName ', HDLmConfigInfo.getServerName()); */
     let upObj1 = {"type":"mod","tooltip":"Checked text modification",
-                  "details":{"find":[],"changeattrsvalues":["kkkkk"],"enabled":false,
+                  "details":{"find":[],"changeattrsvalues":["kkkkk"],
                   "pathre":false,"type":"changeattrs","parameter":1,"cssselector":"","comments":"",
                   "updated":false,"extra":"","name":"New modification name4","nodeiden":{},
                   "xpath":""},
@@ -438,7 +438,7 @@ class HDLmIndexOne {
                   "HDLmRequestType":"updateTreeNode","HDLmCopyElements":false,"HDLmUrlValue":""};
     let upObj2 = {"tooltip":"Style modification","type":"mod",
                   "details":{"name":"Change Add To Cart","extra":"background-color border-radius border",
-                  "enabled":true,"type":"style","find":[],
+                  "type":"style","find":[],
                   "styles":["rgb(55,86,21); ; 0","rgb(55,86,218); 20; 0","rgb(55,86,218) ;  ;","rgb(19,91,21) ; ;","rgb(247,202,0) ;  ;","rgb(19,91,21) ; 20 ;","rgb(19,91,21) ;  ; 0","rgb(247,202,0) ; 20 ; 0"],
                   "pathre":false,"parameter":1,"cssselector":"","comments":"","updated":true,
                   "nodeiden":{"type":"id","attributes":{"innertext":"add to cart",
@@ -453,7 +453,7 @@ class HDLmIndexOne {
     let addObj2 = {"tooltip":"Checked text modification","type":"mod",
                    "nodePath":["Top","Companies","www.yogadirect.com","Rules","example.com","example.com","Mod Yoga Direct 1 4 Inch Yoga Mat.Html Textchecked"],
                    "details":{"name":"Mod Yoga Direct 1 4 Inch Yoga Mat.Html Textchecked",
-                   "extra":"var _cart_secure_url = \"https://www.yogadirect.com\"","enabled":true,
+                   "extra":"var _cart_secure_url = \"https://www.yogadirect.com\"",
                    "type":"textchecked","pathvalue":"/yoga-direct-1-4-inch-yoga-mat.html","comments":"","cssselector":"",
                    "xpath":"","find":[],
                    "nodeiden":{"type":"tag",
