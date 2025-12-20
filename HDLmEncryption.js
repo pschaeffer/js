@@ -36,13 +36,13 @@ class HDLmEncryption {
     /* Make sure the key argument passed by the caller is a string */
     if (typeof key != 'string') {
       let errorText = `Key value passed to decrypt is not a string`;
-      HDLmAssert(false, errorText);
+      ert(false, errorText);
     }
     /* Make sure the value argument passed by the caller is an object */
     /* console.log(typeof(value)); */
     if (typeof value != 'object') {
       let errorText = `Text value passed to decrypt is not an object`;
-      HDLmAssert(false, errorText);
+      ert(false, errorText);
     }
     /* Build the initialization vector for use below */
     let initializationVector = window.crypto.getRandomValues(new Uint8Array(12));

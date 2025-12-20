@@ -19,11 +19,12 @@ class HDLmIndexOne {
        been invoked for some other reason. Check if the path shows 
        that what the user really wants is to edit rules. */
     let editRules = false;
-    let windowlocationPathName = window.location.pathname;
-    if (windowlocationPathName == '/') 
+    let windowLocationPathName = window.location.pathname;
+    /* console.log('window.location.pathname', windowLocationPathName); */
+    if (windowLocationPathName == '/') 
       editRules = true; 
-    /* Check if the user wants to edit rules under the debbuger */    
-    if (windowlocationPathName.endsWith('index.html'))
+    /* Check if the user wants to edit rules under the VSCode debugger */    
+    if (windowLocationPathName.endsWith('index.html'))
       editRules = true;    
     /* Check if we really want to edit rules */
     if (!editRules)

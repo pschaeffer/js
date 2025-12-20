@@ -714,8 +714,8 @@ class HDLmSecurity {
     headersObj = Object.assign(headersObj, standardHeaders);
     /* Build a X-Amz-Target header and add it to the headers object */
     let targetValue = HDLmConfigInfo.getAwsCognitoApiGetUser();
-    let targetHeader = HDLmHtml.buildXAmzTargetHeader(targetValue);
-    headersObj = Object.assign(headersObj, targetHeader);
+    let targetHeaderObj = HDLmHtml.buildXAmzTargetHeaderObj(targetValue);
+    headersObj = Object.assign(headersObj, targetHeaderObj);
     /* Return the headers object to the caller */
     return headersObj;
   }
@@ -729,8 +729,8 @@ class HDLmSecurity {
     headersObj = Object.assign(headersObj, standardHeaders);
     /* Build a X-Amz-Target header and add it to the headers object */
     let targetValue = HDLmConfigInfo.getAwsCognitoApiInitiateAuth();
-    let targetHeader = HDLmHtml.buildXAmzTargetHeader(targetValue);
-    headersObj = Object.assign(headersObj, targetHeader);
+    let targetHeaderObj = HDLmHtml.buildXAmzTargetHeaderObj(targetValue);
+    headersObj = Object.assign(headersObj, targetHeaderObj);
     /* Return the headers object to the caller */
     return headersObj;
   }
@@ -744,8 +744,8 @@ class HDLmSecurity {
     headersObj = Object.assign(headersObj, standardHeaders);
     /* Build a X-Amz-Target header and add it to the headers object */
     let targetValue = HDLmConfigInfo.getAwsCognitoApiRespondToAuthChallenge();
-    let targetHeader = HDLmHtml.buildXAmzTargetHeader(targetValue);
-    headersObj = Object.assign(headersObj, targetHeader);
+    let targetHeaderObj = HDLmHtml.buildXAmzTargetHeaderObj(targetValue);
+    headersObj = Object.assign(headersObj, targetHeaderObj);
     /* Return the headers object to the caller */
     return headersObj;
   }
@@ -755,30 +755,30 @@ class HDLmSecurity {
     /* Create an empty headers object */
     let headersObj = {};
     /* Build a host name header and add it to headers object */
-    let hostHeader = HDLmHtml.buildHostHeader(hostNameStr);
-    headersObj = Object.assign(headersObj, hostHeader);
+    let hostHeaderObj = HDLmHtml.buildHostHeaderObj(hostNameStr);
+    headersObj = Object.assign(headersObj, hostHeaderObj);
     /* Build an accept encoding header and add it to the headers object */
     let acceptValue = HDLmConfigInfo.getAwsCognitoAcceptEncoding();
-    let acceptHeader = HDLmHtml.buildAcceptEncodingHeader(acceptValue);
-    headersObj = Object.assign(headersObj, acceptHeader);
+    let acceptHeaderObj = HDLmHtml.buildAcceptEncodingHeaderObj(acceptValue);
+    headersObj = Object.assign(headersObj, acceptHeaderObj);
     /* Build a content type header and add it to the headers object */
     let contentValue = HDLmConfigInfo.getAwsCognitoContentType();
-    let contentHeader = HDLmHtml.buildContentTypeHeader(contentValue)
-    headersObj = Object.assign(headersObj, contentHeader);
+    let contentHeaderObj = HDLmHtml.buildContentTypeHeaderObj(contentValue);
+    headersObj = Object.assign(headersObj, contentHeaderObj);
     /* Build a user agent header and add it to the headers object */
     let userAgentValue = HDLmConfigInfo.getAwsCognitoUserAgent();
-    let userAgentHeader = HDLmHtml.buildUserAgentHeader(userAgentValue);
-    headersObj = Object.assign(headersObj, userAgentHeader);
+    let userAgentHeaderObj = HDLmHtml.buildUserAgentHeaderObj(userAgentValue);
+    headersObj = Object.assign(headersObj, userAgentHeaderObj);
     /* Build an Amazon SDK invocation Id header and add it to the headers object */
     let uuidStr = HDLmUtility.getUuidStr();
-    let uuidHeader = HDLmHtml.buildAmzSdkInvocationIdHeader(uuidStr);
-    headersObj = Object.assign(headersObj, uuidHeader);
+    let uuidHeaderObj = HDLmHtml.buildAmzSdkInvocationIdHeaderObj(uuidStr);
+    headersObj = Object.assign(headersObj, uuidHeaderObj);
     /* Build an Amazon SDK request header and add it to the headers object */
-    let requestHeader = HDLmHtml.buildAmzSdkRequestHeader(1);
-    headersObj = Object.assign(headersObj, requestHeader);
+    let requestHeaderObj = HDLmHtml.buildAmzSdkRequestHeaderObj(1);
+    headersObj = Object.assign(headersObj, requestHeaderObj);
     /* Build a content length header and add it to the headers object */
-    let lengthHeader = HDLmHtml.buildContentLengthHeader(contentLength);
-    headersObj = Object.assign(headersObj, lengthHeader);
+    let lengthHeaderObj = HDLmHtml.buildContentLengthHeaderObj(contentLength);
+    headersObj = Object.assign(headersObj, lengthHeaderObj);
     /* Return the headers object to the caller */
     return headersObj;
   }

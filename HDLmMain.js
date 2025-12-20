@@ -15,18 +15,28 @@ class HDLmMain {
   /* Handle overall initialization */
   static handleInitialization() {    
     /* console.log('In HDLmMain.handleInitialization'); */
+    let windowLocationPathName = window.location.pathname;
+    console.log('window.location.pathname', windowLocationPathName);
     /* This routine may been invoked to build rules or it may have 
        been invoked for some other reason */
-    /* HDLmExecuteEditor.main();  */  
-    if (1 == 1) { 
-      if (1 == 2)
-        HDLmBuildRules.main();
-      else
+    /* HDLmExecuteEditor.main(); */
+    /* Check if we are running under VSCode. If this
+       is true, then we may want to run the code that
+       manages rules or we may want to run the standard
+       editor code. */  
+    if (HDLmUtility.isVscode()) { 
+      if (1 == 1) 
         HDLmManageRules.main();
-    }
-    else
+      else
+        HDLmIndexOne.main();   
+    } 
+    /* Not running under VSCode. Just run all of the standard
+       routines. In practice, only one will actually do anything. */
+    else {
       HDLmIndexOne.main();   
-  } 
+      HDLmManageRules.main();
+    }
+  }  
 } 
 /* Run the handle initialization function */
 HDLmMain.handleInitialization();

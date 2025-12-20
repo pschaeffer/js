@@ -70,6 +70,28 @@ class HDLmString {
     }
     return rvString;
   }
+  /* This routine converts a JavaScript character (string 
+     of length 1) to a hexadecimal JavaScript string (of 
+     length 2) */
+  static charToHex(charStr) {
+    /* Make sure the first (and only) argument passed by the caller 
+       is a string */
+    if (typeof charStr != 'string') {
+      let errorText = `Input value passed to charToHex is not a string`;
+      HDLmAssert(false, errorText);
+    }
+    /* Make sure the first (and only) argument passed by the caller has 
+       a length of exactly one */
+    if (charStr.length !== 1) {
+      let errorText = `Input value passed to charToHex does not have length 1`;
+      HDLmAssert(false, errorText);
+    }
+    /* Convert the character to a 2-byte hexadecimal string */
+    const charCode = charStr.charCodeAt(0);
+    let hex = charCode.toString(16).padStart(2, '0'); 
+    /* Return the hexadecimal string to the caller */    
+    return hex;
+  }
   /* This function does a case insensitive string comparison. Of course,
      this function can be changed as need be to better case insensitive
      string comparisons. This routine will return true if the strings
@@ -97,6 +119,35 @@ class HDLmString {
       outStr += ch;
     }  
     return outStr;
+  }
+  /* This routine compares two strings character by character
+     and returns a list of differences to the caller. Each
+     difference is a string that describes the difference 
+     between the two strings at a specific index. If the 
+     strings are identical, the list will be empty. */
+ static findCharacterDifferences(str1, str2) {
+    const maxLength = Math.max(str1.length, str2.length);
+    const differences = [];
+    /* Process each character in both strings */
+    for (let i = 0; i < maxLength; i++) {
+      if (str1[i] !== str2[i]) {
+        /* Get the first string character (if any) */
+        let str1Char;
+        if (i < str1.length)
+          str1Char = str1[i];
+        else
+          str1Char = '';
+        /* Get the second string character (if any) */
+        let str2Char;
+        if (i < str2.length)
+          str2Char = str2[i];
+        else
+          str2Char = '';
+        /* Record the difference */
+        differences.push(`Index ${i}: '${str1Char}' vs '${str2Char}'`);
+      }
+    }
+    return differences;
   }
   /* Get a string from an array. The caller provides the array and
      a separator value. The separator value is added to the output 

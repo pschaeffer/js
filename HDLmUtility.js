@@ -3493,7 +3493,7 @@ class HDLmUtility {
   /* This routine takes a string (possibly very long) and breaks
 	   into parts (substrings). Each part is logged. Logged (in this
      context) means written to the console. */
-	static logStringInParts(whereStr, inStr) {
+	static logStringInParts(whereStr, inStr, partSize = 40) {
 		/* Check the values passed by the caller */
 		if (whereStr == null) {
 		  let errorText = "Where string passed to logStringInParts is null";
@@ -3516,7 +3516,6 @@ class HDLmUtility {
     }
 		/* Set a few values for use later. These values make sure we always
 		   use the correct part length. */
-		let partSize = 20;
 		let partOffset = 0;
 		/* Break the passed string into an array of substrings and
 		   log each one */

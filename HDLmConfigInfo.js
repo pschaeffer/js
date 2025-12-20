@@ -16,42 +16,42 @@ class HDLmConfigInfo {
   /* Get the AWS Cognito accept encoding value. The 
      accept encoding value is returned to the caller. */
   static getAwsCognitoAcceptEncoding() {
-    return HDLmConfig.getValue('AWSCognitoAcceptEncoding');
+    return HDLmConfig.getValue('awsCognitoAcceptEncoding');
   }
   /* Get the AWS Cognito get user attributes API name. 
      This is actually a string. The string is returned 
      to the caller. */
   static getAwsCognitoApiGetUser() {
-    return HDLmConfig.getValue('AWSCognitoApiGetUser');
+    return HDLmConfig.getValue('awsCognitoApiGetUser');
   }
   /* Get the AWS Cognito initiate authentication API name. 
      This is actually a string. The string is returned to 
      the caller. */
   static getAwsCognitoApiInitiateAuth() {
-    return HDLmConfig.getValue('AWSCognitoApiInitiateAuth');
+    return HDLmConfig.getValue('awsCognitoApiInitiateAuth');
   }
   /* Get the AWS Cognito respond to challenge API name. 
      This is actually a string. The string is returned to 
      the caller. */
   static getAwsCognitoApiRespondToAuthChallenge() {
-    return HDLmConfig.getValue('AWSCognitoApiRespondToAuthChallenge');
+    return HDLmConfig.getValue('awsCognitoApiRespondToAuthChallenge');
   }
   /* Get the AWS Cognito content type value. The content 
      type value is returned to the caller. */
   static getAwsCognitoContentType() {
-    return HDLmConfig.getValue('AWSCognitoContentType');
+    return HDLmConfig.getValue('awsCognitoContentType');
   }
   /* Get the AWS Cognito host name. This is actually a domain name.
      The domain name is returned to the caller. */
   static getAwsCognitoHost() {
-    return HDLmConfig.getValue('AWSCognitoHost');
+    return HDLmConfig.getValue('awsCognitoHost');
   }
   /* Get the AWS Cognito user agent value. This is actually 
      a string. The value is not correct, but does work with 
      AWS Cognito. The user agent value is returned to the 
      caller. */ 
   static getAwsCognitoUserAgent() {
-    return HDLmConfig.getValue('AWSCognitoUserAgent');
+    return HDLmConfig.getValue('awsCognitoUserAgent');
   }
   /* Get the general build accept encoding value. The 
      accept encoding value is returned to the caller. */

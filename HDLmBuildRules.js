@@ -1551,16 +1551,16 @@ class HDLmBuildRules {
     /* Create an empty headers object */
     let headersObj = {};
     /* Build a host name header and add it to headers object */
-    let hostHeader = HDLmHtml.buildHostHeader(hostNameStr);
-    headersObj = Object.assign(headersObj, hostHeader);
+    let hostHeaderObj = HDLmHtml.buildHostHeaderObj(hostNameStr);
+    headersObj = Object.assign(headersObj, hostHeaderObj);
     /* Build an accept encoding header and add it to the headers object */
     let acceptValue = HDLmConfigInfo.getBuildAcceptEncoding();
-    let acceptHeader = HDLmHtml.buildAcceptEncodingHeader(acceptValue);
-    headersObj = Object.assign(headersObj, acceptHeader);
+    let acceptHeaderObj = HDLmHtml.buildAcceptEncodingHeaderObj(acceptValue);
+    headersObj = Object.assign(headersObj, acceptHeaderObj);
     /* Build a user agent header and add it to the headers object */
     let userAgentValue = HDLmConfigInfo.getBuildUserAgent();
-    let userAgentHeader = HDLmHtml.buildUserAgentHeader(userAgentValue);
-    headersObj = Object.assign(headersObj, userAgentHeader);
+    let userAgentHeaderObj = HDLmHtml.buildUserAgentHeaderObj(userAgentValue);
+    headersObj = Object.assign(headersObj, userAgentHeaderObj);
     /* Return the headers object to the caller */
     return headersObj;
   }
@@ -2387,15 +2387,15 @@ class HDLmBuildRules {
     let headersObj = {};
     /* Build a host name header and add it to headers object */
     if (hostNameStr != null) {
-      let hostHeader = HDLmHtml.buildHostHeader(hostNameStr);
+      let hostHeader = HDLmHtml.buildHostHeaderObj(hostNameStr);
       headersObj = Object.assign(headersObj, hostHeader);
     }
     /* Build a content type header and add it to the headers object */
     let contentType = HDLmConfigInfo. getApplicationJsonType();
-    let contentHeader = HDLmHtml.buildContentTypeHeader(contentType)
+    let contentHeader = HDLmHtml.buildContentTypeHeaderObj(contentType)
     headersObj = Object.assign(headersObj, contentHeader);
     /* Build a content length header and add it to the headers object */
-    let lengthHeader = HDLmHtml.buildContentLengthHeader(contentLength);
+    let lengthHeader = HDLmHtml.buildContentLengthHeaderObj(contentLength);
     headersObj = Object.assign(headersObj, lengthHeader);
     /* Return the headers object to the caller */
     return headersObj;

@@ -7,6 +7,15 @@
  * @author Peter
  */
 "use strict";
+/* The following boolean controls if the new AI code 
+   is used or not. If true, the new code is used. If   
+   should be set to false to use the old code. */
+let useNewAI; 
+useNewAI = false;
+useNewAI = true;
+/* The next integer controls the number of improvements 
+   to request from the LLM */
+const improvementsQuantity = 3;
 /* The headings are set below. They are in this object
    so that they can be easily acccessed and changed 
    if needed. */
@@ -135,6 +144,7 @@ class HDLmManageRules {
     /* Force a re-render of the rules */
     HDLmManageRules.forceReRender();
   }
+
   /* Generate a set of rules */
   static async actionGenerateRules() {
      /* console.log('In HDLmManageRules.actionGenerateRules'); */ 
@@ -155,8 +165,15 @@ class HDLmManageRules {
       /* Call the web page improver to generate some rules */
       let localWebpageDomainName = HDLmManageRules.webpageDomainName;
       let localWebpageDomainNameWPrefix = HDLmUtility.addHttpsPrefixDoubleSlash(localWebpageDomainName);
-      rulesGeneratedList = await HDLmManageRules.webpageImproverRunServices(HDLmManageRules.suggestionText,
-                                                                            localWebpageDomainNameWPrefix);
+      /* Check if the new or old AI code should be used */
+      if (useNewAI == false) {       
+        rulesGeneratedList = await HDLmManageRules.webpageImproverRunServicesOld(HDLmManageRules.suggestionText,
+                                                                                 localWebpageDomainNameWPrefix);
+      }                                                                           
+      else {
+        rulesGeneratedList = await HDLmManageRules.webpageImproverRunServicesNew(HDLmManageRules.suggestionText,
+                                                                                 localWebpageDomainNameWPrefix);
+      }
     }
     /* The else routine is just for testing. The following code
        simulates the generation of rules. */
@@ -184,8 +201,8 @@ class HDLmManageRules {
                                                                     HDLmManageRules.companiesArray);
       /* Adjust the rule numbers in the rule IDs array */
       HDLmManageRules.ruleIdsArray = HDLmManageRules.ruleIdsAdjust(HDLmManageRules.ruleIdsArray, 
-                                                                     companyNumber,                                                                    
-                                                                     rulesGeneratedList.length);  
+                                                                   companyNumber,                                                                    
+                                                                   rulesGeneratedList.length);  
       /* The new rules should be sent to the server */
       HDLmManageRules.sendNewRulesToServer(rulesGeneratedList); 
       /* We need to add an undo / redo entry here */
@@ -488,6 +505,7 @@ class HDLmManageRules {
     /* Get the rule in local storage */
     let companyNumber = ruleIdList[0][0];
     let ruleNumber = ruleIdList[0][1];
+    /* console.log(companyNumber, ruleNumber); */
     /* Turn almost all of the rules off, except for the
        rule specified by the caller. Note that only test
        mode rules are changed. Production mode rules are
@@ -501,6 +519,7 @@ class HDLmManageRules {
          or window */
       let localWebpageDomainName = HDLmManageRules.webpageDomainName;
       let localWebpageDomainNameWPrefix = HDLmUtility.addHttpsPrefixDoubleSlash(localWebpageDomainName);
+      console.log('Opening web page:', localWebpageDomainNameWPrefix);
       setTimeout(() => { window.open(localWebpageDomainNameWPrefix); }, 5000);
     }
     /* Force a re-render of the rules. This is not really
@@ -1815,16 +1834,16 @@ class HDLmManageRules {
     /* Create an empty headers object */
     let headersObj = {};
     /* Build a host name header and add it to headers object */
-    let hostHeader = HDLmHtml.buildHostHeader(hostNameStr);
-    headersObj = Object.assign(headersObj, hostHeader);
+    let hostHeaderObj = HDLmHtml.buildHostHeaderObj(hostNameStr);
+    headersObj = Object.assign(headersObj, hostHeaderObj);
     /* Build an accept encoding header and add it to the headers object */
     let acceptValue = HDLmConfigInfo.getBuildAcceptEncoding();
-    let acceptHeader = HDLmHtml.buildAcceptEncodingHeader(acceptValue);
-    headersObj = Object.assign(headersObj, acceptHeader);
+    let acceptHeaderObj = HDLmHtml.buildAcceptEncodingHeaderObj(acceptValue);
+    headersObj = Object.assign(headersObj, acceptHeaderObj);
     /* Build a user agent header and add it to the headers object */
     let userAgentValue = HDLmConfigInfo.getBuildUserAgent();
-    let userAgentHeader = HDLmHtml.buildUserAgentHeader(userAgentValue);
-    headersObj = Object.assign(headersObj, userAgentHeader);
+    let userAgentHeaderObj = HDLmHtml.buildUserAgentHeaderObj(userAgentValue);
+    headersObj = Object.assign(headersObj, userAgentHeaderObj);
     /* Return the headers object to the caller */
     return headersObj;
   }
@@ -2098,8 +2117,8 @@ class HDLmManageRules {
        under VsCode, set the web domain name to a known value. */
     if (HDLmUtility.isVscode()) {
       HDLmManageRules.webpageDomainName = 'https://www.yogadirect.com/';
-      HDLmManageRules.webpageDomainName = 'www.yogadirect.com';
       HDLmManageRules.webpageDomainName = 'www.themarvelouslandofoz.com';
+      HDLmManageRules.webpageDomainName = 'www.yogadirect.com';
     }
     /* Invoke some React code. The code is in a function
        so that we can control when we run it. */
@@ -2440,11 +2459,12 @@ class HDLmManageRules {
        been invoked for some other reason. Check if the path shows
        that what the user really wants is to manage rules. */
     let manageRules = false;
-    let windowlocationPathName = window.location.pathname;
-    if (windowlocationPathName.toLowerCase() == '/managerules')
+    let windowLocationPathName = window.location.pathname;
+    /* console.log('window.location.pathname', windowLocationPathName); */
+    if (windowLocationPathName.toLowerCase() == '/managerules')
       manageRules = true;
-    /* Check if the user wants to manage rules under the debugger */
-    if (windowlocationPathName.endsWith('index.html'))
+    /* Check if the user wants to manage rules under the VSCode debugger */
+    if (windowLocationPathName.endsWith('index.html'))
       manageRules = true;
     /* Check if we really want to manage rules */
     /* console.log('manageRules', manageRules); */
@@ -2709,6 +2729,34 @@ class HDLmManageRules {
             /* Get a few values from the object */
             HDLmManageRules.accessPassword = decryptObj.password;
             HDLmManageRules.accessUserid = decryptObj.userid;
+            /* The userid and password have been obtained from the
+               access cookie. The values should be valid. They are
+               passed to the server to make sure that they are valid 
+               and to update the in-memory database on the server.
+               
+               This code is not in use. The JavaScript code is run
+               natively (not under VS Code) to update the in-memory
+               database on the server.*/ 
+            if (1 == 2) {
+              /* Check the userid and the password */
+              let localUserid = HDLmManageRules.accessUserid;
+              let localPassword = HDLmManageRules.accessPassword;
+              /* Wait for the server to finish check the userid
+                 and password. */
+              let responseObj = await HDLmSecurity.checkUsernamePasswordServer(localUserid, localPassword);       
+              /* console.log(responseObj); */ 
+              /* Check if the status code from the call, shows
+                 that the call succeeded */
+              let responseStatus = responseObj.status;
+              /* Check if the userid/password combination were even
+                 minimally valid. If they were not even minimally 
+                 valid, we need to get a new combination of userid
+                 and password. */
+              if (responseStatus != 200) {
+                let errorText = 'The Userid / Password combination was invalid';
+                HDLmManageRules.displayErrorMessage(errorText);
+              }            
+            }
             /* Now that we have access information we can get
                some or all of the modifications. */
             stage = HDLmManageRulesStageTypes.getModifications;
@@ -2739,7 +2787,7 @@ class HDLmManageRules {
           /* Check if the status code from the call, shows
              that the call succeeded */
           let responseStatus = responseObj.status;
-          /* check if the userid/password combination were even
+          /* Check if the userid/password combination were even
              minimally valid. If they were not even minimally 
              valid, we need to get a new combination of userid
              and password. */
@@ -4471,15 +4519,15 @@ class HDLmManageRules {
     let headersObj = {};
     /* Build a host name header and add it to headers object */
     if (hostNameStr != null) {
-      let hostHeader = HDLmHtml.buildHostHeader(hostNameStr);
+      let hostHeader = HDLmHtml.buildHostHeaderObj(hostNameStr);
       headersObj = Object.assign(headersObj, hostHeader);
     }
     /* Build a content type header and add it to the headers object */
     let contentType = HDLmConfigInfo.getApplicationJsonType();
-    let contentHeader = HDLmHtml.buildContentTypeHeader(contentType)
+    let contentHeader = HDLmHtml.buildContentTypeHeaderObj(contentType)
     headersObj = Object.assign(headersObj, contentHeader);
     /* Build a content length header and add it to the headers object */
-    let lengthHeader = HDLmHtml.buildContentLengthHeader(contentLength);
+    let lengthHeader = HDLmHtml.buildContentLengthHeaderObj(contentLength);
     headersObj = Object.assign(headersObj, lengthHeader);
     /* Return the headers object to the caller */
     return headersObj;
@@ -4599,8 +4647,8 @@ class HDLmManageRules {
     return webPromise
   }
   /* This routine is used to run a set of services */
-  static async webpageImproverRunServices(suggestionText, webpageUrl) {
-    console.log('In HDLmManageRules.webpageImproverRunServices'); 
+  static async webpageImproverRunServicesOld(suggestionText, webpageUrl) {
+    console.log('In HDLmManageRules.webpageImproverRunServicesOld'); 
     let rulesGeneratedList;
     let serviceData,
         serviceHeaders,
@@ -4620,7 +4668,7 @@ class HDLmManageRules {
       serviceJson = HDLmManageRules.webpageImproverGetSessionJson('Testing');
       serviceLength = serviceJson.length;
       serviceHeaders = HDLmManageRules.webpageImproverGetHeadersStandard(null,
-                                                                        serviceLength);
+                                                                         serviceLength);
       servicePath = HDLmConfigInfo.getWebpageImproverSessionPath();
       /* Invoke the session service */
       servicePromise = HDLmManageRules.webpageImproverInvokeService(servicePath,
@@ -4685,7 +4733,7 @@ class HDLmManageRules {
       /* Get some values from the JSON object */
       /* HDLmManageRules.webpageImproverWebpage = serviceData.webpage; */
       /* Get the JSON string for the improvements service */
-      serviceQuantity = 3;
+      serviceQuantity = improvementsQuantity;
       serviceJson = HDLmManageRules.webpageImproverGetImprovementsJson(serviceSessionId,
                                                                        serviceQuantity);
       serviceLength = serviceJson.length;
@@ -4729,7 +4777,7 @@ class HDLmManageRules {
         let improvementWhy = improvementObj.why;
         /* Get the JSON string for the improvements service */
         serviceJson = HDLmManageRules.webpageImproverGetMarkupJson(serviceSessionId,
-                                                                   improvementWhat);
+                                                                     improvementWhat);
         serviceLength = serviceJson.length;
         serviceHeaders = HDLmManageRules.webpageImproverGetHeadersStandard(null,
                                                                            serviceLength);
@@ -4803,8 +4851,90 @@ class HDLmManageRules {
       return false;
     }
   }
+  /* This routine is used to run a set of services */
+  static async webpageImproverRunServicesNew(suggestionText, webpageUrl) {
+    console.log('In HDLmManageRules.webpageImproverRunServicesNew'); 
+    /* Build the area where the new rules will be stored */
+    let rulesGeneratedList = []; 
+    let improvementsList = await HDLmAI.openAIGetImprovements(suggestionText, webpageUrl);
+    console.log('improvementsList is', improvementsList);
+    /* Get some values from the JSON object */
+    try {
+      let localImprovements = improvementsList;
+      /* The user may or may not have provided a suggestion. The
+         suggestion (if it exists) is used to build some markup.
+         The markup is used to build some rules. */
+      if (HDLmManageRules.suggestionText != null) {
+      }
+      /* Process each of the improvements. Convert the improvement to a
+         set of markup. */
+      let improvementsCount = localImprovements.length;
+      let localMarkups = [];
+      for (let i = 0; i < improvementsCount; i++) {
+        /* Get the current improvement object */
+        let improvementObj = localImprovements[i];
+        let improvementWhat = improvementObj.what;
+        let improvementWhy = improvementObj.why;
+        let markupObj = await HDLmAI.openAIGetMarkup(improvementWhat, webpageUrl);
+        /* Get some values from the JSON object */
+        localMarkups.push(markupObj);
+      }
+      /* Convert each of the markup objects to a rule */
+      let markupsCount = localMarkups.length;
+      for (let i = 0; i < markupsCount; i++) {
+        let improvementObj = localImprovements[i];
+        /* console.log(improvementObj); */
+        let improvementWhat = improvementObj.what;
+        let improvementWhy = improvementObj.why;
+        let markupObj = localMarkups[i];
+        /* Build a tree node object from each of the markups */
+        let constructList = HDLmManageRules.constructTreeNode(webpageUrl,
+                                                              improvementWhy,
+                                                              markupObj);
+        let treeNodeObj = constructList[0];      
+        let overallValid = constructList[1];
+        let scriptValid = constructList[2];
+        let stylesValid = constructList[3];
+        let scriptStr = constructList[4];
+        let stylesStr = constructList[5];
+        /* Check if the tree node has at least
+           one script */ 
+        let scriptCount = treeNodeObj.details.scripts.length;
+        /* Check if the script value is valid */
+        if (overallValid && scriptCount > 0) {
+          HDLmTree.storeTreeNode(treeNodeObj);
+          rulesGeneratedList.push(treeNodeObj);
+        }
+        /* Some type of error was detected. Report the error
+           and continue processing. */
+        else {
+          /* Check what sort of error was detected */
+          if (scriptCount <= 0) {
+            let errorText = 'No scripts were found in the generated rule';
+            HDLmManageRules.displayErrorMessage(errorText);
+          }
+          else {
+            let errorText = 'The generated script or style value(s) is/are not valid';
+            HDLmManageRules.displayErrorMessage(errorText);
+          }
+        }
+      }
+      /* Return to the caller */
+      return rulesGeneratedList;
+    }
+    /* Handle some sort of error condition */
+    catch (error) {
+      console.error(error);
+      let errorText = '';
+      errorText = HDLmError.buildError('Error', 'Get Webpage-Improver Error', 52, error);
+      HDLmManageRules.displayErrorMessage(errorText);
+      return false;
+    }
+    /* Return the new rules */
+    return rulesGeneratedList;
+  }
   /* The routine below does all of the work needed to handle keyboard
-      events */
+     events */
   static windowOnDown(event) {
     /* console.log('In HDLmManageRules.windowOnDown'); */
     /* Handle a ctrl-y (redo) keyboard operation */

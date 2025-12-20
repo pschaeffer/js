@@ -173,7 +173,10 @@ let HDLmManageRulesStageTypes = {
   "getModifications":                16,
   "getSpecificCompany":              17,
   "setTestModeOn":                   18,
-  "showWebPageUi":                   19
+  "showWebPageUi":                   19,
+  "beforeUnload":                    20,
+  "visibilityChange":                21,
+  "setTestModeOff":                  22  
 };
 HDLmManageRulesStageTypes.toString = function (enumVl) {
   /* console.log('In HDLmEnums.toString'); */

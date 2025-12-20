@@ -754,49 +754,58 @@ class HDLmHtml {
     Object.freeze(HDLmHtml);
   }
   /* Build an accept encoding HTML header */
-  static buildAcceptEncodingHeader(acceptEncodingStr) {
-    return HDLmHtml.buildHeader('Accept-Encoding', acceptEncodingStr);
+  static buildAcceptEncodingHeaderObj(acceptEncodingStr) {
+    return HDLmHtml.buildHeaderObj('Accept-Encoding', acceptEncodingStr);
   }
   /* Build an Amazon SDK Invocation Id HTML header */
-  static buildAmzSdkInvocationIdHeader(sdkIdStr) {
-    return HDLmHtml.buildHeader('amz-sdk-invocation-id', sdkIdStr);
+  static buildAmzSdkInvocationIdHeaderObj(sdkIdStr) {
+    return HDLmHtml.buildHeaderObj('amz-sdk-invocation-id', sdkIdStr);
   }
   /* Build an Amazon SDK Request HTML header */
-  static buildAmzSdkRequestHeader(attemptNumber) {
+  static buildAmzSdkRequestHeaderObj(attemptNumber) {
     let attemptStr = attemptNumber.toString();
     let requestStr = 'attempt' + '=' + attemptStr;
-    return HDLmHtml.buildHeader('amz-sdk-request', requestStr);
+    return HDLmHtml.buildHeaderObj('amz-sdk-request', requestStr);
   }
   /* Build an Open AI authorization HTML header */
-  static buildAuthorizationHeader(apiKeyStr) {
+  static buildAuthorizationHeaderObj(apiKeyStr) {
     let authValueStr = 'Bearer' + ' ' + apiKeyStr;
-    return HDLmHtml.buildHeader('Authorization', authValueStr);
+    return HDLmHtml.buildHeaderObj('Authorization', authValueStr);
+  }
+  /* Build an Open AI authorization HTML header */
+  static buildAuthorizationHeaderStr(apiKeyStr) {
+    let authValueStr = 'Bearer' + ' ' + apiKeyStr;
+    return 'Authorization: ' + authValueStr;
   }
   /* Build a content length HTML header */
-  static buildContentLengthHeader(contentLength) {
-    return HDLmHtml.buildHeader('Content-Length', contentLength.toString());
+  static buildContentLengthHeaderObj(contentLength) {
+    return HDLmHtml.buildHeaderObj('Content-Length', contentLength.toString());
   }
   /* Build a content type HTML header */
-  static buildContentTypeHeader(contentTypeStr) {
-    return HDLmHtml.buildHeader('Content-Type', contentTypeStr);
+  static buildContentTypeHeaderObj(contentTypeStr) {
+    return HDLmHtml.buildHeaderObj('Content-Type', contentTypeStr);
+  }
+  /* Build a content type HTML header string */
+  static buildContentTypeHeaderStr(contentTypeStr) {
+    return 'Content-Type: ' + contentTypeStr;
   }
   /* Build an HTML header object from the values passed the caller */
-  static buildHeader(typeStr, valueStr) {
+  static buildHeaderObj(typeStr, valueStr) {
     let outObj = {};
     outObj[typeStr] = valueStr;
     return outObj;
   }
-  /* Build an HTML host header */
-  static buildHostHeader(hostNameStr) {
-    return HDLmHtml.buildHeader('Host', hostNameStr);
+  /* Build an HTML host header object */
+  static buildHostHeaderObj(hostNameStr) {
+    return HDLmHtml.buildHeaderObj('Host', hostNameStr);
   }
   /* Build a user agent HTML header */
-  static buildUserAgentHeader(userAgentStr) {
-    return HDLmHtml.buildHeader('User-Agent', userAgentStr);
+  static buildUserAgentHeaderObj(userAgentStr) {
+    return HDLmHtml.buildHeaderObj('User-Agent', userAgentStr);
   }
   /* Build an X-Amz-Target HTML header */
-  static buildXAmzTargetHeader(targetStr) {
-    return HDLmHtml.buildHeader('X-Amz-Target', targetStr);
+  static buildXAmzTargetHeaderObj(targetStr) {
+    return HDLmHtml.buildHeaderObj('X-Amz-Target', targetStr);
   }
   /* This routine builds a JavaScript object from a DOM node. The
      caller passed the DOM node. This routine builds the JavaScript

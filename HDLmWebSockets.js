@@ -11,6 +11,46 @@
    However, it does contain code for creating and using web
    sockets. */ 
 class HDLmWebSockets {
+  /* This method sends an execute AI request to the server. The
+     execute AI request executes an AI request on server on 
+     behalf of the client. */
+  static executeAIRequest(bodyObj) {
+    /* console.log('In HDLmWebSockets.executeAIRequest'); */
+    /* Create a promise that we can settle later */
+    let newPromise = new Promise(function (resolve, reject) {
+      /* Build a message with the required information */
+      let requestType = 'executeAIRequest';
+      let bodyStr = JSON.stringify(bodyObj);
+      let sendJsonStr = JSON.stringify({});
+      sendJsonStr = HDLmUtility.updateJsonStr(sendJsonStr, 'HDLmRequestType', requestType);
+      sendJsonStr = HDLmUtility.updateJsonStr(sendJsonStr, 'HDLmBodyStr', bodyStr);
+      /* Build the callback function that will be used to handle the
+         WebSocket message that is returned by the caller. Note that
+         this routine is a closure and get important values from the
+         environment where it is defined. */
+      let messageCallback = (event) => {
+        /* Provide an exception handler for the entire callback */
+        try {
+          let currentWebSocket = event.target;
+          /* Close the WebSocket, if need be */
+          if (currentWebSocket != null) {
+            currentWebSocket.close();
+          }
+          /* Pass the WebSocket message to the appropriate handler */
+          /* console.log(event.data); */
+          /* console.log(typeof event.data); */
+          resolve(event.data);
+        }
+        catch (errorObj) {
+          let errorText = HDLmError.reportError(errorObj, 'messageCallback');
+          reject(errorText);
+        }
+      };
+      /* Open a connnection to another process */
+      HDLmWebSockets.openWebSocketConnection(messageCallback, sendJsonStr);
+    });
+    return newPromise;
+  } 
   /* This method sends a get configuration request to the server. The
      get configuration request retrieves the configuration settings
      for the current application. */
@@ -235,6 +275,7 @@ class HDLmWebSockets {
     if (messageObj.hasOwnProperty('HDLmRequestType')) { 
       let messageRequestType = messageObj['HDLmRequestType'];
       if (messageRequestType.startsWith('addTreeNode')    == false &&
+          messageRequestType.startsWith('executeAI')      == false &&
           messageRequestType.startsWith('getConfig')      == false &&
           messageRequestType.startsWith('getImage')       == false &&
           messageRequestType.startsWith('getMod')         == false &&
