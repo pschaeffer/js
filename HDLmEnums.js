@@ -154,29 +154,30 @@ let HDLmManageRulesStageTypes = {
   "none":                            0,
   "getConfigs":                      1,
   "setTitle":                        2,
-  "sendBuildCookie":                 3,
+  "checkServerStatus":               3,
+  "sendBuildCookie":                 4,
   /* The next entry does not appear to be in use. */
-  "sendBuildCookieResponse":         4, 
-  "getAccessCookie":                 5,
-  "getUseridPassword":               6,
-  "checkUseridPassword":             7,
-  "checkUseridPasswordResponse":     8,
-  "getNewPassword":                  9,
-  "setNewPassword":                  10,
+  "sendBuildCookieResponse":         5, 
+  "getAccessCookie":                 6,
+  "getUseridPassword":               7,
+  "checkUseridPassword":             8,
+  "checkUseridPasswordResponse":     9,
+  "getNewPassword":                  10,
+  "setNewPassword":                  11,
   /* The next entry does not appear to be in use. */
-  "setNewPasswordResponse":          11,
-  "getVerificationCode":             12,
-  "sendVerificationCode":            13,
+  "setNewPasswordResponse":          12,
+  "getVerificationCode":             13,
+  "sendVerificationCode":            14,
   /* The next entry does not appear to be in use. */
-  "sendVerificationCodeResponse":    14,
-  "setAccessCookie":                 15,
-  "getModifications":                16,
-  "getSpecificCompany":              17,
-  "setTestModeOn":                   18,
-  "showWebPageUi":                   19,
-  "beforeUnload":                    20,
-  "visibilityChange":                21,
-  "setTestModeOff":                  22  
+  "sendVerificationCodeResponse":    15,
+  "setAccessCookie":                 16,
+  "getModifications":                17,
+  "getSpecificCompany":              18,
+  "setTestModeOn":                   19,
+  "showWebPageUi":                   20,
+  "beforeUnload":                    21,
+  "visibilityChange":                22,
+  "setTestModeOff":                  23  
 };
 HDLmManageRulesStageTypes.toString = function (enumVl) {
   /* console.log('In HDLmEnums.toString'); */
@@ -184,17 +185,6 @@ HDLmManageRulesStageTypes.toString = function (enumVl) {
   return Object.keys(HDLmManageRulesStageTypes).filter(key => (HDLmManageRulesStageTypes[key] == enumVl))[0];
 }
 Object.freeze(HDLmManageRulesStageTypes);
-/* The enum below defines the values for node identifier tracing. 
-   We generally don't trace node identifier processing. However, 
-   we can trace node identifier processing. These values control 
-   what is traced and under what circumstances. */ 
-let HDLmNodeIdenTracing = {
-  "none":  0,
-  "off":   1,
-  "error": 2,
-  "all":   3
-};
-Object.freeze(HDLmNodeIdenTracing);
 /* The enum below defines the types of matches supported by this
    code. Many types of matches are supported at this time. New
    match types may be added in the future. All match types are 
@@ -213,6 +203,17 @@ let HDLmMatchTypes = {
   "like":   4
 };
 Object.freeze(HDLmMatchTypes);
+/* The enum below defines the values for node identifier tracing. 
+   We generally don't trace node identifier processing. However, 
+   we can trace node identifier processing. These values control 
+   what is traced and under what circumstances. */ 
+let HDLmNodeIdenTracing = {
+  "none":  0,
+  "off":   1,
+  "error": 2,
+  "all":   3
+};
+Object.freeze(HDLmNodeIdenTracing);
 /* The enum below defines the types of nodes supported by this
    code. Many types of nodes are supported. We have one and 
    only one top-level node. The real top-level node is hidden 
@@ -447,5 +448,24 @@ let HDLmUnReTypes = {
   "actionUnselect": 21,
   /* NewName occurs when a row is renamed (by entering a new name) */
   "actionNewName":  22,
+  /* Off occurs when a set of rules are turned off */
+  "actionOff":      23,
 };
 Object.freeze(HDLmUnReTypes);
+/* The enum below defines the stages of webpage optimizer processing. 
+   Webpage optimizer processing takes several stages. They are defined 
+   below. */
+let HDLmWebpageOptimizerStageTypes = {
+  "none":                            0,
+  "setTitle":                        1,
+  "checkServerStatus":               2,
+  "showWebPageUi":                   3,
+  "beforeUnload":                    4,
+  "visibilityChange":                5
+};
+HDLmWebpageOptimizerStageTypes.toString = function (enumVl) {
+  /* console.log('In HDLmEnums.toString'); */
+  /* console.log(Object.keys(HDLmWebpageOptimizerStageTypes)); */
+  return Object.keys(HDLmWebpageOptimizerStageTypes).filter(key => (HDLmWebpageOptimizerStageTypes[key] == enumVl))[0];
+}
+Object.freeze(HDLmWebpageOptimizerStageTypes);

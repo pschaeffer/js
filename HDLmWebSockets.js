@@ -13,15 +13,54 @@
 class HDLmWebSockets {
   /* This method sends an execute AI request to the server. The
      execute AI request executes an AI request on server on 
-     behalf of the client. */
-  static executeAIRequest(bodyObj) {
+     behalf of the client. The version might be Open AI or 
+     Open Router or another AI service. */
+  static executeAIRequest(bodyObj, versionStr, typeStr) {
+    /* Check if a few openands are null or undefined. If any 
+       of the openands are null or undefined, then we can not 
+       proceed. */
+    if (bodyObj == null) {
+      let errorText = 'HDLmWebSockets.executeAIRequest: The body object is null or undefined.';
+      HDLmAssert(false, errorText);
+    }
+    if (versionStr == null) {
+      let errorText = 'HDLmWebSockets.executeAIRequest: The version string is null or undefined.';
+      HDLmAssert(false, errorText);
+    }
+    if (typeStr == null) {
+      let errorText = 'HDLmWebSockets.executeAIRequest: The type string is null or undefined.';
+      HDLmAssert(false, errorText);
+    }
     /* console.log('In HDLmWebSockets.executeAIRequest'); */
     /* Create a promise that we can settle later */
     let newPromise = new Promise(function (resolve, reject) {
       /* Build a message with the required information */
-      let requestType = 'executeAIRequest';
+      let requestType;
       let bodyStr = JSON.stringify(bodyObj);
       let sendJsonStr = JSON.stringify({});
+      /* Set the request type as need be. The request type is set
+         based on the version of the AI that is being used and 
+         the type of the request. */
+      if (versionStr == 'OpenAI') {
+        if (typeStr == 'new')
+          requestType = 'executeOpenAIRequest';
+        else if (typeStr == 'old')
+          requestType = 'executeOpenAIRequest';
+      } 
+      else if (versionStr == 'OpenRouter') {
+        if (typeStr == 'WOV1')
+          requestType = 'webpageOptimizer';
+        else if (typeStr == 'V1')
+          requestType = 'webpageImprover';
+        else if (typeStr == 'V2' ||
+                 typeStr == 'V3')
+          requestType = 'webpageImprover';
+        else if (typeStr == 'V4')
+          requestType = 'webpageImprover';
+        else
+          requestType = 'executeOpenRouterRequest';
+      }
+      /* Update the JSON string as need be */
       sendJsonStr = HDLmUtility.updateJsonStr(sendJsonStr, 'HDLmRequestType', requestType);
       sendJsonStr = HDLmUtility.updateJsonStr(sendJsonStr, 'HDLmBodyStr', bodyStr);
       /* Build the callback function that will be used to handle the
@@ -31,6 +70,7 @@ class HDLmWebSockets {
       let messageCallback = (event) => {
         /* Provide an exception handler for the entire callback */
         try {
+          /* console.log('In messageCallback', event); */
           let currentWebSocket = event.target;
           /* Close the WebSocket, if need be */
           if (currentWebSocket != null) {
@@ -47,10 +87,36 @@ class HDLmWebSockets {
         }
       };
       /* Open a connnection to another process */
+      /* let counts = HDLmString.countSpecialCharacters(bodyStr, "()[]{}'\"`~!@#$%^&*-_=+\\|;:,<.>/?"); */
       HDLmWebSockets.openWebSocketConnection(messageCallback, sendJsonStr);
     });
     return newPromise;
   } 
+  /* This method sends the original webpage HTML to the server and
+     waits for the webpage optimizer response. The request body is
+     just the original HTML string. */
+  static sendWebpageOptimizerRequest(originalHtml) {
+    let newPromise = new Promise(function (resolve, reject) {
+      let sendJsonStr = JSON.stringify({});
+      sendJsonStr = HDLmUtility.updateJsonStr(sendJsonStr, 'HDLmRequestType', 'webpageOptimizer');
+      sendJsonStr = HDLmUtility.updateJsonStr(sendJsonStr, 'HDLmBodyStr', originalHtml);
+      let messageCallback = (event) => {
+        try {
+          let currentWebSocket = event.target;
+          if (currentWebSocket != null) {
+            currentWebSocket.close();
+          }
+          resolve(event.data);
+        }
+        catch (errorObj) {
+          let errorText = HDLmError.reportError(errorObj, 'messageCallback');
+          reject(errorText);
+        }
+      };
+      HDLmWebSockets.openWebSocketConnection(messageCallback, sendJsonStr);
+    });
+    return newPromise;
+  }
   /* This method sends a get configuration request to the server. The
      get configuration request retrieves the configuration settings
      for the current application. */
@@ -241,6 +307,10 @@ class HDLmWebSockets {
     /* Return the modified tree node to the caller */
     return tempPos;
   }
+  /* This method is the WebSocket close handler */
+  static onCloseWebSocketClose(event) {
+    /* console.log('In HDLmWebSockets.onCloseWebSocketClose', event); */
+  }
   /* This method is the WebSocket message handler. This method runs
      as part of a content script. This method does the actual work
      of receiving a WebSocket message. */
@@ -268,19 +338,24 @@ class HDLmWebSockets {
        possible because we expect to receive messages from the server in some cases. Of
        course, this means that the WebSocket must remain open. */
     let messageObj = JSON.parse(messageStr);
+    /* console.log('In HDLmWebSockets.onOpenWebSocketContent', messageObj); */
     /* This is the WebSockets on open routine. In most cases, we
        want to close the socket right here. However, in some number
        of important cases, this is not true. We want to leave the
-       WebSocket open so that we can get and use the reply. */
+       WebSocket open so that we can get and use the reply. Note
+       that the code below supports both Open AI and Open Router. */
     if (messageObj.hasOwnProperty('HDLmRequestType')) { 
       let messageRequestType = messageObj['HDLmRequestType'];
       if (messageRequestType.startsWith('addTreeNode')    == false &&
-          messageRequestType.startsWith('executeAI')      == false &&
-          messageRequestType.startsWith('getConfig')      == false &&
-          messageRequestType.startsWith('getImage')       == false &&
-          messageRequestType.startsWith('getMod')         == false &&
-          messageRequestType.startsWith('getText')        == false &&
-          messageRequestType.startsWith('storeTreeNodes') == false) {
+          messageRequestType.startsWith('executeAI')       == false &&
+          messageRequestType.startsWith('executeOpen')     == false &&
+          messageRequestType.startsWith('getConfig')       == false &&
+          messageRequestType.startsWith('getImage')        == false &&
+          messageRequestType.startsWith('getMod')          == false &&
+          messageRequestType.startsWith('getText')         == false &&
+          messageRequestType.startsWith('storeTreeNodes')  == false &&
+          messageRequestType.startsWith('webpageImprove')  == false &&
+          messageRequestType.startsWith('webpageOptimize') == false) {
         currentWebSocket.close(); 
       }
     }    
@@ -341,6 +416,9 @@ class HDLmWebSockets {
       newWebSocket.onmessage = HDLmWebSockets.onMessageWebSocketContent;
     else
       newWebSocket.onmessage = messageCallback;
+    /* The statement below establishes the close routine for this WebSocket.
+       The close routine doesn't do much. */ 
+    newWebSocket.onclose = HDLmWebSockets.onCloseWebSocketClose;
     /* The statement below establishes the open routine for this WebSocket.
        The open routine does the actual work of sending the a message. */
     newWebSocket.onopen = HDLmWebSockets.onOpenWebSocketContent;

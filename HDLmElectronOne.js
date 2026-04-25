@@ -387,7 +387,11 @@ class HDLmElectronOne {
     /* console.log(newSiteNodePath); */
     if (1 == 1) {
       let updateDatabaseTrue = true;
-      let newSiteNode = HDLmTree.buildSiteNode(newSiteNodePath, updateDatabaseTrue, HDLmNodeTypes.rules);
+      let updateFancyTreeTrue = true;
+      let newSiteNode = HDLmTree.buildSiteNode(newSiteNodePath, 
+                                               updateDatabaseTrue,
+                                               updateFancyTreeTrue, 
+                                               HDLmNodeTypes.rules);
       /* console.log('newSiteNode'); */
       /* console.log(newSiteNode); */
       /* console.log(newSiteNodePath); */
@@ -481,7 +485,11 @@ class HDLmElectronOne {
          update the node tree (HDLmTree) in memory and send any new nodes
          to the database as need be. */
       let updateDatabaseTrue = true;
-      newSiteNode =  HDLmTree.buildSiteNode(newSiteNodePath, updateDatabaseTrue, HDLmNodeTypes.rules);
+      let updateFancyTreeTrue = true;
+      newSiteNode =  HDLmTree.buildSiteNode(newSiteNodePath, 
+                                            updateDatabaseTrue, 
+                                            updateFancyTreeTrue, 
+                                            HDLmNodeTypes.rules);
       /* console.log('newSiteNode'); */
       /* console.log(newSiteNode); */
       /* console.log(newSiteNodePath); */
@@ -619,7 +627,11 @@ class HDLmElectronOne {
        update the node tree (HDLmTree) in memory and send any new nodes
        to the database as need be. */
     let updateDatabaseTrue = true;
-    newSiteNode = HDLmTree.buildSiteNode(newSiteNodePath, updateDatabaseTrue, HDLmNodeTypes.rules);
+    let updateFancyTreeTrue = true;
+    newSiteNode = HDLmTree.buildSiteNode(newSiteNodePath, 
+                                        updateDatabaseTrue,
+                                        updateFancyTreeTrue, 
+                                        HDLmNodeTypes.rules);
     if (newSiteNode == null) {
       let errorText = 'Null site tree node returned by buildSiteNode';
       HDLmAssert(false, errorText);

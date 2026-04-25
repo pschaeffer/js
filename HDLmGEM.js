@@ -428,7 +428,11 @@ class HDLmGEM {
         let newSiteNodePath = newNodePath.slice(0, HDLmDefines.getNumber('HDLMSITENODEPATHLENGTH'));
         /* console.log(newSiteNodePath); */
         let updateDatabaseFalse = false;
-        let newSiteNode = HDLmTree.buildSiteNode(newSiteNodePath, updateDatabaseFalse, HDLmNodeTypes.rules);
+        let updateFancyTreeTrue = true;
+        let newSiteNode = HDLmTree.buildSiteNode(newSiteNodePath, 
+                                                 updateDatabaseFalse, 
+                                                 updateFancyTreeTrue, 
+                                                 HDLmNodeTypes.rules);
         /* console.log(newSiteNode); */
         /* console.log('In buttonClick', ruleType); */
         let removeTailsTrue = true;

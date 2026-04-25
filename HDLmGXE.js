@@ -531,7 +531,11 @@ class HDLmGXE {
     let newSiteNodePath = HDLmGXE.buildSiteNodePath(hostName, nodeType);
     /* console.log(newSiteNodePath); */
     let updateDatabaseFalse = false;
-    let newSiteNode = HDLmTree.buildSiteNode(newSiteNodePath, updateDatabaseFalse, nodeType);
+    let updateFancyTreeTrue = true;
+    let newSiteNode = HDLmTree.buildSiteNode(newSiteNodePath, 
+                                             updateDatabaseFalse, 
+                                             updateFancyTreeTrue,
+                                             nodeType);
     return newSiteNode;
   }
   /* This routine does all of the work needed to build a new node path 

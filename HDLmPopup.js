@@ -444,7 +444,11 @@ class HDLmPopup {
       let siteNodeName = HDLmDefines.getString('HDLMSITENODENAME');
       nodePath.push(siteNodeName);
       let updateDatabaseFalse = false;
-      siteTreeNode = HDLmTree.buildSiteNode(nodePath, updateDatabaseFalse, HDLmNodeTypes.rules);
+      let updateFancyTreeTrue = true;
+      siteTreeNode = HDLmTree.buildSiteNode(nodePath, 
+                                            updateDatabaseFalse, 
+                                            updateFancyTreeTrue,
+                                            HDLmNodeTypes.rules);
     }
     /* At least one rule fired for the current DOM node. We can use
        the first rule that actually fired to find the site node. */

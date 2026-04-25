@@ -1290,7 +1290,14 @@ class HDLmTree {
        node tree */
     let siteNodePath = newTreeNode.nodePath.slice(0, 6);
     let updateDatabaseFalse = false;
-    let siteTreeNode = HDLmTree.buildSiteNode(siteNodePath, updateDatabaseFalse, HDLmNodeTypes.rules);
+    let updateFancyTreeTrue = true;
+    /* Note that we are build a site node far under the rules
+       node. This is why we pass HDLmNodeTypes.rules as the
+       third argument to HDLmTree.buildSiteNode. */
+    let siteTreeNode = HDLmTree.buildSiteNode(siteNodePath, 
+                                              updateDatabaseFalse, 
+                                              updateFancyTreeTrue,
+                                              HDLmNodeTypes.rules);
     /* Check if the site tree node value is null */
     if (siteTreeNode == null) {
       let errorText = 'Site tree node value returned from buildSiteNode is null';
@@ -1315,7 +1322,7 @@ class HDLmTree {
     let companyNumber = 0;
     /* Get the companies node */
     let companiesNode = treeTop.children[0];
-    let companiesNodeChildren = companiesNode.children
+    let companiesNodeChildren = companiesNode.children;
     /* Process each company */
     for(let childNodeCompany of companiesNodeChildren) {
       let rulesArray = [];
@@ -1326,36 +1333,44 @@ class HDLmTree {
       let nodePathLen = nodePath.length;
       let companyName = nodePath[nodePathLen - 1];
       /* Create a new company object */
-      let companyObj = new Object;
+      let companyObj = new Object();
       companyObj.name = companyName;
-      /* Get the company rules node */
-      let childNodeRules = childNodeCompany.children[3];
-      /* Process each division */
-      for(let childNodeDivision of childNodeRules.children) {
-        let divisionNodeChildren = childNodeDivision.children;
-        /* console.log(childNodeDivision); */
-        /* Process each site */
-        for(let childNodeSite of divisionNodeChildren) {
-          let siteNodeChildren = childNodeSite.children;
-          /* console.log(childNodeSite); */
-          /* console.log(siteNodeChildren); */
-          /* Process each rule */
-          for(let childNodeRule of siteNodeChildren) {
-            /* Create a new rule object */
-            let ruleObj = new Object;
-            /* Add some information to the rule object */
-            ruleObj.company = companyName;
-            ruleObj.actualRule = childNodeRule;
-            /* Increment the rule number */
-            ruleNumber++;
-            /* Build the array that contains the company number
-               and the rule number */
-            let identityArray = [];
-            identityArray.push(companyNumber);
-            identityArray.push(ruleNumber);
-            ruleObj.identity = identityArray;
-            rulesArray.push(ruleObj);
-          } 
+      /* Try to locate the company rules node. New companies may not
+         have a Rules subtree yet, so this step can legitimately fail. */
+      let rulesNodeName = HDLmDefines.getString('HDLMRULESNODENAME');
+      let childNodeCompanyChildren = childNodeCompany.children;
+      let childNodeRules = childNodeCompanyChildren.find(childNode => {
+        let childNodePath = childNode.nodePath;
+        return childNodePath[childNodePath.length - 1] == rulesNodeName;
+      });
+      if (childNodeRules != null) {
+        /* Process each division */
+        for(let childNodeDivision of childNodeRules.children) {
+          let divisionNodeChildren = childNodeDivision.children;
+          /* console.log(childNodeDivision); */
+          /* Process each site */
+          for(let childNodeSite of divisionNodeChildren) {
+            let siteNodeChildren = childNodeSite.children;
+            /* console.log(childNodeSite); */
+            /* console.log(siteNodeChildren); */
+            /* Process each rule */
+            for(let childNodeRule of siteNodeChildren) {
+              /* Create a new rule object */
+              let ruleObj = new Object;
+              /* Add some information to the rule object */
+              ruleObj.company = companyName;
+              ruleObj.actualRule = childNodeRule;
+              /* Increment the rule number */
+              ruleNumber++;
+              /* Build the array that contains the company number
+                 and the rule number */
+              let identityArray = [];
+              identityArray.push(companyNumber);
+              identityArray.push(ruleNumber);
+              ruleObj.identity = identityArray;
+              rulesArray.push(ruleObj);
+            } 
+          }
         }
       }
       /* Store all of the rules in the company object */
@@ -1712,7 +1727,10 @@ class HDLmTree {
      exist. The eventual site node is returned to the caller.
      The caller must pass a complete node path all the way down
      to the site node. */
-  static buildSiteNode(passedNodePath, updateDatabase, nodeType) {
+  static buildSiteNode(passedNodePath, 
+                       updateDatabase, 
+                       updateFancyTree,
+                       nodeType) {
     /* Check the value(s) passed by the caller */
     if (typeof passedNodePath != 'object') {
       let errorText = `Node path value (${passedNodePath}) passed to buildSiteNode is not an object`;
@@ -1756,7 +1774,7 @@ class HDLmTree {
       /* At this point we may (or may not) want to do a lot of work
          to create a Fancytree node for the new company tree node */
       /* console.log(HDLmGlobals.activeEditorType); */
-      if (!HDLmGlobals.checkForInlineEditorOrGems()) 
+      if (!HDLmGlobals.checkForInlineEditorOrGems() && updateFancyTree) 
         HDLmTree.createCurrentFancytree(companyTreeNode);
     }
     /* At this point we should always be able to locate the
@@ -1796,7 +1814,7 @@ class HDLmTree {
          to create a Fancytree node for the new divison tree node */
       /* console.log(HDLmGlobals.checkForInlineEditorOrGems()); */
       /* console.log(HDLmGlobals.activeEditorType); */
-      if (!HDLmGlobals.checkForInlineEditorOrGems())
+      if (!HDLmGlobals.checkForInlineEditorOrGems() && updateFancyTree)
         HDLmTree.createCurrentFancytree(divisionTreeNode);
     }
     /* Add the site node, if need be */
@@ -1814,7 +1832,7 @@ class HDLmTree {
                                             divisionTreeNode, updateDatabase);
       /* At this point we may (or may not) want to do a lot of work
          to create a Fancytree node for the new site tree node */
-      if (!HDLmGlobals.checkForInlineEditorOrGems())
+      if (!HDLmGlobals.checkForInlineEditorOrGems() && updateFancyTree)
         HDLmTree.createCurrentFancytree(siteTreeNode);
     }
     return siteTreeNode;
@@ -1848,11 +1866,7 @@ class HDLmTree {
       subPos = parentTreeNode.children.length;
     /* Insert the new subnode in the correct position */
     parentTreeNode.children.splice(subPos, 0, newTreeNode);
-    if (newNodeType == 'company') {
-      /* Build the standard/required subnodes of the company node
-         and add them to the company node */
-      HDLmMenus.buildCompanyNode(newTreeNode, updateDatabase);
-    }
+
     HDLmPass.addMissingPassObject(parentTreeNode);
     /* Add the new tree node to the list (actually an array) of
        pending inserts. Eventually, all of these nodes will be
@@ -1860,6 +1874,17 @@ class HDLmTree {
     if (updateDatabase == true) {
       let processSubNodes = false;
       HDLmTree.addPendingInserts(newTreeNode, processSubNodes);
+    }
+    /* Build the standard/required subnodes of the company node
+       and add them to the company node. The standard subnodes
+       are built after the insert for the company node is added 
+       to the pending inserts list because the inserts for the 
+       standard subnodes must come after the insert for the
+       company node. */
+    if (newNodeType == 'company') {
+      /* Build the standard/required subnodes of the company node
+         and add them to the company node */
+      HDLmMenus.buildCompanyNode(newTreeNode, updateDatabase);
     }
     return newTreeNode;
   }
@@ -3809,6 +3834,34 @@ class HDLmTree {
     ajaxPromise = HDLmTree.passDeleteRowsFromDatabase(treeIdArray, treeInfoArray);
     return ajaxPromise;
   }
+  /* This code inserts one or more rows into the database. One row
+     is created for each node of the tree. The caller passes the top
+     node of the tree. Note that this may not be the overall top node
+     of the tree. */
+  static passInsertOneTreePos(treePos) {
+    /* Declare and define a few variables */
+    let ajaxPromise;
+    /* Build the content string for use below. */
+    let content = HDLmUtility.getContentString();
+    /* Get the data values from a tree of nodes */
+    let treeDataArray = [];
+    HDLmTree.buildInfoArray(treeDataArray, treePos);
+    /* Insert all of the rows associated with the tree */
+    ajaxPromise = HDLmTree.passInsertRows(content, treeDataArray);
+    /* We can now wait from the Promise to complete */
+    ajaxPromise.then(function (responseText) {
+      let responseJson = JSON.parse(responseText);
+      let treeIdArray = [];
+      HDLmTree.getIdValuesFromResponseJson(responseJson, treeIdArray, treePos);
+      /* The ID values returned by the insert must be stored in each
+         node in the node tree */
+      HDLmTree.resetIdValues(treeIdArray, treeDataArray);
+    }, function (errorText) {
+      /* console.log(errorText); */
+      HDLmError.buildError('Error', 'Insert(s) failure', 14, errorText);
+    });
+    return ajaxPromise;
+  }
   /* This code converts one node of the node tree (not the Fancytree)
      to a string and sends it to the server. This has the effect of inserting
      one node as one row. The node can be a company node, a division node,
@@ -3873,7 +3926,7 @@ class HDLmTree {
     let requestAJAXAsyncTrue = true;
     ajaxPromise = HDLmAJAX.runAJAX('URL', requestAJAXAsyncTrue, URL, userid, password, 'post', inStr);
     return ajaxPromise;
-  }
+  }  
   /* This code inserts zero or more rows into the database. The caller
      passes an array with zero or more entries. A Promise is returned
      to the caller. When the Promise resolves, the insert operation is
@@ -3944,34 +3997,6 @@ class HDLmTree {
        encoding is now done by the call below in some cases. */
     let requestAJAXAsyncTrue = true;
     ajaxPromise = HDLmAJAX.runAJAX('URL', requestAJAXAsyncTrue, URL, userid, password, 'post', inStr);
-    return ajaxPromise;
-  }
-  /* This code inserts one or more rows into the database. One row
-     is created for each node of the tree. The caller passes the top
-     node of the tree. Note that this may not be the overall top node
-     of the tree. */
-  static passInsertOneTreePos(treePos) {
-    /* Declare and define a few variables */
-    let ajaxPromise;
-    /* Build the content string for use below. */
-    let content = HDLmUtility.getContentString();
-    /* Get the data values from a tree of nodes */
-    let treeDataArray = [];
-    HDLmTree.buildInfoArray(treeDataArray, treePos);
-    /* Insert all of the rows associated with the tree */
-    ajaxPromise = HDLmTree.passInsertRows(content, treeDataArray);
-    /* We can now wait from the Promise to complete */
-    ajaxPromise.then(function (responseText) {
-      let responseJson = JSON.parse(responseText);
-      let treeIdArray = [];
-      HDLmTree.getIdValuesFromResponseJson(responseJson, treeIdArray, treePos);
-      /* The ID values returned by the insert must be stored in each
-         node in the node tree */
-      HDLmTree.resetIdValues(treeIdArray, treeDataArray);
-    }, function (errorText) {
-      /* console.log(errorText); */
-      HDLmError.buildError('Error', 'Insert(s) failure', 14, errorText);
-    });
     return ajaxPromise;
   }
   /* This code reads all of the rows from the database and returns

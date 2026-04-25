@@ -7,12 +7,23 @@
  * @author Peter
  */
 "use strict";
-/* The following boolean controls if the new AI code 
-   is used or not. If true, the new code is used. If   
-   should be set to false to use the old code. */
-let useNewAI; 
-useNewAI = false;
-useNewAI = true;
+/* The following string controls what type and version 
+   of the AI code is used. If the string is set to 'OpenAINew',
+   the new OpenAI code is used. If the string is set to 'OpenAIOld', 
+   the old OpenAI code is used. If the string is set to 'OpenRouterV1',
+   then version 1 of the Open Router code is used. If the string is set
+   to 'OpenRouterV2', then version 2 of the OpenRouter code is used. 
+   If the string is set to 'OpenRouterV3', then version 3 of the 
+   OpenRouter code is used. If the string is set to 'OpenRouterV4',
+   then version 4 of the OpenRouter code is used.*/ 
+let useAIVersion;
+useAIVersion = 'OpenAIOld';
+useAIVersion = 'OpenAINew';
+useAIVersion = 'OpenRouterV1'; 
+useAIVersion = 'OpenRouterV2';
+useAIVersion = 'OpenRouterV3';
+useAIVersion = 'OpenRouterV4'; 
+useAIVersion = 'OpenRouterV4';
 /* The next integer controls the number of improvements 
    to request from the LLM */
 const improvementsQuantity = 3;
@@ -88,6 +99,8 @@ const actionsList = [
                         action: '' },  
                       { name:   'Show all rules', 
                         action: '' }, 
+                      { name:   'Turn off rule(s)', 
+                        action: '' }, 
                       { name:   'Undo changes', 
                         action: '' },
                       { name:   'Redo changes', 
@@ -115,6 +128,8 @@ class HDLmManageRules {
     /* Find the rules in local storage */
     let ruleIdList = HDLmManageRules.ruleIdsList(HDLmManageRules.ruleIdsArray);
     for (let ruleIdValue of ruleIdList) {
+      /* console.log(ruleIdList.length); */
+      /* console.log(HDLmManageRules.ruleIdsArray.length); */
       /* Get the company number and the rule number */
       let companyNumber = ruleIdValue[0];
       let ruleNumber = ruleIdValue[1];
@@ -125,10 +140,42 @@ class HDLmManageRules {
       HDLmManageRules.ruleIdsArray = ruleIdsArray;
       /* Delete the rule from local storage. The rule is not
          actually deleted. Instead it is marked as deleted. */
-      let deletedRule = HDLmManageRules.companiesArray[companyNumber-1].rules[ruleNumber-1];      
+      let companyEntry = HDLmManageRules.getCompany(companyNumber);
+      let companyRules = null;
+      if (companyEntry != null)
+        companyRules = companyEntry.rules;
+      let deletedRule = null;
+      if (Array.isArray(companyRules) == true)
+        deletedRule = companyRules[ruleNumber-1];
+      if (deletedRule == null ||
+          deletedRule.actualRule == null) {
+        HDLmManageRules.displayErrorMessage('The selected rule could not be found');
+        continue;
+      }
+      /* Check if the rule has already been marked as deleted.
+         There is no need to delete a rule more than once. 
+         This check is needed to prevent a locate error on
+         the host (in the Java code). */         
+      if (deletedRule.hasOwnProperty('deleted') == true &&
+          deletedRule.deleted == true) {
+        continue;
+      }
       deletedRule.deleted = true;
       /* Add the rule to the list of deleted rules */
       rulesDeletedList.push(deletedRule);
+      /* Add the deleted rule to the list of deleted
+         rules. This list is check later to find a bug. */
+      let tempDeletedRule = {};
+      tempDeletedRule = Object.assign(tempDeletedRule, deletedRule);
+      HDLmManageRules.deletedRulesList.push(tempDeletedRule);
+      /* Check for a duplicate rule name in the deleted rules 
+         list. This is a bug check. If there are duplicate rule 
+         names in the deleted rules list, this indicates a bug.
+         The code below allows us to set a breakpoint and check 
+         the state of the code when a duplicate rule name is found. */
+      let localCount = HDLmManageRules.lookForDuplicateRuleNames(deletedRule, HDLmManageRules.deletedRulesList);
+      if (localCount > 1) 
+        localCount = localCount;
       /* The actual rule is one of the properties of the deletedRule
          object. */
       let deletedRuleActualRule = deletedRule.actualRule;
@@ -144,10 +191,9 @@ class HDLmManageRules {
     /* Force a re-render of the rules */
     HDLmManageRules.forceReRender();
   }
-
   /* Generate a set of rules */
   static async actionGenerateRules() {
-     /* console.log('In HDLmManageRules.actionGenerateRules'); */ 
+    /* console.log('In HDLmManageRules.actionGenerateRules'); */ 
     let checkRuleSelectedFalse = false;
     let checkDomainNameTrue = true;
     let errorText;
@@ -165,14 +211,46 @@ class HDLmManageRules {
       /* Call the web page improver to generate some rules */
       let localWebpageDomainName = HDLmManageRules.webpageDomainName;
       let localWebpageDomainNameWPrefix = HDLmUtility.addHttpsPrefixDoubleSlash(localWebpageDomainName);
-      /* Check if the new or old AI code should be used */
-      if (useNewAI == false) {       
-        rulesGeneratedList = await HDLmManageRules.webpageImproverRunServicesOld(HDLmManageRules.suggestionText,
-                                                                                 localWebpageDomainNameWPrefix);
-      }                                                                           
-      else {
-        rulesGeneratedList = await HDLmManageRules.webpageImproverRunServicesNew(HDLmManageRules.suggestionText,
-                                                                                 localWebpageDomainNameWPrefix);
+      /* Check what type and version of the AI code should be used. This is controlled
+         by the useAIVersion string. */
+      switch (useAIVersion) {
+        case 'OpenAIOld': {
+          rulesGeneratedList = await HDLmManageRules.webpageImproverRunServicesOpenAIOld(HDLmManageRules.suggestionText,
+                                                                                         localWebpageDomainNameWPrefix);
+          break; 
+        }
+        case 'OpenAINew': {
+          rulesGeneratedList = await HDLmManageRules.webpageImproverRunServicesOpenAINew(HDLmManageRules.suggestionText,
+                                                                                         localWebpageDomainNameWPrefix);
+          break; 
+        }
+        case 'OpenRouterV1': {
+          rulesGeneratedList = await HDLmManageRules.webpageImproverRunServicesOpenRouterV1(HDLmManageRules.suggestionText,
+                                                                                            localWebpageDomainNameWPrefix);
+          break; 
+        }
+        case 'OpenRouterV2': {
+          rulesGeneratedList = await HDLmManageRules.webpageImproverRunServicesOpenRouterV2(HDLmManageRules.suggestionText,
+                                                                                            localWebpageDomainNameWPrefix);
+          break; 
+        }
+        case 'OpenRouterV3': {
+          rulesGeneratedList = await HDLmManageRules.webpageImproverRunServicesOpenRouterV3(HDLmManageRules.suggestionText,
+                                                                                            localWebpageDomainNameWPrefix);
+          break; 
+        }
+        case 'OpenRouterV4': {
+          rulesGeneratedList = await HDLmManageRules.webpageImproverRunServicesOpenRouterV4(HDLmManageRules.suggestionText,
+                                                                                            localWebpageDomainNameWPrefix);
+          break; 
+        }
+        /* Report an error if the AI type and version did not match one 
+           of the expected choices */
+        default: {
+          let errorString = useAIVersion;
+          HDLmError.buildError('Error', 'Invalid type', 88, errorString);
+          break;
+        }
       }
     }
     /* The else routine is just for testing. The following code
@@ -234,12 +312,16 @@ class HDLmManageRules {
     /* Check if any errors were detected */
     if (errorText != null)  
       return; 
-    /* Find the rules in local storage */
-    let ruleIdList = HDLmManageRules.ruleIdsList(HDLmManageRules.ruleIdsArray);
+    /* Find the rules in local storage */      
+    let ruleIdList = HDLmManageRules.ruleIdsList(HDLmManageRules.ruleIdsArray);       
     for (let ruleIdValue of ruleIdList) {
       let companyNumber = ruleIdValue[0];
       let ruleNumber = ruleIdValue[1];
       let rule = HDLmManageRules.getTreeRule(companyNumber, ruleNumber);
+      if (rule == null) {
+        HDLmManageRules.displayErrorMessage('The selected rule could not be found');
+        continue;
+      }
       /* Check if the rule is already in production */
       let localUseMode = '';
       if (rule.details.hasOwnProperty('usemode'))
@@ -263,7 +345,12 @@ class HDLmManageRules {
       let rulesArray = []; 
       let companiesArray = HDLmManageRules.companiesArray; 
       let currentCompany = companiesArray[companyNumber-1]; 
-      for (let ruleEntry of currentCompany.rules) {
+      let currentCompanyRules = null;
+      if (currentCompany != null)
+        currentCompanyRules = currentCompany.rules;
+      if (Array.isArray(currentCompanyRules) == false)
+        currentCompanyRules = [];
+      for (let ruleEntry of currentCompanyRules) {
         rulesArray.push(ruleEntry.actualRule);
       }
       /* Find the most used use mode. This is done by looking
@@ -322,11 +409,15 @@ class HDLmManageRules {
     if (errorText != null)
       return;
     /* Find the rules in local storage */
-    let ruleIdList = HDLmManageRules.ruleIdsList(HDLmManageRules.ruleIdsArray);
+    let ruleIdList = HDLmManageRules.ruleIdsList(HDLmManageRules.ruleIdsArray);     
     for (let ruleIdValue of ruleIdList) {
       let companyNumber = ruleIdValue[0];
       let ruleNumber = ruleIdValue[1];
       let rule = HDLmManageRules.getTreeRule(companyNumber, ruleNumber);
+      if (rule == null) {
+        HDLmManageRules.displayErrorMessage('The selected rule could not be found');
+        continue;
+      }
       /* Check if the rule is already in production */
       let localUseMode = '';
       if (rule.details.hasOwnProperty('usemode'))
@@ -511,7 +602,7 @@ class HDLmManageRules {
        mode rules are changed. Production mode rules are
        ignored. */
     let companyRulesStr = HDLmManageRules.setRulesOff(companyNumber, ruleNumber);
-    let sendStr = '{"rules": ' + '[' + companyRulesStr + ']' + '}';
+    let sendStr = '{"nodes": ' + '[' + companyRulesStr + ']' + '}';
     /* Try to send the rules to the server */
     if (1 == 1) {
       let sendPromise = HDLmWebSockets.sendStoreTreeNodesRequest(sendStr);
@@ -526,6 +617,53 @@ class HDLmManageRules {
        needed if just one rule has been moved. */
     HDLmManageRules.forceReRender();    
   } 
+  /* This routine is executed when the user requests that
+     rule(s) should be turned off */
+  static actionTurnOffRules() {
+    /* console.log('In HDLmManageRules.actionTurnOffRules'); */
+    let checkRuleSelectedTrue = true;
+    let checkDomainNameFalse = false;
+    let errorText;
+    let rulesTurnedOffList = [];
+    let webpageDomainName;
+    [errorText, webpageDomainName] = HDLmManageRules.startAnAction(checkRuleSelectedTrue,
+                                                                   checkDomainNameFalse);
+    /* Check if any errors were detected */
+    if (errorText != null)
+      return;
+    /* Find the rules in local storage */
+    let ruleIdList = HDLmManageRules.ruleIdsList(HDLmManageRules.ruleIdsArray);
+    for (let ruleIdValue of ruleIdList) {
+      let companyNumber = ruleIdValue[0];
+      let ruleNumber = ruleIdValue[1];
+      let rule = HDLmManageRules.getTreeRule(companyNumber, ruleNumber);
+      if (rule == null) {
+        HDLmManageRules.displayErrorMessage('The selected rule could not be found');
+        continue;
+      }
+      let previousUseMode = '';
+      if (rule.details.hasOwnProperty('usemode'))
+        previousUseMode = rule.details.usemode;
+      let localUseMode = previousUseMode.toLowerCase();
+      if (localUseMode == 'off') {
+        let ruleName = rule.details.name;
+        errorText = "Rule '" + ruleName + "' is already turned off";
+        HDLmManageRules.displayErrorMessage(errorText);
+        continue;
+      }
+      rule.details.usemode = 'off';
+      rulesTurnedOffList.push(rule);
+      rulesTurnedOffList.push(previousUseMode);
+      HDLmWebSockets.sendUpdateTreeNodeRequest(rule);
+    }
+    /* Check if any rules were actually turned off. If rules
+       were turned off, we need to add an undo / redo entry. */
+    if (rulesTurnedOffList.length > 0)
+      HDLmUnRe.addActionOff(rulesTurnedOffList);
+    /* Force a re-render of the rules. This step is needed
+       to show the change in the rules. */
+    HDLmManageRules.forceReRender();
+  }
   /* This routine is executed when the user requests that 
      changes be undone */
   static actionUndoChanges() {
@@ -557,6 +695,15 @@ class HDLmManageRules {
           }
           break;
         } 
+        /* Redo a turn off rules event */
+        case HDLmUnReTypes.actionOff: {
+          for (let i = 0; i < rulesArray.length; i += 2) {
+            let rule = rulesArray[i];
+            rule.details.usemode = 'off';
+            HDLmWebSockets.sendUpdateTreeNodeRequest(rule);
+          }
+          break;
+        }
         /* Redo a move into production rules event */
         case HDLmUnReTypes.actionProd: {
           for (let rule of rulesArray) {
@@ -646,6 +793,16 @@ class HDLmManageRules {
               delete rule.deleted;
             /* The rule should be sent to the server */
             HDLmManageRules.sendNewRulesToServer([rule]);  
+          }
+          break;
+        }
+        /* Undo a turn off rules event */
+        case HDLmUnReTypes.actionOff: {
+          for (let i = 0; i < rulesArray.length; i += 2) {
+            let rule = rulesArray[i];
+            let previousUseMode = rulesArray[i+1];
+            rule.details.usemode = previousUseMode;
+            HDLmWebSockets.sendUpdateTreeNodeRequest(rule);
           }
           break;
         }
@@ -923,8 +1080,9 @@ class HDLmManageRules {
     actionsArray[6].action = HDLmManageRules.actionShowProdRules;
     actionsArray[7].action = HDLmManageRules.actionShowTestRules;
     actionsArray[8].action = HDLmManageRules.actionShowAllRules;
-    actionsArray[9].action = HDLmManageRules.actionUndoChanges;
-    actionsArray[10].action = HDLmManageRules.actionRedoChanges;
+    actionsArray[9].action = HDLmManageRules.actionTurnOffRules;
+    actionsArray[10].action = HDLmManageRules.actionUndoChanges;
+    actionsArray[11].action = HDLmManageRules.actionRedoChanges;
     /* Process each of the companies in the companies array */
     for (let actionEntry of actionsArray) {
       /* Create a React element for the current action */
@@ -940,6 +1098,18 @@ class HDLmManageRules {
                                                                  actionsArrayElements);
     /* Return the actions element to the caller */
     return actionsElement;
+  }
+  /* This routine is passed a function for updating the compoent
+     state and a rule IDs array (which might be a null value).
+     The component state is updated with the rule IDs array. 
+     This will probably force React to (re)render the component. */      
+  static buildAndSetRuleIdsValue(setStateFunction, ruleIdsArray) {
+    /* console.log('In HDLmManageRules.buildAndSetRuleIdsValue'); */
+    /* console.log(setStateFunction, ruleIdsArray); */
+    /* Store the rule IDs array in the component state */
+    setStateFunction(ruleIdsArray); 
+    /* Return the rule IDs array to the caller */
+    return ruleIdsArray;
   }
   /* This routine builds a companies React element from 
      an array of companies. The companies array is
@@ -979,12 +1149,18 @@ class HDLmManageRules {
      an array of companies. The companies array is passed to
      this routine as a parameter. The React element is 
      returned to the caller. */
-  static buildCompaniesSelectElement(companiesArray, setSelectedCompany) {  
+  static buildCompaniesSelectElement(companiesArray,
+                                     setSelectedCompany,
+                                     ignoreCheckboxesFunction = null) {  
     /* console.log('In HDLmManageRules.buildCompaniesSelectElement'); */
     /* console.log(companiesArray); */
     /* Create an array to hold the company checkbox ID values */
     let idValueArray = [];
-    let onRowClick = (event) => { /* Get rid of any existing error text */
+    let onRowClick = (event) => { /* Ignore checkbox clicks when the new company input is active */
+                                  if (ignoreCheckboxesFunction != null &&
+                                      ignoreCheckboxesFunction() == true)
+                                    return;
+                                  /* Get rid of any existing error text */
                                   HDLmManageRules.clearErrorText();
                                   let fieldId = event.target.id;
                                   let fieldValue = event.target.value;
@@ -1061,6 +1237,8 @@ class HDLmManageRules {
     tableRowsArray.push(headerTrElement);
     /* Build a row for each rule in the current company */
     let companyRulesArray = oneCompany.rules;
+    if (Array.isArray(companyRulesArray) == false)
+      companyRulesArray = [];
     for (let companyRule of companyRulesArray) {
       /* get some information about the current rule */
       let companyNumber = companyRule.identity[0];
@@ -1097,17 +1275,18 @@ class HDLmManageRules {
          also used as the component state. This force a full 
          rerender by React. */      
       let onRowClick = (event) => { /* Get rid of any existing error text */
-                                    HDLmManageRules.clearErrorText()
+                                    HDLmManageRules.clearErrorText();                               
                                     /* Get a few of the original values */ 
                                     let originalCompanyNumber = companyRule.identity[0];
                                     let originalRuleNumber = companyRule.identity[1];
+                                    /* console.log('Original rule number = ' + originalRuleNumber); */
                                     /* console.log(originalCompanyNumber, originalRuleNumber);  */
                                     /* Check if the original values can be found in the
-                                        rule IDs array. If this is correct, remove them.
-                                        Otherwise, add them to rule IDs array. */
+                                       rule IDs array. If this is correct, remove them.
+                                       Otherwise, add them to rule IDs array. */
                                     let originalRuleid = HDLmManageRules.ruleIdsCheck(HDLmManageRules.ruleIdsArray,
                                                                                       originalCompanyNumber,
-                                                                                      originalRuleNumber);
+                                                                                      originalRuleNumber);                                                             
                                     let originalCheck = (originalRuleid != null) ? true : false;  
                                     /* Check if the original values were found */
                                     let ruleIdsArray;
@@ -1117,48 +1296,53 @@ class HDLmManageRules {
                                           If so, we may need to add more than one row. */
                                       let localRuleNumber = originalRuleNumber;
                                     if (event.shiftKey == true) {
+                                      /* console.log(HDLmManageRules.ruleIdsArray.length); */
+                                      /* console.log(HDLmManageRules.ruleIdsArray); */
                                       localRuleNumber = HDLmManageRules.ruleIdsShiftAdd(HDLmManageRules.ruleIdsArray,
                                                                                         originalCompanyNumber,
                                                                                         originalRuleNumber);
+                                      /* console.log(HDLmManageRules.ruleIdsArray.length); */
+                                      /* console.log(HDLmManageRules.ruleIdsArray); */
                                     }                                      
                                     ruleIdsArray = HDLmManageRules.ruleIdsAdd(HDLmManageRules.ruleIdsArray,
                                                                               originalCompanyNumber,
                                                                               localRuleNumber);
-                                    HDLmUnRe.addActionSelect([originalCompanyNumber, localRuleNumber]);                                          
+                                    HDLmUnRe.addActionSelect([originalCompanyNumber, localRuleNumber]);                                                                              
                                   }
                                   else {
                                     /* Check if the shift key is being held down. 
                                         If so, we may need to remove more than one row. */
                                     let localRuleNumber = originalRuleNumber;
-                                    if (event.shiftKey == true) {
+                                    if (event.shiftKey == true) {                                     
                                       localRuleNumber = HDLmManageRules.ruleIdsShiftRemove(HDLmManageRules.ruleIdsArray,
                                                                                             originalCompanyNumber,
-                                                                                            originalRuleNumber);
+                                                                                            originalRuleNumber);                                                        
                                     }
                                     ruleIdsArray = HDLmManageRules.ruleIdsRemove(HDLmManageRules.ruleIdsArray,
                                                                                   originalCompanyNumber,
                                                                                   localRuleNumber);
                                     HDLmUnRe.addActionUnselect([originalCompanyNumber, localRuleNumber]);  
-                                  }                                               
+                                  }        
+                                  /* console.log(ruleIdsArray); */
                                   HDLmManageRules.ruleIdsArray = ruleIdsArray;
                                   HDLmManageRules.buildAndSetRuleIdsValue(HDLmManageRules.stateSetFunction,
-                                                                          ruleIdsArray);
+                                                                          ruleIdsArray);                                                                                
                                   /* console.log(HDLmManageRules.ruleIdsArray); */ };
       /* Show if the current row is selected or not */  
       let rowClassName;    
       if (HDLmManageRules.ruleIdsArray == null ||
           HDLmManageRules.ruleIdsArray.length == 0) {
-        rowClassName = '';
+        rowClassName = '';           
         /* console.log('Null values found', HDLmManageRules.ruleIdsArray); */
       }
       else {       
         /* console.log('About to check'); */
         let currentIdentity = companyRule.identity;
         let currentCompanyNumber = currentIdentity[0];
-        let currentRuleNumber = currentIdentity[1];
+        let currentRuleNumber = currentIdentity[1];          
         let currentRuleid = HDLmManageRules.ruleIdsCheck(HDLmManageRules.ruleIdsArray,
                                                          currentCompanyNumber,
-                                                         currentRuleNumber);
+                                                         currentRuleNumber);                                              
         let currentCheck = (currentRuleid != null) ? true : false;                                                  
         /* console.log('Current check', currentCheck, HDLmManageRules.ruleIdsArray); */
         rowClassName = (currentCheck) ? 'row-highlighted' : '';
@@ -1281,18 +1465,6 @@ class HDLmManageRules {
     /* Return the list to the caller */
     return ruleIdList;
   }
-  /* This routine is passed a function for updating the compoent
-     state and a rule IDs array (which might be a null value).
-     The component state is updated with the rule IDs array. 
-     This will probably force React to (re)render the component. */      
-  static buildAndSetRuleIdsValue(setStateFunction, ruleIdsArray) {
-    /* console.log('In HDLmManageRules.buildAndSetRuleIdsValue'); */
-    /* console.log(setStateFunction, ruleIdsArray); */
-    /* Store the rule IDs array in the component state */
-    setStateFunction(ruleIdsArray); 
-    /* Return the rule IDs array to the caller */
-    return ruleIdsArray;
-  }
   /* This routine builds a style string that highlights 
      a class. The style string is returned to the caller. */   
   static buildStyleHighlight() {  
@@ -1382,6 +1554,69 @@ class HDLmManageRules {
     /* Return the React fragment element to the caller */ 
     return tempFragment;
   }
+  /* Check if the new company name is valid and not a duplicate */
+  static checkNewCompanyName(newCompanyName, companiesArray) {
+    let localCompanyName = newCompanyName;
+    if (typeof(localCompanyName) != 'string')
+      return ['The new company name must be a string', null];
+    localCompanyName = localCompanyName.trim().toLowerCase();
+    if (localCompanyName == '')
+      return ['The new company name is blank', null];
+    /* Normalize full URLs to host names and reject URL paths */
+    if (localCompanyName.startsWith('https://') ||
+        localCompanyName.startsWith('http://')) {
+      try {
+        let localUrlObj = new URL(localCompanyName);
+        if (localUrlObj.pathname != '/' ||
+            localUrlObj.search   != ''  ||
+            localUrlObj.hash     != '')
+          return ['The new company name must be a domain name only', null];
+        localCompanyName = localUrlObj.hostname;
+      }
+      catch (errorObj) {
+        console.error(errorObj);
+        return ['The new company name is not valid', null];
+      }
+    }
+    let localCompanyNameWPrefix = HDLmUtility.addHttpsPrefixDoubleSlash(localCompanyName);
+    let errorText = HDLmManageRules.checkUrlValid(localCompanyNameWPrefix);
+    if (errorText != '')
+      return ['The new company name is not a valid domain name', null];
+    for (let companyEntry of companiesArray) {
+      if (companyEntry.name.toLowerCase() == localCompanyName)
+        return ['The new company name is already in use', null];
+    }
+    return [null, localCompanyName];
+  }
+  /* Check if the server is reachable by sending a
+     server-status message over HTTP GET. This routine
+     returns true if the server is up and false if
+     the server is down. */
+  static async checkServerStatus() {
+    let requestAJAXAsyncTrue = true;
+    let requestType = 'URL';
+    let serverName = HDLmConfigInfo.getServerName();
+    let serverStatusStr = HDLmDefines.getString('HDLMSERVERSTATUS');
+    let urlStr = 'https://' + serverName + '/' + serverStatusStr;
+    let userid = '';
+    let password = '';
+    let httpType = 'get';
+    let extraInfo = '';
+    try {
+      await HDLmAJAX.runAJAX(requestType,
+                             requestAJAXAsyncTrue,
+                             urlStr,
+                             userid,
+                             password,
+                             httpType,
+                             extraInfo);
+      return true;
+    }
+    catch (errorObj) {
+      console.error(errorObj);
+      return false;
+    }
+  }
   /* Check if a URL is minimally valid. This routine returns a error
      text message if the URL is not valid. If the URL is valid, then
      this routine returns an empty string. */
@@ -1394,6 +1629,7 @@ class HDLmManageRules {
       let urlObj = new URL(urlStr);
     }
     catch (errorObj) {
+      console.error(errorObj);
       errorText = errorObj.message;
       return errorText;
     }
@@ -1414,6 +1650,120 @@ class HDLmManageRules {
   static clearErrorText() {
     /* console.log('In HDLmManageRules.clearErrorText'); */
     HDLmUtility.setErrorText('');
+  }
+  /* Construct a script based on the information passed
+     to this routine. The new script string is returned
+     to the caller.  */
+  static constructScript(markupObj) {
+     /* console.log('In HDLmManageRules.constructScript'); */
+    let scriptValid = false;
+    let stylesStr = '';
+    let stylesValid = false;
+    let overallValid = false;
+    let overallStr = '';
+    /* Extract some values from the markup object */
+    let scriptStr = markupObj.scriptInsertions;
+    let styleStr = markupObj.styleInsertions;
+    /* Change the script in a few ways. The regular expressions
+       below remove the leading and trailing 'script' tags and
+       some new line characters. */
+    /* console.log(scriptStr); */
+    scriptStr = scriptStr.replace(/^<script((\s)+type(\s)*=(\s)*(?<quotechar>'|")text\/javascript(\k<quotechar>))?>(\n)*/g, "");
+    scriptStr = scriptStr.replace(/(\n)*<\/script>/, "");
+    /* Check if the JavaScript script starts and/or ends
+       with a new line. If it does, remove the new line
+       from the start or end or both. This code is no
+       longer needed. The regular expressions above do
+       the same work. */
+    /*
+    if (scriptStr.startsWith('\n'))
+      scriptStr = scriptStr.substring(1);
+    if (scriptStr.endsWith('\n')) {
+      let scriptStrLen = scriptStr.length;
+      if (scriptStrLen > 0)
+        scriptStrLen -= 1;
+      scriptStr = scriptStr.substring(0, scriptStrLen);
+    }
+    */
+    /* Check if the script is valid JavaScript */
+    scriptValid = HDLmHtml.checkJavaScriptCode(scriptStr);
+    /* If the script is not valid JavaScript, log the script to the
+       console. This is useful for debugging purposes. */
+    if (!scriptValid)
+      HDLmUtility.logStringInParts('Script', scriptStr);
+    /* scriptValid = false; */
+    /* Check if the script is valid JavaScript. If the script is not
+       valid JavaScript, then we can't do anything. */
+    if (!scriptValid)
+      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];
+    /* At this point we want to work on the 'style' insertions. The first
+       step is too remove any 'style' tags and/or new line characters. */
+    styleStr = styleStr.replace(/^<style>(\n)*/g, "");
+    styleStr = styleStr.replace(/(\n)*<\/style>/, "");
+    /* The style string may actually contain several styles. The
+       first step is break up the style string into individual
+       styles. The individual styles are return in an array. */
+    let styleArray = HDLmHtml.splitCssString(styleStr);
+    /* In some cases, the style string may be empty. In this case, we want
+       to add an empty string to the style array. This is because we want
+       to run the code that adds styles to the web page at least once, 
+       even if there are no styles to add. This is a bug fix (as of 20126/3/17). */
+    /* temp code */
+    let styleArrayLen = styleArray.length;
+    if (styleArrayLen == 0) {
+      styleArray.push('');
+      console.log('In HDLmManageRules.constructScript', ':', 'Empty style string found');
+    }
+    /* Process each of the styles */
+    for (styleStr of styleArray) {
+      /* The next step is to escape any single quotes in the style string.
+         This is done because the style string is going to be assigned to
+         a JavaScript variable. */
+      styleStr = styleStr.replace(/\'/g, "\\'");
+      /* The next step is to escape any new line characters in the style
+         string. This is done because the style string is going to be
+         assigned to a JavaScript variable. The inspiration for this code
+         came from https://github.com/benjamn/recast/issues/421. */
+      styleStr = styleStr.replace(/\n/g, "\\n");
+      /* Build some more JavaScript code. This JavaScript code is used to
+         add the style string to the web page. */
+      let styleScript = '';
+      styleScript += '\n';
+      styleScript += '{\n';
+      styleScript += '  var styleSheet = document.createElement("style");\n';
+      styleScript += '  styleSheet.textContent = ' + "'" + styleStr + "'" + ';' + '\n';
+      styleScript += '  document.head.appendChild(styleSheet);\n';
+      styleScript += '}';
+      /* Add the style script to the styles script string */
+      stylesStr += styleScript;
+    }
+    /* Check if the script built to add style information
+       is valid JavaScript */
+    stylesValid = HDLmHtml.checkJavaScriptCode(stylesStr);
+    /* If the styles string is not valid JavaScript, log the
+       styles string to the console. This is useful for
+       debugging purposes. */
+    if (!stylesValid)
+      HDLmUtility.logStringInParts('Styles', stylesStr);
+    /* Check if the script built to add style information
+       is valid JavaScript. If the script is not valid
+       JavaScript, then we can't do anything. */
+    if (!stylesValid)
+      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];
+    /* Check if the both the script string and the style string
+       are valid JavaScript. If both are valid, then the overall
+       JavaScript is valid. */
+    if (scriptValid && stylesValid) {
+      overallStr = scriptStr + stylesStr;
+      overallValid = true;
+    }
+    /* Either the script string or the style string is not valid
+       JavaScript */
+    else
+      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];
+    
+    /* Return the new script string to the caller */
+    return [overallStr, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];
   }
   /* Construct a tree node based on the information passed
      to this routine. The new tree node object is returned
@@ -1474,6 +1824,19 @@ class HDLmManageRules {
        first step is break up the style string into individual
        styles. The individual styles are return in an array. */
     let styleArray = HDLmHtml.splitCssString(styleStr);
+    /* In some cases, the style string may be empty. In this case, we want
+       to add an empty string to the style array. This is because we want
+       to run the code that adds styles to the web page at least once, 
+       even if there are no styles to add. This is a bug fix (as of 20126/3/17). */
+    let styleArrayLen = styleArray.length;
+    /* In some cases, the style string may be empty. In this case, we want
+       to report an error. The ifs below are separate deliberately. The goal 
+       is to ensure that are error is reported in all case. */ 
+    if (styleArrayLen == 0) 
+      console.log('In HDLmManageRules.constructTreeNode', ':', 'Empty style string found');
+    if (styleArrayLen == 0) {
+      styleArray.push('');
+    }
     /* Process each of the styles */
     for (styleStr of styleArray) {
       /* The next step is to escape any single quotes in the style string.
@@ -1541,10 +1904,16 @@ class HDLmManageRules {
     parentNodePath.push(nodePathEntry);
     /* Build all of the intermediate levels as need be. This call will
        update the node tree (HDLmTree) in memory and won't send any new
-       nodes to the database. */
+       nodes to the database. Note that we are building a site node far 
+       under the rules node. This is why we pass HDLmNodeTypes.rules as 
+       the last argument to HDLmTree.buildSiteNode. */
     let updateDatabaseFalse = false;
+    let updateFancyTreeFalse = false;
     let newSiteNode;
-    newSiteNode = HDLmTree.buildSiteNode(parentNodePath, updateDatabaseFalse, HDLmNodeTypes.rules);
+    newSiteNode = HDLmTree.buildSiteNode(parentNodePath, 
+                                         updateDatabaseFalse, 
+                                         updateFancyTreeFalse,
+                                         HDLmNodeTypes.rules);
     /* Try to locate the parent node of the new tree node. The
        parent node is needed to get the (possible) new name
        suffix. */
@@ -1555,7 +1924,7 @@ class HDLmManageRules {
       /* console.log('In HDLmManageRules.constructTreeNode', nodeString); */
       HDLmError.buildError('Error', 'Locate', 9, nodeString);
       /* This routine used to just return 'null' (without the quotes)
-         to the caller. However, the caller expects a list with two
+         to the caller. However, the caller expects a list with six
          values. */
       /* return null; */
       return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];
@@ -1629,6 +1998,276 @@ class HDLmManageRules {
     /* Return the new tree node object to the caller */
     return [treeNodeObj, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];
   }
+  /* Construct a tree node based on the information passed
+     to this routine. The new tree node object is returned
+     to the caller.  */
+  static constructTreeNodeFromScripts(urlStr, improveWhy, scriptsArray) {
+    /* console.log('In HDLmManageRules.constructTreeNodeFromScripts'); */
+    let nodePathEntry;
+    let nodeType = 'mod';
+    let ruleType = 'script'
+    /* Build a URL object from the URL string */
+    let urlObj = new URL(urlStr);
+    /* Get some information from the URL object */
+    let urlHostName = urlObj.hostname;
+    let urlPathName = urlObj.pathname;
+    /* Build the node path of the parent node (site) */
+    let parentNodePath = [];
+    nodePathEntry = HDLmDefines.getString('HDLMTOPNODENAME');
+    parentNodePath.push(nodePathEntry);
+    nodePathEntry = HDLmDefines.getString('HDLMCOMPANIESNODENAME');
+    parentNodePath.push(nodePathEntry);
+    parentNodePath.push(urlHostName);
+    nodePathEntry = HDLmDefines.getString('HDLMRULESNODENAME');
+    parentNodePath.push(nodePathEntry);
+    nodePathEntry = HDLmDefines.getString('HDLMDIVISIONNODENAME');
+    parentNodePath.push(nodePathEntry);
+    nodePathEntry = HDLmDefines.getString('HDLMSITENODENAME');
+    parentNodePath.push(nodePathEntry);
+    /* Build all of the intermediate levels as need be. This call will
+       update the node tree (HDLmTree) in memory and won't send any new
+       nodes to the database. Note that we are building a site node far 
+       under the rules node. This is why we pass HDLmNodeTypes.rules as 
+       the last argument to HDLmTree.buildSiteNode. */
+    let updateDatabaseFalse = false;
+    let updateFancyTreeFalse = false;
+    let newSiteNode;
+    newSiteNode = HDLmTree.buildSiteNode(parentNodePath, 
+                                         updateDatabaseFalse, 
+                                         updateFancyTreeFalse,
+                                         HDLmNodeTypes.rules);
+    /* Try to locate the parent node of the new tree node. The
+       parent node is needed to get the (possible) new name
+       suffix. */
+    let parentTreeNode = HDLmTree.locateTreeNode(parentNodePath);
+    /* Report an error if the parent node could not be found */
+    if (parentTreeNode == null) {
+      let nodeString = parentNodePath.toString();
+      /* console.log('In HDLmManageRules.constructTreeNode', nodeString); */
+      HDLmError.buildError('Error', 'Locate', 9, nodeString);
+      /* This routine used to just return 'null' (without the quotes)
+         to the caller. However, the caller expects a list with six
+         values. */
+      /* return null; */
+      return [null, overallValid, scriptValid, stylesValid, scriptStr, stylesStr];
+    }
+    /* The URL string is modified (possibly) to remove the suffix.
+       We don't want the suffix (and the period before the suffix)
+       to be part of the new modification name. This is the old
+       approach where the modification name was derived from the
+       URL. */
+    let urlStringModified = HDLmString.removeFileNameSuffix(urlStr);
+    if (urlStringModified == null)
+      urlStringModified = urlStr;
+    /* Get the new modification name */
+    let removeTailsFalse = false;
+    let quoteCharsSingleQuote = "'";
+    let ignoreSomeSingleQuotesTrue = true;
+    let newModName = HDLmMenus.buildModificationName(parentTreeNode,
+                                                     urlStringModified,
+                                                     ruleType,
+                                                     removeTailsFalse,
+                                                     quoteCharsSingleQuote,
+                                                     ignoreSomeSingleQuotesTrue);
+    /* Get the modification name from the why string */
+    let tempWhyValue = HDLmString.getCompleteWords(improveWhy, 55);
+    tempWhyValue = tempWhyValue.trim();
+    newModName = HDLmMenus.buildModificationName(parentTreeNode,
+                                                  tempWhyValue,
+                                                  ruleType,
+                                                  removeTailsFalse,
+                                                  quoteCharsSingleQuote,
+                                                  ignoreSomeSingleQuotesTrue);
+    /* console.log('New mod name = ' + newModName); */
+    /* Build the tooltip for the rule */
+    let longNameStr = HDLmMod.getModificationLongName(ruleType);
+    let tooltipStr = HDLmString.ucFirst(longNameStr);
+    tooltipStr += ' ' + 'modification'
+    /* Build the node path for the rule */
+    let newRuleNodePath = parentNodePath;
+    newRuleNodePath.push(newModName);
+    /* Creat a new node identification object for the
+       new rule. The node identification object is used
+       to locate a node in the HTML. The HTML node is
+       always the head node. */
+    let newNodeIdenObj = new HDLmNodeIden()
+    newNodeIdenObj.type = 'tag';
+    newNodeIdenObj.attributes = {};
+    newNodeIdenObj.attributes.tag = 'head';
+    newNodeIdenObj.counts = {};
+    newNodeIdenObj.counts.tag = 1;
+    newNodeIdenObj.parent = {};
+    newNodeIdenObj.parent.tag = 'html';
+    /* Create a new rule/modification/details object */
+    let newRuleObj = new HDLmMod(newModName, '', ruleType);
+    newRuleObj.pathvalue = urlPathName;
+    newRuleObj.comments = '';
+    newRuleObj.probability = 100.0;
+    newRuleObj.usemode = 'off';
+    newRuleObj.cssselector = '';
+    newRuleObj.xpath = '';
+    newRuleObj.find = [];
+    newRuleObj.nodeiden = newNodeIdenObj;
+    newRuleObj.parameter = 0;
+    /* newRuleObj.scripts = ['let aaa = 3;\nlet bbb = 4;']; */
+    newRuleObj.scripts = scriptsArray;
+    newRuleObj.updated = false;
+    /* Create a new tree node object */
+    let treeNodeObj = new HDLmTree(nodeType, tooltipStr);
+    treeNodeObj.details = newRuleObj
+    treeNodeObj.type = nodeType
+    treeNodeObj.nodePath = newRuleNodePath;
+    /* Return the new tree node object to the caller */
+    return treeNodeObj;
+  }
+  /* Add a new company to the local tree and send insert requests by websocket */
+  static async createNewCompany(newCompanyName) {
+    /* Create a few local variable */
+    let nodePathEntry;
+    let companiesNodePath = [];
+    /* Try to find the companies node in the tree.
+       The companies node is the parent node for 
+       all company nodes. */
+    nodePathEntry = HDLmDefines.getString('HDLMTOPNODENAME');
+    companiesNodePath.push(nodePathEntry);
+    nodePathEntry = HDLmDefines.getString('HDLMCOMPANIESNODENAME');
+    companiesNodePath.push(nodePathEntry);
+    let companiesTreeNode = HDLmTree.locateTreeNode(companiesNodePath);
+    if (companiesTreeNode == null)
+      return ['The companies node could not be found', null];
+    /* Check the company node already exists. If should be exist 
+       at this point. */
+    let companyNodePath = companiesNodePath.slice();
+    companyNodePath.push(newCompanyName);
+    let companyTreeNode = HDLmTree.locateTreeNode(companyNodePath);
+    if (companyTreeNode != null) {
+      return [`The company (${newCompanyName}) already exists`, null];
+    }
+    /* Build the new company tree node and add it the node tree.
+       The company node starts out with four subnodes. */
+    let companyTreeNodeType = HDLmDefines.getString('HDLMCOMPANYTYPE');
+    let companyTooltip = HDLmTree.getTooltip('newcompmod');
+    let updateDatabaseFalse = false;
+    let updateFancyTreeFalse = false;
+    companyTreeNode = HDLmTree.buildTreeNode(newCompanyName,
+                                             companyTreeNodeType,
+                                             companyTooltip,
+                                             companyNodePath,
+                                             companiesTreeNode,
+                                             updateDatabaseFalse);
+    /* Check if the new company really exists */
+    if (companyTreeNode == null)
+      return ['The new company could not be created', null];     
+    /* Build a node path for the site node under the new 
+       company. The site node is needed because the rules 
+       are stored under the site node. The site node is
+       built far down in the tree, so we have to build all 
+       of the intermediate nodes as well. */  
+    let parentNodePath = [];
+    nodePathEntry = HDLmDefines.getString('HDLMTOPNODENAME');
+    parentNodePath.push(nodePathEntry);
+    nodePathEntry = HDLmDefines.getString('HDLMCOMPANIESNODENAME');
+    parentNodePath.push(nodePathEntry);
+    parentNodePath.push(newCompanyName);
+    nodePathEntry = HDLmDefines.getString('HDLMRULESNODENAME');
+    parentNodePath.push(nodePathEntry);
+    nodePathEntry = HDLmDefines.getString('HDLMDIVISIONNODENAME');
+    parentNodePath.push(nodePathEntry);
+    nodePathEntry = HDLmDefines.getString('HDLMSITENODENAME');
+    parentNodePath.push(nodePathEntry); 
+    /* Build all of the intermediate levels as need be. This call will
+       update the node tree (HDLmTree) in memory and won't send any new
+       nodes to the database. Note that we are building a site node far
+       under the rules node. This is why we pass HDLmNodeTypes.rules as
+       the last argument to HDLmTree.buildSiteNode. */
+    let newSiteNode = HDLmTree.buildSiteNode(parentNodePath,
+                                             updateDatabaseFalse,
+                                             updateFancyTreeFalse,
+                                             HDLmNodeTypes.rules);
+    if (newSiteNode == null)
+      return ['The site node for the new company could not be created', null];
+    let nodesToInsertArray = [];
+    /* Create the insert for the company node */
+    let nodePath = parentNodePath.slice(0, 3);
+    let currentNode = HDLmTree.locateTreeNode(nodePath);
+    if (currentNode != null &&
+        (currentNode.hasOwnProperty('id') == false ||
+      currentNode.id == null))
+    nodesToInsertArray.push(HDLmManageRules.createTreeNodeInsertString(currentNode));
+    /* Create the insert for the data node */
+    nodePath.push(HDLmDefines.getString('HDLMDATANODENAME'));
+    currentNode = HDLmTree.locateTreeNode(nodePath);
+    if (currentNode != null &&
+        (currentNode.hasOwnProperty('id') == false ||
+         currentNode.id == null))
+      nodesToInsertArray.push(HDLmManageRules.createTreeNodeInsertString(currentNode));
+    nodePath.pop();  
+    /* Create the insert for the ignore lists node */
+    nodePath.push(HDLmDefines.getString('HDLMIGNORELISTSNODENAME'));
+    currentNode = HDLmTree.locateTreeNode(nodePath);
+    if (currentNode != null &&
+        (currentNode.hasOwnProperty('id') == false ||
+         currentNode.id == null))
+      nodesToInsertArray.push(HDLmManageRules.createTreeNodeInsertString(currentNode));
+    nodePath.pop();  
+    /* Create the insert for the reports node */
+    nodePath.push(HDLmDefines.getString('HDLMREPORTSNODENAME'));
+    currentNode = HDLmTree.locateTreeNode(nodePath);
+    if (currentNode != null &&
+        (currentNode.hasOwnProperty('id') == false ||
+         currentNode.id == null))
+      nodesToInsertArray.push(HDLmManageRules.createTreeNodeInsertString(currentNode));
+    nodePath.pop();  
+    /* Create the insert for the rules node */
+    nodePath.push(HDLmDefines.getString('HDLMRULESNODENAME'));
+    currentNode = HDLmTree.locateTreeNode(nodePath);
+    if (currentNode != null &&
+        (currentNode.hasOwnProperty('id') == false ||
+         currentNode.id == null))
+      nodesToInsertArray.push(HDLmManageRules.createTreeNodeInsertString(currentNode));
+    /* Create the insert for the division node */
+    nodePath.push(HDLmDefines.getString('HDLMDIVISIONNODENAME'));
+    currentNode = HDLmTree.locateTreeNode(nodePath);
+    if (currentNode != null &&
+        (currentNode.hasOwnProperty('id') == false ||
+         currentNode.id == null))
+      nodesToInsertArray.push(HDLmManageRules.createTreeNodeInsertString(currentNode));
+    /* Create the insert for the site node */
+    nodePath.push(HDLmDefines.getString('HDLMSITENODENAME'));
+    currentNode = HDLmTree.locateTreeNode(nodePath);
+    if (currentNode != null &&
+        (currentNode.hasOwnProperty('id') == false ||
+         currentNode.id == null))
+      nodesToInsertArray.push(HDLmManageRules.createTreeNodeInsertString(currentNode));
+    /* Send the new nodes to the server by websocket. The server will insert
+       the new nodes into the database and will return the new nodes with
+       their ID values filled in. The ID values are needed to update the
+       local tree with the correct ID values. */
+      if (nodesToInsertArray.length > 0) {
+      try {
+        let sendStr = '{"nodes": ' + '[' + nodesToInsertArray.toString() + ']' + '}';
+        let sendPromise = HDLmWebSockets.sendStoreTreeNodesRequest(sendStr);
+        let sendResponseJson = await sendPromise;
+        let sendResponseObj = JSON.parse(sendResponseJson);
+        if (sendResponseObj.hasOwnProperty('resultList') == true &&
+            Array.isArray(sendResponseObj.resultList)         == true &&
+            sendResponseObj.resultList.length                 == nodesToInsertArray.length)
+          HDLmTree.resetIdValues(sendResponseObj.resultList, nodesToInsertArray);
+      }
+      catch (errorObj) {
+        console.error(errorObj);
+        let errorText = 'The new company was created locally but could not be sent to the server';
+        return [errorText, null];
+      }
+    }
+    /* At this point the new company has been created locally
+       and on the server. The next step is to update
+       the companies array in HDLmManageRules. */
+    let treeTop = HDLmTree.getTreeTop();
+    let companiesArray = HDLmTree.buildCompaniesArray(treeTop);
+    HDLmManageRules.companiesArray = companiesArray;
+    return [null, companiesArray];
+  }
   /* This routine creates a style DOM entry. The style DOM
      entry is returned to the caller. */   
   static createStyleDomEntry() {  
@@ -1637,6 +2276,30 @@ class HDLmManageRules {
     let styleSheet = document.createElement('style');
     /* Return the DOM entry to the caller */
     return styleSheet;
+  }
+  /* Build a temporary tree node JSON string used for websocket inserts */
+  static createTreeNodeInsertString(treePos) {
+    let tempDetails = {};
+    let tempPos = {};
+    tempPos = Object.assign(tempPos, treePos);
+    if (tempPos.hasOwnProperty('children'))
+      delete tempPos.children;
+    if (tempPos.hasOwnProperty('containerWidget'))
+      delete tempPos.containerWidget;
+    if (tempPos.hasOwnProperty('id'))
+      delete tempPos.id;
+    if (tempPos.hasOwnProperty('savedDetails'))
+      delete tempPos.savedDetails;
+    if (tempPos.hasOwnProperty('details')) {
+      tempDetails = Object.assign(tempDetails, tempPos.details);
+      if (tempDetails.hasOwnProperty('pathvalue')) {
+        tempDetails.path = tempDetails.pathvalue;
+        delete tempDetails.pathvalue;
+      }
+      tempPos.details = tempDetails;
+    }
+    let tempPosStr = JSON.stringify(tempPos);
+    return tempPosStr;
   }
   /* This routine displays an error message passed
      to it. The error message is displayed as an
@@ -1707,7 +2370,7 @@ class HDLmManageRules {
     if (localRuleIdsArray == null) 
       localRuleIdsArray = [];
     else
-      localRuleIdsArray = HDLmManageRules.ruleIdsArray.slice();
+      localRuleIdsArray = HDLmManageRules.ruleIdsArray.slice();      
     HDLmManageRules.buildAndSetRuleIdsValue(HDLmManageRules.stateSetFunction,
                                             localRuleIdsArray); 
   }
@@ -1932,6 +2595,20 @@ class HDLmManageRules {
     HDLmManageRules.promiseResolveFunction = reactResolveFunction;
     /* Provde a local new rule name variable */
     let localNewRuleName = oldRuleName; 
+     /* This function handles a key down event in the 
+        new rule name field */
+    function newRuleNameKeyDown(event) {
+      /* console.log('In event function', event.key, event.target.value); */
+      /* Get a copy of the event key */
+      let eventKey = event.key;
+      /* Check if the enter key has been pressed */
+      if (eventKey == 'Enter') {
+        let fieldValue = event.target.value;      
+        localNewRuleName = fieldValue;
+        /* console.log('New rule name has been entered'); */
+        HDLmManageRules.inputDone(localNewRuleName);   
+      }
+    }
     /* This function handles a click event on the 
        proceed button */
     function proceedClick(event) {      
@@ -1948,20 +2625,6 @@ class HDLmManageRules {
         let fieldValue = document.getElementById('newRuleName').value;
         localNewRuleName = fieldValue;
         HDLmManageRules.inputDone(localNewRuleName);  
-      }
-    }
-     /* This function handles a key down event in the 
-        new rule name field */
-    function newRuleNameKeyDown(event) {
-      /* console.log('In event function', event.key, event.target.value); */
-      /* Get a copy of the event key */
-      let eventKey = event.key;
-      /* Check if the enter key has been pressed */
-      if (eventKey == 'Enter') {
-        let fieldValue = event.target.value;      
-        localNewRuleName = fieldValue;
-        /* console.log('New rule name has been entered'); */
-        HDLmManageRules.inputDone(localNewRuleName);   
       }
     }
     /* Create the overall heading element */
@@ -2025,6 +2688,7 @@ class HDLmManageRules {
     /* console.log(companiesArray); */
     let rv = null;
     let companiesArrayLen = companiesArray.length;
+    let initialCompaniesArrayLen = companiesArrayLen;
     let reactRejectFunction;
     let reactResolveFunction;
     /* Create a local promise */
@@ -2037,31 +2701,152 @@ class HDLmManageRules {
     HDLmManageRules.promiseRejectFunction = reactRejectFunction;
     /* Store the location of the resolve function */
     HDLmManageRules.promiseResolveFunction = reactResolveFunction;
-    /* Check if we don't have any companies. Just return 
-       null to the caller, in this case. */
-    if (companiesArrayLen == 0) {
-      let errorText = 'No companies are available';
-      HDLmManageRules.displayErrorMessage(errorText);
-      HDLmManageRules.inputDone(null);
-      return reactPromise;  
+    /* Check if the new company name field is currently in use */
+    function newCompanyInputUsed() {
+      let localNewCompanyName = HDLmManageRules.newCompanyNameChange;
+      if (typeof(localNewCompanyName) != 'string')
+        return false;
+      return (localNewCompanyName.trim() != '');
     }
-    /* Check if we have only one company. If we do, just
-       return the first company to the caller. */ 
-    if (companiesArrayLen == 1) {
-      HDLmManageRules.inputDone(companiesArray[0]); 
-      return reactPromise;  
+    /* This function handles change events in the new company name field */
+    async function newCompanyNameChange(event) {
+      /* Change events don't have a key value, 
+         so we don't need to check the event key. 
+         We just need to get the field value and 
+         store it in a variable. */
+      /* let eventKey = event.key; */
+      let fieldValue = event.target.value;
+      let proposedValue = fieldValue.trim();
+      if (proposedValue == '')
+        proposedValue = null;
+      HDLmManageRules.newCompanyNameChange = proposedValue;
+    }
+    /* This function handles key down events in the new company name field */
+    async function newCompanyNameKeyDown(event) {
+      let eventKey = event.key;
+      let fieldValue = event.target.value;
+      let proposedValue = fieldValue;
+      if (HDLmManageRules.keyValidForTextField(eventKey) == true)
+        proposedValue = fieldValue + eventKey;
+      proposedValue = proposedValue.trim();
+      if (proposedValue == '')
+        proposedValue = null;
+      HDLmManageRules.newCompanyNameChange = proposedValue;
+      /* Only the Enter key can submit a new company name */
+      if (eventKey != 'Enter')
+        return;
+      /* A blank field + Enter is ignored */
+      let enteredCompanyName = HDLmManageRules.newCompanyNameChange;
+      if (enteredCompanyName == null)
+        return;
+      event.preventDefault();
+      let localCompaniesArray = HDLmManageRules.companiesArray;
+      let errorText;
+      let validCompanyName;
+      [errorText, validCompanyName] = HDLmManageRules.checkNewCompanyName(enteredCompanyName,
+                                                                          localCompaniesArray);
+      if (errorText != null) {
+        HDLmManageRules.displayErrorMessage(errorText);
+        return;
+      }
+      [errorText, localCompaniesArray] = await HDLmManageRules.createNewCompany(validCompanyName);
+      if (errorText != null) {
+        HDLmManageRules.displayErrorMessage(errorText);
+        return;
+      }
+      rv = validCompanyName;
+      companiesArray = localCompaniesArray;
+      companiesArrayLen = companiesArray.length;
+      HDLmManageRules.newCompanyNameChange = null;
+      /* If no companies existed when we started, immediately use
+         the new company and continue processing. */
+      if (initialCompaniesArrayLen == 0) {
+        HDLmManageRules.inputDone(rv);
+        return;
+      }
+      renderCompanySelectionUi();
     }
     /* This function handles a click event in the proceed
        button */
-    function proceedClick(event) {      
+    function proceedClick(event) {
+      /* Ignore the proceed button if the new company field is currently in use */
+      if (newCompanyInputUsed() == true)
+        return;
       /* console.log('Proceed button clicked'); */
       let localSelectedCompany = rv;
       if (localSelectedCompany == null) {
         let errorText = 'A company must be selected';
+        if (companiesArrayLen == 0)
+          errorText = 'No companies are available';
         HDLmManageRules.displayErrorMessage(errorText);
       }
       else
-        HDLmManageRules.inputDone(rv);  
+        HDLmManageRules.inputDone(rv);
+    }
+    /* Render (or re-render) the company selection UI */
+    function renderCompanySelectionUi() {
+      /* The new company field should be reset when the company list is displayed */
+      HDLmManageRules.newCompanyNameChange = null;
+      /* This field is used below */
+      let breakElement;
+      /* The element array is built below. In some case, we do
+         not need to add all of the elements. For example, if
+         we don't have any companies, then we don't need to add
+         the company select element. */
+      let elementsArray = [];
+      /* We have more than one company. We need to ask
+         the user to select a company. */
+      let pageText = headings["pageText"];
+      let pageHeadingElement = HDLmReactFour.buildTextElement('h2', null, pageText);
+      elementsArray.push(pageHeadingElement);
+      /* Check if we have any companies or not. If we don't
+         have any companies, then we don't need to add the
+         company select element. */
+      if (companiesArrayLen > 0) {
+        let selectPromptText = headings["selectCompanyPrompt"];
+        let selectHeadingElement = HDLmReactFour.buildTextElement('h3', null, selectPromptText);
+        elementsArray.push(selectHeadingElement);
+      }
+      /* Build the companies select element */
+      if (companiesArrayLen > 0) {
+        let companiesElement = HDLmManageRules.buildCompaniesSelectElement(companiesArray,
+                                                                           setSelectedCompany,
+                                                                           () => { return newCompanyInputUsed(); });
+        elementsArray.push(companiesElement);
+      }
+      /* Build the New Company Name input section */
+      /* breakElement = HDLmReactFour.buildBreakElement(); */
+      /* elementsArray.push(breakElement); */
+      let newCompanyHeadingElement = HDLmReactFour.buildTextElement('h3', null, 'New Company Name');
+      elementsArray.push(newCompanyHeadingElement);
+      let readOnlyFalse = false;
+      let autoFocusFalse = false;
+      let initialValue = '';
+      let newCompanyElement = HDLmReactFour.buildInputElement(null,
+                                                              newCompanyNameChange,
+                                                              newCompanyNameKeyDown, 
+                                                              'Enter New Company Name',
+                                                              'newCompanyName',
+                                                              initialValue,
+                                                              readOnlyFalse,
+                                                              null,
+                                                              autoFocusFalse);
+      elementsArray.push(newCompanyElement);
+      breakElement = HDLmReactFour.buildBreakElement();
+      elementsArray.push(breakElement);
+      /* Build a button element to proceed */
+      breakElement = HDLmReactFour.buildBreakElement();
+      elementsArray.push(breakElement);
+      let buttonElement = HDLmReactFour.buildButtonElement(null,
+                                                           'Proceed',
+                                                           'Proceed',
+                                                           proceedClick);
+      elementsArray.push(buttonElement);
+      /* Put all of the elements into a React fragment */
+      let tempFragment = HDLmReactFour.putElementsInFragment(elementsArray);
+      /* Display the company selection UI */
+      let reactRoot = HDLmReactFour.getRootContainer('leftAndRightPage');
+      HDLmReactFour.renderReact(reactRoot, tempFragment);
     }
     /* This function sets the return value (selected company)
        from this function. The caller passes a selected 
@@ -2069,29 +2854,7 @@ class HDLmManageRules {
     function setSelectedCompany(company) {
       rv = company;      
     }
-    /* We have more than one company. We need to ask
-       the user to select a company. */
-    let pageText = headings["pageText"];
-    let pageHeadingElement = HDLmReactFour.buildTextElement('h2', null, pageText); 
-    let selectPromptText = headings["selectCompanyPrompt"];
-    let selectHeadingElement = HDLmReactFour.buildTextElement('h3', null, selectPromptText); 
-    let breakElement = HDLmReactFour.buildBreakElement();
-    /* build the companies select element */
-    let companiesElement = HDLmManageRules.buildCompaniesSelectElement(companiesArray, setSelectedCompany);
-    /* Build a button element to proceed */
-    let buttonElement = HDLmReactFour.buildButtonElement(null, 
-                                                         'Proceed',
-                                                         'Proceed', 
-                                                         proceedClick);
-    /* Put all of the elements into a React fragment */
-    let tempFragment = HDLmReactFour.putElementsInFragment([pageHeadingElement, 
-                                                            selectHeadingElement,
-                                                            companiesElement,                                                          
-                                                            breakElement,
-                                                            buttonElement]);
-    /* Display the company selection UI */
-    let reactRoot = HDLmReactFour.getRootContainer('leftAndRightPage');
-    HDLmReactFour.renderReact(reactRoot, tempFragment);
+    renderCompanySelectionUi();
     return reactPromise;    
   }
   /* This routine tries to get a suggestion from a user. 
@@ -2114,8 +2877,11 @@ class HDLmManageRules {
         HDLmManageRules.suggestionText = fieldValue + eventKey;
     }
     /* Check if we are running under VsCode or not. If we are running
-       under VsCode, set the web domain name to a known value. */
-    if (HDLmUtility.isVscode()) {
+       under VsCode, set the web domain name to a known value. This 
+       is no longer case (as of 2026/3/12). We use whatever value is
+       selected. The driver/etc/hosts file has been updated so that 
+       several domain names actually go to www.yogadirect.com. */
+    if (false && HDLmUtility.isVscode()) {
       HDLmManageRules.webpageDomainName = 'https://www.yogadirect.com/';
       HDLmManageRules.webpageDomainName = 'www.themarvelouslandofoz.com';
       HDLmManageRules.webpageDomainName = 'www.yogadirect.com';
@@ -2158,9 +2924,20 @@ class HDLmManageRules {
   static getTreeRule(companyNumber, ruleNumber) {
     /* Find the rule in local storage */
     let companiesArray = HDLmManageRules.companiesArray;
+    if (Array.isArray(companiesArray) == false ||
+        companyNumber <= 0 ||
+        ruleNumber <= 0)
+      return null;
     let specificCompany = companiesArray[companyNumber-1];
+    if (specificCompany == null)
+      return null;
     let rulesArray = specificCompany.rules;
+    if (Array.isArray(rulesArray) == false)
+      return null;
     let ruleEntry = rulesArray[ruleNumber-1];
+    if (ruleEntry == null ||
+        ruleEntry.actualRule == null)
+      return null;
     let rule = ruleEntry.actualRule;
     return rule;
   }
@@ -2452,6 +3229,31 @@ class HDLmManageRules {
     /* console.log(rv); */
     return rv;
   }    
+  /* This routine looks for duplicate rule names in a list of deleted rules.
+     The routine returns the number of duplicate rule names that it finds. */
+  static lookForDuplicateRuleNames(deleteRule, deletedRulesList) {
+    /* Get the rule name of the rule this is being deleted */
+    let deleteRuleName = deleteRule.actualRule.details.name;
+    let duplicateRuleNameCount = 0;
+    let i = 0;
+    /* Loop through the deleted rules and look for duplicate rule names */
+    for (let deletedRuleEntry of deletedRulesList) {
+      i++;
+      let actualRuleEntry = deletedRuleEntry.actualRule;
+      let actualRuleNameEntry = actualRuleEntry.details.name;
+      /* Check for a duplicate rule name */
+      if (actualRuleNameEntry == deleteRuleName) {
+        duplicateRuleNameCount++;
+        /* The following code is for debugging purposes only. 
+           It allows us to set a breakpoint on the line below 
+           and check the state of the code when a duplicate
+           rule name is found. */
+        if (duplicateRuleNameCount > 1) 
+          i = i;
+      }
+    };
+    return duplicateRuleNameCount;
+  }
   /* Provide the main routine */
   static main() {
     /* console.log('In HDLmManageRules.main'); */ 
@@ -2476,6 +3278,8 @@ class HDLmManageRules {
     let stage = HDLmManageRulesStageTypes.getConfigs; 
     HDLmManageRules.nextStage(stage, null);
     /* Return to the caller */
+    /* console.log('HDLmManageRules.main done'); */
+    /* console.trace(); */
     return;
   }
   /* This routine makes the rollover text area invisible 
@@ -2662,6 +3466,21 @@ class HDLmManageRules {
           newTitle = '';
           window.document.title = newTitle;
           HDLmUtility.setHeader(newTitle);
+          stage = HDLmManageRulesStageTypes.checkServerStatus;
+          break
+        }
+        /* Check if the server is reachable before doing any
+           additional startup work */
+        case HDLmManageRulesStageTypes.checkServerStatus: {
+          let serverUp = await HDLmManageRules.checkServerStatus();
+          /* console.log('In HDLmManageRules.nextStage checkServerStatus', serverUp); */
+          if (serverUp == false) {
+            let errorText = 'The server is unavailable';
+            HDLmManageRules.displayErrorMessage(errorText);
+            /* Stop stage processing if the server cannot be reached */
+            nextStageLoop = false;
+            break;
+          }
           stage = HDLmManageRulesStageTypes.sendBuildCookie;
           break
         }
@@ -2736,14 +3555,19 @@ class HDLmManageRules {
                
                This code is not in use. The JavaScript code is run
                natively (not under VS Code) to update the in-memory
-               database on the server.*/ 
-            if (1 == 2) {
+               database on the server. 
+               
+               The prior comment is not correct. We check the userid
+               and password combination with the server to ensure they
+               are valid and to update the in-memory database on the 
+               server. */ 
+            if (1 == 1) {
               /* Check the userid and the password */
               let localUserid = HDLmManageRules.accessUserid;
               let localPassword = HDLmManageRules.accessPassword;
               /* Wait for the server to finish check the userid
                  and password. */
-              let responseObj = await HDLmSecurity.checkUsernamePasswordServer(localUserid, localPassword);       
+              let responseObj = await HDLmSecurity.checkUsernamePasswordUpdateMemoryServer(localUserid, localPassword);       
               /* console.log(responseObj); */ 
               /* Check if the status code from the call, shows
                  that the call succeeded */
@@ -2995,6 +3819,8 @@ class HDLmManageRules {
           /* console.log('In HDLmManageRules.nextStage before get modifications'); */
           let responseText = await HDLmTree.passReadSomeRows(HDLmManageRules.accessUserid, 
                                                              HDLmManageRules.accessPassword);
+          /* let rtl = responseText.length; */
+          /* let rtl2 = responseText.length; */
           /* console.log('In HDLmManageRules.nextStage after get modifications', responseText); */
           /* console.log(responseText); */
           /* Convert the JSON string obtained by the call above 
@@ -3003,9 +3829,11 @@ class HDLmManageRules {
           /* Get the top of the tree */
           let treeTop = HDLmTree.getTreeTop();             
           /* Build the companies/rules array. The array has one
-             entry for each company in the true that actually 
-             has one or more rules. */
-          let companiesArray = HDLmTree.buildCompaniesArray(treeTop);
+             entry for each company in the tree that actually 
+             has zero or more rules. */
+          let companiesArray = HDLmTree.buildCompaniesArray(treeTop); 
+          if (1 == 2)  
+            companiesArray.length = 0; 
           HDLmManageRules.companiesArray = companiesArray;
           /* We now have the rules. We need to select a specific company. */
           stage = HDLmManageRulesStageTypes.getSpecificCompany;
@@ -3038,13 +3866,103 @@ class HDLmManageRules {
           HDLmManageRules.addStyleTextAreaInvisibleClass();
           HDLmManageRules.addStyleTextAreaRolloverClass();
           HDLmManageRules.addStyleTextAreaVisibleClass();
+          /* console.log('In HDLmManageRules.nextStage in showWebPageUi'); */
           /* Get where the React elements are to be placed */          
           let reactRoot = HDLmReactFour.getRootContainer('leftAndRightPage');
           reactRoot.render(React.createElement(HDLmManageRules.buildWebUiElement));   
-          /* Terminate the next stage loop and terminate the switch */
-          nextStageLoop = false;
+          /* Terminate the next stage loop and terminate the switch.
+             This is no longer done because we want to run the before
+             unload code. */
+          /* nextStageLoop = false; */
+          stage = HDLmManageRulesStageTypes.beforeUnload;
           break;  
         } 
+        /* Wait for the user to close the browser.
+           This may happen quite soon or it may take
+           a while. */
+        case HDLmManageRulesStageTypes.beforeUnload: {
+          /* console.log('In HDLmManageRules.beforeUnload'); */
+          /* Add an event listener to the window object. The event
+             listener is used to detect when the user closes the
+             browser. */
+          HDLmManageRules.beforeUnloadAdd();
+          /* Define a few variables */
+          let beforeUnloadRejectFunction;
+          let beforeUnloadResolveFunction;
+          /* Create a local promise */
+          let beforeUnloadPromise = new Promise(function (resolve, reject) {
+            /* Save references to the reject and resolve functions */
+            beforeUnloadRejectFunction = reject;
+            beforeUnloadResolveFunction = resolve;
+          });
+          /* Store the location of the resolve function */
+          HDLmManageRules.beforeUnloadResolveFunction = beforeUnloadResolveFunction;
+          /* Wait for a browser close event */
+          beforeUnloadPromise.then(function(responseText) {
+            /* console.log(document.visibilityState); */
+            responseText = responseText;
+            /* Turn off test mode  */
+            stage = HDLmManageRulesStageTypes.setTestModeOff;
+            HDLmManageRules.nextStage(stage, '');
+          },
+          function(error) {
+            let errorText = '';
+            errorText = 'Before unload (the promise) was rejected';
+            HDLmUtility.setErrorText(errorText);
+            /* Turn off test mode */
+            stage = HDLmManageRulesStageTypes.setTestModeOff;
+            HDLmManageRules.nextStage(stage, '');
+          });
+          /* Terminate the next stage loop and terminate the switch */
+          nextStageLoop = false;
+          break;
+        }
+        /* Wait for the user to change the visibility of the browser.
+           This may happen quite soon or it may take a while. */
+        case HDLmManageRulesStageTypes.visibilityChange: {
+          /* console.log('In HDLmManageRules.visibilityChange'); */
+          /* Add an event listener to the window object. The event
+             listener is used to detect when the user changes the
+             visibility of the browser. */
+          HDLmManageRules.visibilityChangeAdd();
+          /* Define a few variables */
+          let visibilityChangeRejectFunction;
+          let visibilityChangeResolveFunction;
+          /* Create a local promise */
+          let visibilityChangePromise = new Promise(function (resolve, reject) {
+            /* Save references to the reject and resolve functions */
+            visibilityChangeRejectFunction = reject;
+            visibilityChangeResolveFunction = resolve;
+          });
+          /* Store the location of the resolve function */
+          HDLmManageRules.visibilityChangeResolveFunction = visibilityChangeResolveFunction;
+          /* Wait for a visibility change event */
+          visibilityChangePromise.then(function(responseText) {
+            /* console.log(document.visibilityState); */
+            responseText = responseText;
+            /* Turn off test mode  */
+            stage = HDLmManageRulesStageTypes.setTestModeOff;
+            HDLmManageRules.nextStage(stage, '');
+          },
+          function(error) {
+            let errorText = '';
+            errorText = 'Visibility change (the promise) was rejected';
+            HDLmUtility.setErrorText(errorText);
+            /* Turn off test mode */
+            stage = HDLmManageRulesStageTypes.setTestModeOff;
+            HDLmManageRules.nextStage(stage, '');
+          });
+          /* Terminate the next stage loop and terminate the switch */
+          nextStageLoop = false;
+          break;
+        }
+        case HDLmManageRulesStageTypes.setTestModeOff: {
+          /* Turn test mode off for the current user */
+          HDLmManageRules.setTestModeOff();
+          /* Terminate the next stage loop and terminate the switch */
+          nextStageLoop = false;
+          break;
+        }
       }
     }
   }
@@ -3062,6 +3980,10 @@ class HDLmManageRules {
     }
     /* Get the requested company */ 
     let companyEntry = companiesArray[companyNumber - 1];
+    if (companyEntry == null)
+      return;
+    if (Array.isArray(companyEntry.rules) == false)
+      companyEntry.rules = [];
     /* Remove some rules from the current company */   
     companyEntry.rules.splice(0, numberOfRulesToBeRemoved);    
     /* Check if we found a matching company. If so we
@@ -3594,7 +4516,7 @@ class HDLmManageRules {
   /* This routine returns a list of company numbers and rule
      numbers. Each entry in the high-level list (the one 
      returned) is actually a lower-level list. The lower-level
-     list has two entries. The first entry in the lower-leve 
+     list has two entries. The first entry in the lower-level
      list is the company number and the second entry is the 
      rule number. If the passed rule Ids array is null, then
      a null value is returned. */
@@ -4137,8 +5059,16 @@ class HDLmManageRules {
        a serious error and must be reported to the user. */
     /* Get the company specified by the caller */
     let specificCompany = HDLmManageRules.getCompany(companyNumber);
+    if (specificCompany == null) {
+      let errorText = 'The company could not be found';
+      HDLmManageRules.displayErrorMessage(errorText);
+      return;
+    }
+    let specificCompanyRules = specificCompany.rules;
+    if (Array.isArray(specificCompanyRules) == false)
+      specificCompanyRules = [];
     /* Process all of the existing rules */    
-    for (let existingRule of specificCompany.rules) {   
+    for (let existingRule of specificCompanyRules) {   
       /* Check if the new name has already been used */  
       if (existingRule.actualRule.details.name == newName) {
         /* The new name is already in use */
@@ -4156,7 +5086,6 @@ class HDLmManageRules {
        This call does not update the database. */
     let currentFancyNodeNull = null;
     let updateDatabaseFalse = false;
-    let updateDatabaseTrue = true;
     HDLmTree.deleteTreeNode(currentFancyNodeNull, oldRule, updateDatabaseFalse); 
     /* Send a delete request to the server. The server
        deletes the rule from the database and from the
@@ -4169,11 +5098,11 @@ class HDLmManageRules {
                                                          companyNumber,
                                                          oldRuleNumber);
     highlightedCheck = (highlightedRuleId != null) ? true : false;     
-    if (highlightedCheck == true) {
+    if (highlightedCheck == true) {      
       HDLmManageRules.ruleIdsArray = 
         HDLmManageRules.ruleIdsRemove(HDLmManageRules.ruleIdsArray,
                                        companyNumber,
-                                       oldRuleNumber);
+                                       oldRuleNumber);                                      
     }
     /* If we reach this point, the new name is valid 
        and can be used */
@@ -4190,25 +5119,33 @@ class HDLmManageRules {
     /* Get the top of the tree */
     let treeTop = HDLmTree.getTreeTop();             
     /* Build the companies/rules array. The array has one
-       entry for each company in the true that actually 
-       has one or more rules. */
+       entry for each company in the tree that actually 
+       has zero or more rules. */
     let companiesArray = HDLmTree.buildCompaniesArray(treeTop);
     HDLmManageRules.companiesArray = companiesArray;
     /* Find the new rule number */
     let newRuleNumber = 0;
     specificCompany = HDLmManageRules.getCompany(companyNumber);
-    for (let ruleEntry of specificCompany.rules) {
+    if (specificCompany == null) {
+      let errorText = 'The company could not be found after the rename';
+      HDLmManageRules.displayErrorMessage(errorText);
+      return;
+    }
+    specificCompanyRules = specificCompany.rules;
+    if (Array.isArray(specificCompanyRules) == false)
+      specificCompanyRules = [];
+    for (let ruleEntry of specificCompanyRules) {
       newRuleNumber++;
       if (ruleEntry.actualRule.details.name == newName) 
         break;
     }
     /* Check if we need to highlight the rule */
     if (highlightedCheck == true) {
-      /* Add the rule to list of rules to be highlighted */
+      /* Add the rule to list of rules to be highlighted */   
       HDLmManageRules.ruleIdsArray = 
         HDLmManageRules.ruleIdsAdd(HDLmManageRules.ruleIdsArray,
                                    companyNumber,
-                                   newRuleNumber);
+                                   newRuleNumber);                                    
     }
     /* The key value is incremented here to force a re-render
        of the React input areas. We use what are called uncontrolled
@@ -4230,31 +5167,6 @@ class HDLmManageRules {
     /* Force a re-render of the rules */
     HDLmManageRules.forceReRender();
     return;
-  }
-  /* This routine sends one or more new rules to the server */
-  static async sendNewRulesToServer(newRulesArray) {
-    /* console.log('In HDLmManageRules.sendNewRulesToServer'); */
-    let newRulesArrayLen = newRulesArray.length;
-    if (newRulesArrayLen == 0)
-      return;
-    /* Build the string that is send to the server */
-    let newRulesArrayString = [];
-    for (let newRule of newRulesArray) {
-      newRulesArrayString.push(JSON.stringify(newRule));
-    }
-    /* Send the rules created using AI to the server */
-    /* Build a JSON string from the rules array */
-    let newRulesStr = newRulesArrayString.toString();
-    newRulesStr = '{"rules": ' + '[' + newRulesStr + ']' + '}';
-    /* Try to send the rules to the server */
-    let sendPromise = HDLmWebSockets.sendStoreTreeNodesRequest(newRulesStr); 
-    /* Wait for the store tree nodes to complete */
-    let sendResponseJson = await sendPromise;
-    let sendResponseObj = JSON.parse(sendResponseJson);
-    let nodeIdList = sendResponseObj.resultList;
-    for (let i = 0; i < newRulesArrayLen; i++) {
-      newRulesArray[i].id = nodeIdList[i];
-    }
   }
   /* This routine is used to send a build cookie request
      to the server. The server builds the cookie and sends
@@ -4288,6 +5200,31 @@ class HDLmManageRules {
                            );
     /* Return the promise build above to the caller */
     return sendPromise;                      
+  }
+  /* This routine sends one or more new rules to the server */
+  static async sendNewRulesToServer(newRulesArray) {
+    /* console.log('In HDLmManageRules.sendNewRulesToServer'); */
+    let newRulesArrayLen = newRulesArray.length;
+    if (newRulesArrayLen == 0)
+      return;
+    /* Build the string that is send to the server */
+    let newRulesArrayString = [];
+    for (let newRule of newRulesArray) {
+      newRulesArrayString.push(JSON.stringify(newRule));
+    }
+    /* Send the rules created using AI to the server */
+    /* Build a JSON string from the rules array */
+    let newRulesStr = newRulesArrayString.toString();
+    newRulesStr = '{"nodes": ' + '[' + newRulesStr + ']' + '}';
+    /* Try to send the rules to the server */
+    let sendPromise = HDLmWebSockets.sendStoreTreeNodesRequest(newRulesStr); 
+    /* Wait for the store tree nodes to complete */
+    let sendResponseJson = await sendPromise;
+    let sendResponseObj = JSON.parse(sendResponseJson);
+    let nodeIdList = sendResponseObj.resultList;
+    for (let i = 0; i < newRulesArrayLen; i++) {
+      newRulesArray[i].id = nodeIdList[i];
+    }
   }
   /* This routine tries to set the access cookie to a value
      passed by the caller */  
@@ -4327,10 +5264,20 @@ class HDLmManageRules {
     const constTestStr = 'test';
     /* Get the rule specified by the caller and set it to test mode */
     let rule = HDLmManageRules.getTreeRule(companyNumber, ruleNumber);
+    if (rule == null) {
+      HDLmManageRules.displayErrorMessage('The selected rule could not be found');
+      return '';
+    }
     rule.details.usemode = constTestStr;
     /* Get the company specified by the caller */
     let specificCompany = HDLmManageRules.getCompany(companyNumber);
+    if (specificCompany == null) {
+      HDLmManageRules.displayErrorMessage('The selected company could not be found');
+      return '';
+    }
     let companyRulesArray = specificCompany.rules;
+    if (Array.isArray(companyRulesArray) == false)
+      companyRulesArray = [];
     /* Build the string that is send to the server */
     let companyRulesArrayString = [];
     for (let companyRule of companyRulesArray) {
@@ -4417,7 +5364,7 @@ class HDLmManageRules {
     /* Set a few initial values */
     let errorText = null;
     let webpageDomainName = null;
-    let ruleIdsArrayLen = 0;
+    let ruleIdsArrayLen = 0;   
     if (HDLmManageRules.ruleIdsArray != null)
       ruleIdsArrayLen = HDLmManageRules.ruleIdsArray.length;
     /* Check if a rule has been selected. If not, display an
@@ -4471,6 +5418,10 @@ class HDLmManageRules {
     let companyNumber = parseInt(companyNumberStr);
     let ruleNumber = parseInt(ruleNumberStr);
     let rule = HDLmManageRules.getTreeRule(companyNumber, ruleNumber);
+    if (rule == null) {
+      HDLmManageRules.displayErrorMessage('The selected rule could not be found');
+      return;
+    }
     let OldRuleName = rule.details.name;
     /* Try to change the rule name */
     HDLmManageRules.ruleNewName(companyNumber, 
@@ -4533,7 +5484,7 @@ class HDLmManageRules {
     return headersObj;
   }
   /* Get some JSON for a get improvements service request */
-  static webpageImproverGetImprovementsJson(sessionUuid, improvementsQuantity) {
+  static webpageImproverGetImprovementsJsonOld(sessionUuid, improvementsQuantity) {
     /* Build the initially empty get improvements service object */
     let getObj = {};
     /* Set a few values in the get improvements service object */
@@ -4647,8 +5598,98 @@ class HDLmManageRules {
     return webPromise
   }
   /* This routine is used to run a set of services */
-  static async webpageImproverRunServicesOld(suggestionText, webpageUrl) {
-    console.log('In HDLmManageRules.webpageImproverRunServicesOld'); 
+  static async webpageImproverRunServicesOpenAINew(suggestionText, webpageUrl) {
+    console.log('In HDLmManageRules.webpageImproverRunServicesOpenAINew'); 
+    /* Build the area where the new rules will be stored */
+    let rulesGeneratedList = []; 
+    let improvementsList = await HDLmAI.openAIGetImprovementsNew(suggestionText, webpageUrl, useAIVersion);
+    console.log('improvementsList is', improvementsList);
+    /* Get some values from the JSON object */
+    try {
+      let localImprovements = improvementsList;
+      /* The user may or may not have provided a suggestion. The
+         suggestion (if it exists) is used to build some markup.
+         The markup is used to build some rules. */
+      if (HDLmManageRules.suggestionText != null) {
+      }
+      /* Process each of the improvements. Convert the improvement to a
+         set of markup. */
+      let improvementsCount = localImprovements.length;
+      let localMarkups = [];
+      for (let i = 0; i < improvementsCount; i++) {
+        /* Get the current improvement object */
+        let improvementObj = localImprovements[i];
+        let improvementWhat = improvementObj.what;
+        let markupObj = await HDLmAI.openAIGetMarkup(improvementWhat, webpageUrl, useAIVersion);
+        /* Get some values from the JSON object */
+        localMarkups.push(markupObj);
+      }
+      /* Convert each of the markup objects to a rule */
+      let markupsCount = localMarkups.length;
+      for (let i = 0; i < markupsCount; i++) {
+        let improvementObj = localImprovements[i];
+        /* console.log(improvementObj); */ 
+        let improvementWhy = improvementObj.why;
+        /* The improvementWhy value may contain some special (bad) characters
+           that need to be replaced. For example, the improvementWhy value may
+           contain the \u2019 character, which is a right single quotation mark.
+           This character needs to be replaced with a regular single quote character
+           ('). 
+
+           This code is no long needed because the server can properly handle all
+           special characters. However, the code is left here in case we need to
+           use it in the future for some reason. */
+        /* improvementWhy = HDLmString.replaceAllSimple(improvementWhy, "\u2019","'"); */
+        let markupObj = localMarkups[i];
+        /* Build a tree node object from each of the markups */
+        let constructList = HDLmManageRules.constructTreeNode(webpageUrl,
+                                                              improvementWhy,
+                                                              markupObj);
+        let treeNodeObj = constructList[0];      
+        let overallValid = constructList[1];
+        let scriptValid = constructList[2];
+        let stylesValid = constructList[3];
+        let scriptStr = constructList[4];
+        let stylesStr = constructList[5];
+        /* Check if the tree node has at least
+           one script */ 
+        let scriptCount = treeNodeObj.details.scripts.length;
+        /* Check if the script value is valid */
+        if (overallValid && scriptCount > 0) {
+          HDLmTree.storeTreeNode(treeNodeObj);
+          rulesGeneratedList.push(treeNodeObj);
+        }
+        /* Some type of error was detected. Report the error
+           and continue processing. */
+        else {
+          /* Check what sort of error was detected */
+          if (scriptCount <= 0) {
+            let errorText = 'No scripts were found in the generated rule';
+            HDLmManageRules.displayErrorMessage(errorText);
+          }
+          else {
+            let errorText = 'The generated script or style value(s) is/are not valid';
+            HDLmManageRules.displayErrorMessage(errorText);
+          }
+        }
+      }
+      /* Return to the caller */
+      return rulesGeneratedList;
+    }
+    /* Handle some sort of error condition */
+    catch (error) {
+      console.error(error);
+      let errorText = '';
+      errorText = HDLmError.buildError('Error', 'Get Webpage-Improver Error', 52, error);
+      HDLmManageRules.displayErrorMessage(errorText);
+      return false;
+    }
+    /* Return the new rules */
+    return rulesGeneratedList;
+  }
+  /* This routine is used to run a set of services */
+  static async webpageImproverRunServicesOpenAIOld(suggestionText, webpageUrl) {
+    console.log('In HDLmManageRules.webpageImproverRunServicesOpenAIOld'); 
     let rulesGeneratedList;
     let serviceData,
         serviceHeaders,
@@ -4734,8 +5775,8 @@ class HDLmManageRules {
       /* HDLmManageRules.webpageImproverWebpage = serviceData.webpage; */
       /* Get the JSON string for the improvements service */
       serviceQuantity = improvementsQuantity;
-      serviceJson = HDLmManageRules.webpageImproverGetImprovementsJson(serviceSessionId,
-                                                                       serviceQuantity);
+      serviceJson = HDLmManageRules.webpageImproverGetImprovementsJsonOld(serviceSessionId,
+                                                                          serviceQuantity);
       serviceLength = serviceJson.length;
       serviceHeaders = HDLmManageRules.webpageImproverGetHeadersStandard(null,
                                                                          serviceLength);
@@ -4774,10 +5815,9 @@ class HDLmManageRules {
         let improvementObj = localImprovements[i];
         /* console.log(improvementObj); */
         let improvementWhat = improvementObj.what;
-        let improvementWhy = improvementObj.why;
         /* Get the JSON string for the improvements service */
         serviceJson = HDLmManageRules.webpageImproverGetMarkupJson(serviceSessionId,
-                                                                     improvementWhat);
+                                                                   improvementWhat);
         serviceLength = serviceJson.length;
         serviceHeaders = HDLmManageRules.webpageImproverGetHeadersStandard(null,
                                                                            serviceLength);
@@ -4802,9 +5842,18 @@ class HDLmManageRules {
       let markupsCount = localMarkups.length;
       for (let i = 0; i < markupsCount; i++) {
         let improvementObj = localImprovements[i];
-        /* console.log(improvementObj); */
-        let improvementWhat = improvementObj.what;
+        /* console.log(improvementObj); */ 
         let improvementWhy = improvementObj.why;
+        /* The improvementWhy value may contain some special (bad) characters
+           that need to be replaced. For example, the improvementWhy value may
+           contain the \u2019 character, which is a right single quotation mark.
+           This character needs to be replaced with a regular single quote character
+           ('). 
+
+           This code is no long needed because the server can properly handle all
+           special characters. However, the code is left here in case we need to
+           use it in the future for some reason. */
+        /* improvementWhy = HDLmString.replaceAllSimple(improvementWhy, "\u2019","'"); */
         let markupObj = localMarkups[i];
         /* console.log(markupObj); */
         /* Build a tree node object from each of the markups */
@@ -4852,11 +5901,105 @@ class HDLmManageRules {
     }
   }
   /* This routine is used to run a set of services */
-  static async webpageImproverRunServicesNew(suggestionText, webpageUrl) {
-    console.log('In HDLmManageRules.webpageImproverRunServicesNew'); 
+  static async webpageImproverRunServicesOpenRouterV1(suggestionText, webpageUrl) {
+    /* console.log('In HDLmManageRules.webpageImproverRunServicesOpenRouterV1'); */
     /* Build the area where the new rules will be stored */
     let rulesGeneratedList = []; 
-    let improvementsList = await HDLmAI.openAIGetImprovements(suggestionText, webpageUrl);
+    let improvementsList = await HDLmAI.openRouterGetImprovementsV1(suggestionText, webpageUrl, useAIVersion);
+    /* console.log('improvementsList is', improvementsList); */
+    /* Get some values from the JSON object */
+    try {
+      let localImprovements = improvementsList;
+      /* The user may or may not have provided a suggestion. The
+         suggestion (if it exists) is used to build some markup.
+         The markup is used to build some rules. */
+      if (HDLmManageRules.suggestionText != null) {
+      }
+      /* Process each of the improvements. Convert the improvement to a
+         set of markup. */
+      let improvementsCount = localImprovements.length;
+      let localMarkups = [];
+      for (let i = 0; i < improvementsCount; i++) {
+        /* Get the current improvement object */
+        let improvementObj = localImprovements[i];
+        let improvementWhat = improvementObj.what; 
+        let markupObj = await HDLmAI.openRouterGetMarkupV1(improvementWhat, webpageUrl, useAIVersion);
+        /* Get some values from the JSON object */
+        localMarkups.push(markupObj);
+      }
+      /* Convert each of the markup objects to a rule */
+      let markupsCount = localMarkups.length;
+      for (let i = 0; i < markupsCount; i++) {
+        let improvementObj = localImprovements[i];
+        /* console.log(improvementObj); */
+        let improvementWhy = improvementObj.why;
+        /* The improvementWhy value may contain some special (bad) characters
+           that need to be replaced. For example, the improvementWhy value may
+           contain the \u2019 character, which is a right single quotation mark.
+           This character needs to be replaced with a regular single quote character
+           ('). 
+
+           This code is no long needed because the server can properly handle all
+           special characters. However, the code is left here in case we need to
+           use it in the future for some reason. */
+        /* improvementWhy = HDLmString.replaceAllSimple(improvementWhy, "\u2019","'"); */
+        /* let rightSingleQuote = "\u2019"; */
+        /* let treeTop = HDLmTree.getTreeTop(); */
+        /* improvementWhy = rightSingleQuote + improvementWhy; */
+        if (1 == 2) {
+          console.log('In HDLmManageRules.webpageImproverRunServicesOpenRouterV1, improvementWhy is', improvementWhy);
+        }
+        let markupObj = localMarkups[i];
+        /* Build a tree node object from each of the markups */
+        let constructList = HDLmManageRules.constructTreeNode(webpageUrl,
+                                                              improvementWhy,
+                                                              markupObj);
+        let treeNodeObj = constructList[0];      
+        let overallValid = constructList[1];
+        let scriptValid = constructList[2];
+        let stylesValid = constructList[3];
+        let scriptStr = constructList[4];
+        let stylesStr = constructList[5];
+        /* Check if the tree node has at least
+           one script */ 
+        let scriptCount = treeNodeObj.details.scripts.length;
+        /* Check if the script value is valid */
+        if (overallValid && scriptCount > 0) {
+          HDLmTree.storeTreeNode(treeNodeObj);
+          rulesGeneratedList.push(treeNodeObj);
+        }
+        /* Some type of error was detected. Report the error
+           and continue processing. */
+        else {
+          /* Check what sort of error was detected */
+          if (scriptCount <= 0) {
+            let errorText = 'No scripts were found in the generated rule';
+            HDLmManageRules.displayErrorMessage(errorText);
+          }
+          else {
+            let errorText = 'The generated script or style value(s) is/are not valid';
+            HDLmManageRules.displayErrorMessage(errorText);
+          }
+        }
+      }
+    }
+    /* Handle some sort of error condition */
+    catch (error) {
+      console.error(error);
+      let errorText = '';
+      errorText = HDLmError.buildError('Error', 'Get Webpage-Improver Error', 52, error);
+      HDLmManageRules.displayErrorMessage(errorText);
+      rulesGeneratedList = [];
+    }
+    /* Return the new rules */
+    return rulesGeneratedList;
+  }
+  /* This routine is used to run a set of services */
+  static async webpageImproverRunServicesOpenRouterV2(suggestionText, webpageUrl) {
+    console.log('In HDLmManageRules.webpageImproverRunServicesOpenRouterV2'); 
+    /* Build the area where the new rules will be stored */
+    let rulesGeneratedList = []; 
+    let improvementsList = await HDLmAI.openRouterGetImprovementsV2(suggestionText, webpageUrl, useAIVersion);
     console.log('improvementsList is', improvementsList);
     /* Get some values from the JSON object */
     try {
@@ -4873,9 +6016,7 @@ class HDLmManageRules {
       for (let i = 0; i < improvementsCount; i++) {
         /* Get the current improvement object */
         let improvementObj = localImprovements[i];
-        let improvementWhat = improvementObj.what;
-        let improvementWhy = improvementObj.why;
-        let markupObj = await HDLmAI.openAIGetMarkup(improvementWhat, webpageUrl);
+        let markupObj = improvementObj.markup;
         /* Get some values from the JSON object */
         localMarkups.push(markupObj);
       }
@@ -4883,9 +6024,18 @@ class HDLmManageRules {
       let markupsCount = localMarkups.length;
       for (let i = 0; i < markupsCount; i++) {
         let improvementObj = localImprovements[i];
-        /* console.log(improvementObj); */
-        let improvementWhat = improvementObj.what;
+        /* console.log(improvementObj); */ 
         let improvementWhy = improvementObj.why;
+        /* The improvementWhy value may contain some special (bad) characters
+           that need to be replaced. For example, the improvementWhy value may
+           contain the \u2019 character, which is a right single quotation mark.
+           This character needs to be replaced with a regular single quote character
+           ('). 
+
+           This code is no long needed because the server can properly handle all
+           special characters. However, the code is left here in case we need to
+           use it in the future for some reason. */
+        /* improvementWhy = HDLmString.replaceAllSimple(improvementWhy, "\u2019","'"); */
         let markupObj = localMarkups[i];
         /* Build a tree node object from each of the markups */
         let constructList = HDLmManageRules.constructTreeNode(webpageUrl,
@@ -4933,6 +6083,261 @@ class HDLmManageRules {
     /* Return the new rules */
     return rulesGeneratedList;
   }
+  /* This routine is used to run a set of services */
+  static async webpageImproverRunServicesOpenRouterV3(suggestionText, webpageUrl) {
+    console.log('In HDLmManageRules.webpageImproverRunServicesOpenRouterV3'); 
+    /* Build the area where the new rules will be stored */
+    let rulesGeneratedList = []; 
+    let improvementsList = await HDLmAI.openRouterGetImprovementsV3(suggestionText, webpageUrl, useAIVersion);
+    console.log('improvementsList is', improvementsList);
+    /* Get some values from the JSON object */
+    try {
+      let localImprovements = improvementsList;
+      /* The user may or may not have provided a suggestion. The
+         suggestion (if it exists) is used to build some markup.
+         The markup is used to build some rules. */
+      if (HDLmManageRules.suggestionText != null) {
+      }
+      /* Process each of the improvements. Convert the improvement to a
+         set of markup. */
+      let improvementsCount = localImprovements.length;
+      let localMarkups = [];
+      for (let i = 0; i < improvementsCount; i++) {
+        /* Get the current improvement object */
+        let improvementObj = localImprovements[i];
+        let markupObj = improvementObj.markup;
+        /* Get some values from the JSON object */
+        localMarkups.push(markupObj);
+      }
+      /* Convert each of the markup objects to a rule */
+      let markupsCount = localMarkups.length;
+      for (let i = 0; i < markupsCount; i++) {
+        let improvementObj = localImprovements[i];
+        /* console.log(improvementObj); */ 
+        let improvementWhy = improvementObj.why;
+        /* The improvementWhy value may contain some special (bad) characters
+           that need to be replaced. For example, the improvementWhy value may
+           contain the \u2019 character, which is a right single quotation mark.
+           This character needs to be replaced with a regular single quote character
+           ('). 
+
+           This code is no long needed because the server can properly handle all
+           special characters. However, the code is left here in case we need to
+           use it in the future for some reason. */
+        /* improvementWhy = HDLmString.replaceAllSimple(improvementWhy, "\u2019","'"); */
+        let markupObj = localMarkups[i];
+        /* Build a tree node object from each of the markups */
+        let constructList = HDLmManageRules.constructTreeNode(webpageUrl,
+                                                              improvementWhy,
+                                                              markupObj);
+        let treeNodeObj = constructList[0];      
+        let overallValid = constructList[1];
+        let scriptValid = constructList[2];
+        let stylesValid = constructList[3];
+        let scriptStr = constructList[4];
+        let stylesStr = constructList[5];
+        /* Check if the tree node has at least
+           one script */ 
+        let scriptCount = treeNodeObj.details.scripts.length;
+        /* Check if the script value is valid */
+        if (overallValid && scriptCount > 0) {
+          HDLmTree.storeTreeNode(treeNodeObj);
+          rulesGeneratedList.push(treeNodeObj);
+        }
+        /* Some type of error was detected. Report the error
+           and continue processing. */
+        else {
+          /* Check what sort of error was detected */
+          if (scriptCount <= 0) {
+            let errorText = 'No scripts were found in the generated rule';
+            HDLmManageRules.displayErrorMessage(errorText);
+          }
+          else {
+            let errorText = 'The generated script or style value(s) is/are not valid';
+            HDLmManageRules.displayErrorMessage(errorText);
+          }
+        }
+      }
+      /* Return to the caller */
+      return rulesGeneratedList;
+    }
+    /* Handle some sort of error condition */
+    catch (error) {
+      console.error(error);
+      let errorText = '';
+      errorText = HDLmError.buildError('Error', 'Get Webpage-Improver Error', 52, error);
+      HDLmManageRules.displayErrorMessage(errorText);
+      return false;
+    }
+    /* Return the new rules */
+    return rulesGeneratedList;
+  }
+  /* This routine is used to run a set of services */
+  static async webpageImproverRunServicesOpenRouterV4(suggestionText, webpageUrl) {
+    /* console.log('In HDLmManageRules.webpageImproverRunServicesOpenRouterV4'); */
+    /* Build the area where the new rules will be stored */
+    let rulesGeneratedList = []; 
+    let improvementsList = await HDLmAI.openRouterGetImprovementsV4(suggestionText, webpageUrl, useAIVersion);
+    /* console.log('improvementsList is', improvementsList); */
+    /* Get some values from the JSON object */
+    try {
+      let localImprovements = improvementsList;
+      /* The user may or may not have provided a suggestion. The
+         suggestion (if it exists) is used to build some markup.
+         The markup is used to build some rules. */
+      if (HDLmManageRules.suggestionText != null) {
+      }
+      /* Process each of the improvements. Convert the improvement to a
+         set of markup. */
+      let improvementsCount = localImprovements.length;
+      let localMarkups = [];
+      for (let i = 0; i < improvementsCount; i++) {
+        /* Get the current improvement object */
+        let improvementObj = localImprovements[i];
+        let improvementWhat = improvementObj.what;
+        let markupObj = await HDLmAI.openRouterGetMarkupV4(improvementWhat, webpageUrl, useAIVersion);
+        /* Get some values from the JSON object */
+        localMarkups.push(markupObj);
+      }
+      /* Convert each of the markup objects to a script string */
+      let markupsCount = localMarkups.length;
+      for (let i = 0; i < markupsCount; i++) {        
+        let markupObj = localMarkups[i];
+        /* Get the current improvement object */
+        let improvementObj = localImprovements[i];
+        let improvementWhy = improvementObj.why;
+        /* The improvementWhy value may contain some special (bad) characters
+           that need to be replaced. For example, the improvementWhy value may
+           contain the \u2019 character, which is a right single quotation mark.
+           This character needs to be replaced with a regular single quote character
+           ('). 
+
+           This code is no long needed because the server can properly handle all
+           special characters. However, the code is left here in case we need to
+           use it in the future for some reason. */
+        /* improvementWhy = HDLmString.replaceAllSimple(improvementWhy, "\u2019","'"); */
+      
+        /* Build a tree node object from each of the markups */
+        let constructList = HDLmManageRules.constructTreeNode(webpageUrl,
+                                                              improvementWhy,
+                                                              markupObj);
+        let treeNodeObj = constructList[0];      
+        let overallValid = constructList[1];
+        let scriptValid = constructList[2];
+        let stylesValid = constructList[3];
+        let scriptStr = constructList[4];
+        let stylesStr = constructList[5];
+        /* Some type of error was detected. Report the error
+           and continue processing. */
+        if (!overallValid) {
+          /* Check what sort of error was detected */
+          if (!scriptValid) {
+            let errorText = 'The script is not valid'; 
+            HDLmManageRules.displayErrorMessage(errorText);
+          }
+          if (!stylesValid) {
+            let errorText = 'The style is not valid'; 
+            HDLmManageRules.displayErrorMessage(errorText);
+          }
+        }
+        /* Get the number of scripts in the tree node object. 
+           The number of scripts is used to determine if the 
+           tree node object is valid. A tree node object must 
+           have at least one script to be valid. */
+        let scriptCount = 0;
+        /* Check if the tree node has at least
+           one script */ 
+        /* console.log(typeof(treeNodeObj)); */
+        /* console.log(treeNodeObj); */
+        /* console.log(typeof(treeNodeObj.details)); */
+        /* console.log(treeNodeObj.details); */
+        /* console.log(typeof(treeNodeObj.details.scripts)); */ 
+        /* console.log(treeNodeObj.details.scripts); */
+        /* let detailsType = typeof(treeNodeObj.details); */
+        /* Check if the tree node object is not null. The 
+           tree node object may be null if the constructTreeNode
+           routine encountered an error. Testing has show that 
+           this can really happen if one of the scripts is invalid. */
+        if (treeNodeObj != null)
+          scriptCount = treeNodeObj.details.scripts.length;
+        /* console.log(scriptValid, stylesValid); */
+        /* Check if the script value is valid */
+        if (overallValid && scriptCount > 0) {
+          HDLmTree.storeTreeNode(treeNodeObj);
+          rulesGeneratedList.push(treeNodeObj);
+        }
+        /* Some type of error was detected. Report the error
+           and continue processing. */
+        else {
+          /* Check what sort of error was detected */
+          if (scriptCount <= 0) {
+            let errorText = 'No scripts were found in the generated rule';
+            HDLmManageRules.displayErrorMessage(errorText);
+          }
+          else {
+            let errorText = 'The generated script or style value(s) is/are not valid';
+            HDLmManageRules.displayErrorMessage(errorText);
+          }
+        }
+      }
+    }
+    /* Handle some sort of error condition */
+    catch (error) {
+      console.error(error);
+      let errorText = '';
+      errorText = HDLmError.buildError('Error', 'Get Webpage-Improver Error', 52, error);
+      HDLmManageRules.displayErrorMessage(errorText);
+      rulesGeneratedList = [];
+    }
+    /* Return the new rules */
+    return rulesGeneratedList;
+  } 
+  /* Convert each of the markup objects to a script string */
+  /* 
+  let markupsCount = localMarkups.length;
+  let scriptsArray = [];
+  for (let i = 0; i < markupsCount; i++) {
+    let markupObj = localMarkups[i];
+  */
+  /* Build a script string from each of the markups */
+  /* 
+  let constructList = HDLmManageRules.constructScript(markupObj);
+  let overallStr = constructList[0];      
+  let overallValid = constructList[1];
+  let scriptValid = constructList[2];
+  let stylesValid = constructList[3];
+  let scriptStr = constructList[4];
+  let stylesStr = constructList[5];
+  */
+  /* Some type of error was detected. Report the error
+      and continue processing. */
+  /*
+  if (!overallValid) {
+  */
+  /* Check what sort of error was detected */
+  /*
+    if (!scriptValid) {
+      let errorText = 'The script is not valid'; 
+      HDLmManageRules.displayErrorMessage(errorText);
+    }
+    if (!stylesValid) {
+      let errorText = 'The style is not valid'; 
+      HDLmManageRules.displayErrorMessage(errorText);
+    }
+  } 
+  */
+  /* If no errors were detected, store the script
+      string in the array of script strings */
+  /* 
+    else    
+  */
+  /* Make sure that at least one script was generated */
+  /*                               
+  if (scriptsArray.length > 0) {
+    let treeNodeObj = HDLmManageRules.constructTreeNodeFromScripts(webpageUrl, firstImprovementWhy, scriptsArray);
+    rulesGeneratedList.push(treeNodeObj);
+  }
+  */
   /* The routine below does all of the work needed to handle keyboard
      events */
   static windowOnDown(event) {
@@ -4961,15 +6366,6 @@ class HDLmManageRules {
     HDLmManageRules.makeRolloverTextAreaInvisible(event);
   }
 }
-/* The following promise is used to wait for the user to
-   hide the browser. This promise is resolved when the
-   user hides the browser. */
-HDLmManageRules.visibilityChangeResolveFunction = null;
-/* The following counts are used to keep track of the number
-   of times the user hides the browser or makes the browser
-   visible */
-HDLmManageRules.visibilityChangeHiddenCount = 0;
-HDLmManageRules.visibilityChangeVisibleCount = 0;
 /* The access challenge name is stored in the field
    below */
 HDLmManageRules.accessChallengeName = null;
@@ -4988,10 +6384,16 @@ HDLmManageRules.accessUserid = null;
 /* The verification code is stored in the field 
    below */
 HDLmManageRules.accessVerificationCode = null;
+/* The resolve function saved in the field below is invoked
+   when the user unloads the browser */
+HDLmManageRules.beforeUnloadResolveFunction = null;
 /* The companies array is stored in the field below.
    The companies array has information about each 
    company that has one or more rules. */
 HDLmManageRules.companiesArray = null;
+/* The list of deleted rules is stored in the array 
+   below. This list was needed to find a bug. */ 
+HDLmManageRules.deletedRulesList = [];
 /* The display rules value is stored in the field below.
    This value can be used to display all of the rules
    or just some of the rules */
@@ -5010,6 +6412,11 @@ HDLmManageRules.getFromCookie = false;
    instead. These components are remounted by React 
    when the key value changes. */
 HDLmManageRules.inputKeyValue = 1;
+/* The next field contains the value of the new company
+   name field. This value may be incomplete. This value 
+   may be a duplicate of an existing company name. This 
+   value may not be valid. */ 
+HDLmManageRules.newCompanyNameChange = null;
 /* The function saved in the field below is invoked
    when a promise is rejected */
 HDLmManageRules.promiseRejectFunction = null;
@@ -5042,6 +6449,19 @@ HDLmManageRules.stateSetFunction = null;
    below. The suggestion text (if any) is used to help 
    guide the LLM in creating improvements. */ 
 HDLmManageRules.suggestionText = null;
+/* The following count is used to keep track of the number
+   of times the user hides the browser or a tab of the 
+   browswer */
+HDLmManageRules.visibilityChangeHiddenCount = 0;
+/* The resolve function saved in the field below is invoked
+   when the user changes the visibility of a webpage. This 
+   can happen if the user switches tabs or minimizes the browser
+   or closes the browser. */
+HDLmManageRules.visibilityChangeResolveFunction = null;
+/* The following count is used to keep track of the number
+   of times the user makes the browser visible or makes a 
+   tab of the browser visible */
+HDLmManageRules.visibilityChangeVisibleCount = 0;
 /* The web page domain name is stored in the field 
    below. The web page domain name is used to access  
    a page on the Internet. */ 

@@ -16,7 +16,7 @@ class HDLmMain {
   static handleInitialization() {    
     /* console.log('In HDLmMain.handleInitialization'); */
     let windowLocationPathName = window.location.pathname;
-    console.log('window.location.pathname', windowLocationPathName);
+    /* console.log('window.location.pathname', windowLocationPathName); */
     /* This routine may been invoked to build rules or it may have 
        been invoked for some other reason */
     /* HDLmExecuteEditor.main(); */
@@ -25,16 +25,23 @@ class HDLmMain {
        manages rules or we may want to run the standard
        editor code. */  
     if (HDLmUtility.isVscode()) { 
-      if (1 == 1) 
-        HDLmManageRules.main();
+      if (1 == 1) {
+        if (1 == 2)
+          HDLmManageRules.main();
+        else
+          HDLmWebpageOptimizer.main();
+      }
       else
-        HDLmIndexOne.main();   
+        HDLmIndexOne.main();
     } 
     /* Not running under VSCode. Just run all of the standard
-       routines. In practice, only one will actually do anything. */
+       routines. In practice, only one will actually do anything. 
+       Each routine will check the window location pathname and
+       determine if it should execute. */
     else {
       HDLmIndexOne.main();   
       HDLmManageRules.main();
+      HDLmWebpageOptimizer.main();
     }
   }  
 } 

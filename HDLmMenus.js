@@ -70,13 +70,15 @@ class HDLmMenus {
                                          companyTreeNode,
                                          updateDatabase);
     /* Add the new Lists child to the new company */
-    let nodePathLists = nodePathCompanyNode.slice();
-    nodePathLists.push('Ignore Lists');
+    /* As of 2026/3/13 this code was changed. we used to
+       build a lists node. Now we build an ignore node. */
+    let nodePathIgnoreList = nodePathCompanyNode.slice();
+    nodePathIgnoreList.push('Ignore Lists');
     tooltip = HDLmModTreeInfo['lists'].tooltip;
     let newLists = HDLmTree.buildTreeNode('Ignore Lists', 
                                           'lists',
                                           tooltip,
-                                          nodePathLists,
+                                          nodePathIgnoreList,
                                           companyTreeNode,
                                           updateDatabase);
     /* Add the new Reports child to the new company */
@@ -3758,7 +3760,11 @@ class HDLmMenus {
       if (HDLmGlobals.checkForGemOrGxe()) {
         let siteNodePath = currentTreeNode.nodePath.slice(0, 6);
         let updateDatabaseFalse = false;
-        HDLmTree.buildSiteNode(siteNodePath, updateDatabaseFalse, HDLmNodeTypes.rules);
+        let updateFancyTreeTrue = true;
+        HDLmTree.buildSiteNode(siteNodePath, 
+                               updateDatabaseFalse, 
+                               updateFancyTreeTrue,
+                               HDLmNodeTypes.rules);
       }
       /* console.log(currentTreeNode.details.extra); */
       /* Try to add the new rule to the rule tree and the Fancytree node

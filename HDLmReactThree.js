@@ -225,7 +225,7 @@ class HDLmReactThree {
       rulesStringArray[additionalIndex] = ruleString;
       /* Send the updated rule object to the server */
       let valuesArray = [ruleObj];
-      let valuesObj = {rules: valuesArray};
+      let valuesObj = {nodes: valuesArray};
       let valuesObjJson = JSON.stringify(valuesObj);
       /* console.log(valuesObjJson); */
       HDLmWebSockets.sendStoreTreeNodesRequest(valuesObjJson);

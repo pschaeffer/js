@@ -100,6 +100,53 @@ class HDLmString {
   static compareCaseInsensitive(firstStr, secondStr) {
     return firstStr.localeCompare(secondStr, undefined, { sensitivity: 'accent' }) === 0;
   }
+  /* This routine counts special characters in a string. The caller
+     provides the string and the list of special characters. The special
+     characters are given as a string. Each character in the string is a 
+     special character. The output of this routine is an object with one 
+     property for each special character. The value of each property is 
+     the number of times that the corresponding special character appears
+     in the input string. */
+  static countSpecialCharacters(inStr, specialChars) {
+    /* Create an object to hold the counts of each special character. The
+       object has one property for each special character. The value of each
+       property is the number of times that the corresponding special character
+       appears in the input string. */
+    let counts = {};
+    let countDoubleParen = 0;
+    let locStart, locEnd;
+    let inStrObj = JSON.parse(inStr);
+    /* Set the initial count for each special character to zero */
+    for (let i = 0; i < specialChars.length; i++) {
+      counts[specialChars[i]] = 0;
+    }
+    /* Scan the input string character by character. If the current 
+       character is a special character, increment its count.  */
+    for (let i = 0; i < inStr.length; i++) {
+      let ch = inStr[i];
+      /* 
+      if (ch == '"') {
+        if (countDoubleParen == 0) {
+          countDoubleParen = 1;
+          locStart = i;
+        } 
+        else if (countDoubleParen == 1) {
+          countDoubleParen = 0;
+          locEnd = i;
+          let doubleParenStr = inStr.substring(locStart + 1, locEnd);
+          console.log(`Double paren string: ${doubleParenStr}`);
+        }
+      }
+      */
+      if (counts.hasOwnProperty(ch)) {
+        counts[ch]++;
+      }
+    }
+    /* Return the counts object to the caller. The counts object has one property
+       for each special character. The value of each property is the number of
+       times that the corresponding special character appears in the input string. */
+    return counts;
+  }
   /* This routine escapes double quotes in a string, if the double
      quotes are not already escaped. The caller provides the input
      string and the output string is returned. */
@@ -984,6 +1031,33 @@ class HDLmString {
     let haystack = ' \f\n\r\t\v';
     return (haystack.indexOf(inChar) >= 0);
   }
+  /* Replace characters in a string that can not actually be sent
+     over the Internet with JSON-friendly Unicode escape sequences.
+     Characters that can be sent are copied unchanged. */
+  static jsonReplaceUnprintable(inStr) {
+    /* Check for null values. Null values are treated as objects.
+       However, we want a special message for them. */
+    if (inStr == null) {
+      let errorText = `Input value passed to jsonReplaceUnprintable is null`;
+      HDLmAssert(false, errorText);
+    }
+    /* Make sure the argument passed by the caller is a string */
+    if (typeof(inStr) != 'string') {
+      let errorText = `Input value passed to jsonReplaceUnprintable is not a string`;
+      HDLmAssert(false, errorText);
+    }
+    let rv = '';
+    for (let i = 0; i < inStr.length; i++) {
+      let curChar = inStr.charAt(i);
+      let curCharCode = inStr.charCodeAt(i);
+      if (curCharCode < 0x20 ||
+          curCharCode > 0x7e)
+        rv += '\\u' + curCharCode.toString(16).padStart(4, '0');
+      else
+        rv += curChar;
+    }
+    return rv;
+  }
   /* This method is passed a string. It counts the number of numeric 
      characters (0-9) and returns the count to the caller. */
   static numericCount(inStr) {
@@ -1092,6 +1166,29 @@ class HDLmString {
     search = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     search = search.replace(/\s/g, "\\s");
     return inStr.replace(new RegExp(search, 'g'), replacement);
+  }  
+  /* Fix a string by replacing all occurrences of a specified substring with another
+     specified substring. The caller provides the input string, the substring to be
+     replaced, and the substring to replace it with. The output string is returned to
+     the caller. */
+  static replaceAllSimple(inStr, searchStr, replaceStr) {
+    /* Make sure the first argument passed by the caller is a string */
+    if (typeof inStr != 'string') {
+      let errorText = `Input value passed to replaceAllSimple is not a string`;
+      HDLmAssert(false, errorText);
+    }
+    /* Make sure the second argument passed by the caller is a string */
+    if (typeof searchStr != 'string') {
+      let errorText = `Search string passed to replaceAllSimple is not a string`;
+      HDLmAssert(false, errorText);
+    }
+    /* Make sure the third argument passed by the caller is a string */
+    if (typeof replaceStr != 'string') {
+      let errorText = `Replace string passed to replaceAllSimple is not a string`;
+      HDLmAssert(false, errorText);
+    } 
+    inStr = inStr.replaceAll(searchStr, replaceStr);
+    return inStr;
   }
   /* This routine converts a JavaScript string to 
      a hexadecimal JavaScript string */
@@ -1170,7 +1267,7 @@ class HDLmString {
   /* Convert the first character all of words in a string to uppercase
      and return the possibly modified sentence to the caller */
   static ucFirstSentence(inputValue, quoteChars = "'", ignoreSomeSingleQuotes = false) {
-    console.log('In HDLmString.ucFirstSentence');
+    /* console.log('In HDLmString.ucFirstSentence'); */
     /* Make sure the argument passed by the caller is a string */
     if (typeof inputValue != 'string') {
       let errorText = `Input value passed to ucFirstSentence is not a string`;
@@ -1186,9 +1283,9 @@ class HDLmString {
       valueToken = valueTokens[i];
       valueString = valueToken.value;
       /* If the current token is an identifier, then we must
-         convert the first character to uppercase */
+         convert the first character to uppercase */ 
       if (valueToken.tokType == HDLmTokenTypes.identifier)
-        valueString = HDLmString.ucFirst(valueString);
+        valueString = HDLmString.ucFirst(valueString); 
       /* Add the current (possibly modified) value to the output 
          string */
       outputValue += valueString;

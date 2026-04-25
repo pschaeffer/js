@@ -50,7 +50,7 @@ class HDLmAJAX {
     /* The function below gains control when an AJAX error occurs.
        the error is reported by failing the current request. */
     function runAJAXError() { 
-      /* console.log('In HDLmAJAX.runAJAX.runAJAXError'); */
+      console.log('In HDLmAJAX.runAJAX.runAJAXError'); 
       rejectFunction(Error("Network Error"));
     }
     /* The function below gains control when an AJAX request completes.
@@ -61,6 +61,9 @@ class HDLmAJAX {
       /* console.log(this.status); */
       /* Check the status of the request. This event will occur even
          if the status is a 404. */
+      console.log(this.status);
+      console.log(this.HDLmRequestType);
+      console.log(this.responseText);
       if (this.status == 200) {
         /* Resolve the Promise with the response text or a JSON
            object built from the response text */
@@ -84,6 +87,10 @@ class HDLmAJAX {
     let invokeApiStr = HDLmDefines.getString('HDLMINVOKEAPI');
     if (requestType == 'URL' &&
         URL.startsWith('https://' + serverName + '/' + invokeApiStr + '?'))
+      bypassProxy = true;
+    let serverStatusStr = HDLmDefines.getString('HDLMSERVERSTATUS');
+    if (requestType == 'URL' &&
+        URL.startsWith('https://' + serverName + '/' + serverStatusStr))
       bypassProxy = true;
     /* We may be running in an Electron JS environment or the extension
        window environment. In either of these environments, we don't need 

@@ -174,6 +174,25 @@ class HDLmUnRe {
                             newRuleNumber];
     HDLmUnRe.addChange(newChange);
   }
+  /* The method below adds a turn off event to the changes array. This
+     code constructs an undo / redo event (for turning rules off) and then adds
+     it to the changes array using a common routine. A turn off event
+     occurs when a turn off menu entry is invoked. */
+  static addActionOff(passedRuleList) {
+    /* console.log('In HDLmUnRe.addActionOff'); */
+    /* Write a debugging message to the console, if need be */
+    if (HDLmGlobals.activeDebugging.showInfo) {
+      /* 
+      let changesLength = HDLmUnRe.changesArray.length;
+      let changesIndex = HDLmUnRe.changesIndex;
+      let errorText = `Add Off - Changes Length (${changesLength}) Changes Index (${changesIndex})`;
+      console.log(errorText);
+      */
+    }
+    let newChange = new HDLmUnReChange(HDLmUnReTypes.actionOff);
+    newChange.rulesArray = passedRuleList;
+    HDLmUnRe.addChange(newChange);
+  }
   /* The method below adds a move into production event to the changes array. This 
      code constructs an undo / redo event (for a move into production) and then adds
      it to the changes array using a common routine. A move into production event
@@ -1183,6 +1202,11 @@ class HDLmUnRe {
         HDLmManageRules.actionUnRe('redo', HDLmUnReTypes.actionDelete, currentChange.rulesArray);
         break;
       }
+      /* Redo a turn off rules event */
+      case HDLmUnReTypes.actionOff: {
+        HDLmManageRules.actionUnRe('redo', HDLmUnReTypes.actionOff, currentChange.rulesArray);
+        break;
+      }
       /* Redo a move into production rules event */
       case HDLmUnReTypes.actionProd: {
         HDLmManageRules.actionUnRe('redo', HDLmUnReTypes.actionProd, currentChange.rulesArray);
@@ -1678,6 +1702,11 @@ class HDLmUnRe {
       /* Undo a delete rules event */
       case HDLmUnReTypes.actionDelete: {
         HDLmManageRules.actionUnRe('undo', HDLmUnReTypes.actionDelete, currentChange.rulesArray);
+        break;
+      }
+      /* Undo a turn off rules event */
+      case HDLmUnReTypes.actionOff: {
+        HDLmManageRules.actionUnRe('undo', HDLmUnReTypes.actionOff, currentChange.rulesArray);
         break;
       }
       /* Undo a move into production rules event */

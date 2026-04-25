@@ -40,8 +40,8 @@ class HDLmBuildRules {
     /* event.preventDefault(); */
     HDLmBuildRules.beforeUnloadResolveFunction('The browser was closed');
   }
-    /* Build the addTreeNode string. This string is used just for
-       testing and debugging purposes. */
+  /* Build the addTreeNode string. This string is used just for
+     testing and debugging purposes. */
   static buildAddTreeNodeString(nodePath) {
     let addTreeNodeString = '';
     addTreeNodeString = '{"tooltip":"Script modification from web-page improver",' +
@@ -218,7 +218,7 @@ class HDLmBuildRules {
                         '      }' +
                         '    },' +
                         '    "path": "//.*/",' +
-                        '    "prob": 1.0,' +
+                        '    "prob": 100.0,' +
                         '    "usemode": "prod",' +
                         '    "xpath": ""' +
                         '  },' +
@@ -288,7 +288,7 @@ class HDLmBuildRules {
                          '      }' +
                          '    },' +
                          '    "path": "//.*/",' +
-                         '    "prob": 1.0,' +
+                         '    "prob": 100.0,' +
                          '    "usemode": "prod",' +
                          '    "xpath": ""' +
                          '  },' +
@@ -342,7 +342,7 @@ class HDLmBuildRules {
                          '      }' +
                          '    },' +
                          '    "path": "//.*/",' +
-                         '    "prob": 1.0,' +
+                         '    "prob": 100.0,' +
                          '    "usemode": "prod",' +
                          '    "xpath": ""' +
                          '  },' +
@@ -397,7 +397,7 @@ class HDLmBuildRules {
                          '      }' +
                          '    },' +
                          '    "path": "//.*/",' +
-                         '    "prob": 1.0,' +
+                         '    "prob": 100.0,' +
                          '    "usemode": "prod",' +
                          '    "xpath": ""' +
                          '  },' +
@@ -483,7 +483,7 @@ class HDLmBuildRules {
                          '      }' +
                          '    },' +
                          '    "path": "//.*/",' +
-                         '    "prob": 1.0,' +
+                         '    "prob": 100.0,' +
                          '    "usemode": "prod",' +
                          '    "xpath": ""' +
                          '  },' +
@@ -559,7 +559,7 @@ class HDLmBuildRules {
                          '      }' +
                          '    },' +
                          '    "path": "//.*/",' +
-                         '    "prob": 1.0,' +
+                         '    "prob": 100.0,' +
                          '    "usemode": "prod",' +
                          '    "xpath": ""' +
                          '  },' +
@@ -627,7 +627,7 @@ class HDLmBuildRules {
                          '      }' +
                          '    },' +
                          '    "path": "//.*/",' +
-                         '    "prob": 1.0,' +
+                         '    "prob": 100.0,' +
                          '    "usemode": "prod",' +
                          '    "xpath": ""' +
                          '  },' +
@@ -695,7 +695,7 @@ class HDLmBuildRules {
                          '      }' +
                          '    },' +
                          '    "path": "//.*/",' +
-                         '    "prob": 1.0,' +
+                         '    "prob": 100.0,' +
                          '    "usemode": "prod",' +
                          '    "xpath": ""' +
                          '  },' +
@@ -763,7 +763,7 @@ class HDLmBuildRules {
                          '      }' +
                          '    },' +
                          '    "path": "//.*/",' +
-                         '    "prob": 1.0,' +
+                         '    "prob": 100.0,' +
                          '    "usemode": "prod",' +
                          '    "xpath": ""' +
                          '  },' +
@@ -828,7 +828,7 @@ class HDLmBuildRules {
                          '      }' +
                          '    },' +
                          '    "path": "//.*/",' +
-                         '    "prob": 1.0,' +
+                         '    "prob": 100.0,' +
                          '    "usemode": "prod",' +
                          '    "xpath": ""' +
                          '  },' +
@@ -904,7 +904,7 @@ class HDLmBuildRules {
                           '      }' +
                           '    },' +
                           '    "path": "//.*/",' +
-                          '    "prob": 1.0,' +
+                          '    "prob": 100.0,' +
                           '    "usemode": "prod",' +
                           '    "xpath": ""' +
                           '  },' +
@@ -971,7 +971,7 @@ class HDLmBuildRules {
                           '      }' +
                           '    },' +
                           '    "path": "//.*/",' +
-                          '    "prob": 1.0,' +
+                          '    "prob": 100.0,' +
                           '    "usemode": "prod",' +
                           '    "xpath": ""' +
                           '  },' +
@@ -1029,7 +1029,7 @@ class HDLmBuildRules {
                           '      }' +
                           '    },' +
                           '    "path": "//.*/",' +
-                          '    "prob": 1.0,' +
+                          '    "prob": 100.0,' +
                           '    "usemode": "prod",' +
                           '    "xpath": ""' +
                           '  },' +
@@ -1084,7 +1084,7 @@ class HDLmBuildRules {
                           '      }' +
                           '    },' +
                           '    "path": "//.*/",' +
-                          '    "prob": 1.0,' +
+                          '    "prob": 100.0,' +
                           '    "usemode": "prod",' +
                           '    "xpath": ""' +
                           '  },' +
@@ -1448,8 +1448,12 @@ class HDLmBuildRules {
        update the node tree (HDLmTree) in memory and won't send any new
        nodes to the database. */
     let updateDatabaseFalse = false;
+    let updateFancyTreeFalse = false;
     let newSiteNode;
-    newSiteNode = HDLmTree.buildSiteNode(parentNodePath, updateDatabaseFalse, HDLmNodeTypes.rules);
+    newSiteNode = HDLmTree.buildSiteNode(parentNodePath, 
+                                         updateDatabaseFalse, 
+                                         updateFancyTreeFalse,
+                                         HDLmNodeTypes.rules);
     /* Try to locate the parent node of the new tree node. The
        parent node is needed to get the (possible) new name
        suffix. */
@@ -2145,7 +2149,7 @@ class HDLmBuildRules {
           }
           /* Build a JSON string from the rules array */
           let newRulesStr = newRulesArray.toString();
-          newRulesStr = '{"rules": ' + '[' + newRulesStr + ']' + '}';
+          newRulesStr = '{"nodes": ' + '[' + newRulesStr + ']' + '}';
           /* console.log(newRulesArray); */
           /* console.log(newRulesStr); */
           /* console.log(newRulesStr); */

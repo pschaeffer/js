@@ -2409,7 +2409,6 @@ const HDLmModTreeInfo = {
     "ucfirstname": "Company",
     "tooltip":     "Company node"
   },
-
   "config": {
     "longname":    "configuration",
     "ucfirstname": "Configuration",

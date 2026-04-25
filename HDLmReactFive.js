@@ -1,15 +1,15 @@
 /**
- * HDLmReactFour short summary.
+ * HDLmReactFive short summary.
  *
- * HDLmReactFour description.
+ * HDLmReactFive description.
  *
  * @version 1.0
  * @author Peter
  */
 "use strict";
-/* The HDLmReactFour class is not used to create any objects.
+/* The HDLmReactFive class is not used to create any objects.
    However, it does contain code for creating and using React. */ 
-class HDLmReactFour {    
+class HDLmReactFive {    
   /* Build a React break element and return the React 
      break element to the caller */
   static buildBreakElement() {
@@ -25,7 +25,7 @@ class HDLmReactFour {
                             buttonIdValue,
                             buttonText, 
                             buttonRoutine) {
-    /* console.log('In HDLmReactFour.buildButtonElement'); */
+    /* console.log('In HDLmReactFive.buildButtonElement'); */
     if (propsValue == null) {
       const buttonStyle = { borderRadius: '25px',  
                             margin: '2px 1px',
@@ -43,7 +43,7 @@ class HDLmReactFour {
                                             propsValue, 
                                             buttonText);
     /* Put the button in a div */
-    let buttonDivElement = HDLmReactFour.putElementsInDiv(null, [buttonElement]);    
+    let buttonDivElement = HDLmReactFive.putElementsInDiv(null, [buttonElement]);    
     /* Return the React button element in a div to the caller */                                    
     return buttonDivElement;
   }
@@ -134,11 +134,11 @@ class HDLmReactFour {
                           rightPaddingValue,
                           focusValue) {
     /* Get a React element for the label text */
-    let labelElement = HDLmReactFour.buildLabelElement(null, null, labelText);
-    let breakElement = HDLmReactFour.buildBreakElement();
+    let labelElement = HDLmReactFive.buildLabelElement(null, null, labelText);
+    let breakElement = HDLmReactFive.buildBreakElement();
     let onChangeFunction = null;
     /* Get a React element for the input area */
-    let inputElement = HDLmReactFour.buildInputElement(null, 
+    let inputElement = HDLmReactFive.buildInputElement(null, 
                                                        onChangeFunction, 
                                                        onKeyDownFunction, 
                                                        placeHolderText, 
@@ -148,7 +148,7 @@ class HDLmReactFour {
                                                        rightPaddingValue,
                                                        focusValue);
     /* Combine the label with the input element in a div */
-    let divElement = HDLmReactFour.putElementsInDiv(null,
+    let divElement = HDLmReactFive.putElementsInDiv(null,
                                                     [labelElement, breakElement, inputElement]);
     /* Return the div React element to the caller */
     return divElement;
@@ -163,10 +163,10 @@ class HDLmReactFour {
                               numberOfCols,
                               focusValue) {
     /* Get a React element for the label text */
-    let labelElement = HDLmReactFour.buildLabelElement(null, null, labelText);
-    let breakElement = HDLmReactFour.buildBreakElement();
+    let labelElement = HDLmReactFive.buildLabelElement(null, null, labelText);
+    let breakElement = HDLmReactFive.buildBreakElement();
     /* Get a React element for the input area */
-    let inputElement = HDLmReactFour.buildTextAreaElement(onKeyDownFunction, 
+    let inputElement = HDLmReactFive.buildTextAreaElement(onKeyDownFunction, 
                                                           onMouseEnterFunction,
                                                           onMouseLeaveFunction,
                                                           initialTextAreaName,
@@ -175,7 +175,7 @@ class HDLmReactFour {
                                                           numberOfCols,
                                                           focusValue); 
     /* Combine the label with the input element in a div */
-    let divElement = HDLmReactFour.putElementsInDiv(null,
+    let divElement = HDLmReactFive.putElementsInDiv(null,
                                                     [labelElement, breakElement, inputElement]);
     /* Return the div React element to the caller */
     return divElement;
@@ -197,9 +197,9 @@ class HDLmReactFour {
                                   actionIdValue,
                                   actionName, 
                                   actionRoutine) {
-    /* console.log('In HDLmReactFour.buildManageActionElement', actionRoutine); */
+    /* console.log('In HDLmReactFive.buildManageActionElement', actionRoutine); */
     /* Build a React action element for the action */
-    let actionElement = HDLmReactFour.buildButtonElement(null,
+    let actionElement = HDLmReactFive.buildButtonElement(null,
                                                          actionIdValue, 
                                                          actionName, 
                                                          actionRoutine);
@@ -225,7 +225,7 @@ class HDLmReactFour {
                          'left': fromLeftPixels.toString() + 'px' };               
       divPropsValue = { style: divStyle };
     }
-    let actionsDivElement = HDLmReactFour.putElementsInDiv(divPropsValue, [actionsElement]);  
+    let actionsDivElement = HDLmReactFive.putElementsInDiv(divPropsValue, [actionsElement]);  
     /* Return the React actions elements in a div to the caller */
     return actionsDivElement;
   }
@@ -282,13 +282,13 @@ class HDLmReactFour {
      with the break to the caller */
   static buildManageCompanyWBreakElement(propsValue, companyNameString) {
     /* Build a React text element for the company */  
-    let textElement = HDLmReactFour.buildTextElement('strong',
+    let textElement = HDLmReactFive.buildTextElement('strong',
                                                      propsValue, 
                                                      companyNameString);  
     /* Build a React break element */                          
-    let breakElement = HDLmReactFour.buildBreakElement();
+    let breakElement = HDLmReactFive.buildBreakElement();
     /* Combine the label with the break element in a fragment */
-    let fragmentElement = HDLmReactFour.putElementsInFragment([textElement, breakElement]);
+    let fragmentElement = HDLmReactFive.putElementsInFragment([textElement, breakElement]);
     /* Return the React fragment element to the caller */
     return fragmentElement;
   }
@@ -382,22 +382,22 @@ class HDLmReactFour {
       iconDomEntry.style.cssText = cssText;
     }
     /* Build an icon element to show/hide the password */    
-    let iconElement = HDLmReactFour.buildFontAwesomeIElement(null, 
+    let iconElement = HDLmReactFive.buildFontAwesomeIElement(null, 
                                                              'fa-eye', 
                                                              iconIdValue,
                                                              localOnClickFunction); 
     /* Get a React element for the label text */
-    let labelElement = HDLmReactFour.buildLabelElement(null, null, labelText);
-    let breakElement = HDLmReactFour.buildBreakElement();
+    let labelElement = HDLmReactFive.buildLabelElement(null, null, labelText);
+    let breakElement = HDLmReactFive.buildBreakElement();
     /* Get a React element for the input area */
-    let inputElement = HDLmReactFour.buildPasswordElement(null, 
+    let inputElement = HDLmReactFive.buildPasswordElement(null, 
                                                           onKeyDownFunction, 
                                                           placeHolderText, 
                                                           passwordIdValue, 
                                                           paddingRightValue,
                                                           focusValue);
     /* Combine the label with the input element in a div */
-    let divElement = HDLmReactFour.putElementsInDiv(null,
+    let divElement = HDLmReactFive.putElementsInDiv(null,
                                                     [labelElement, 
                                                      breakElement,  
                                                      inputElement,
@@ -416,17 +416,17 @@ class HDLmReactFour {
                              paddingRightValue,
                              focusValue) {
     /* Get a React element for the label text */
-    let labelElement = HDLmReactFour.buildLabelElement(null, null, labelText);
-    let breakElement = HDLmReactFour.buildBreakElement();
+    let labelElement = HDLmReactFive.buildLabelElement(null, null, labelText);
+    let breakElement = HDLmReactFive.buildBreakElement();
     /* Get a React element for the input area */
-    let inputElement = HDLmReactFour.buildPasswordElement(null, 
+    let inputElement = HDLmReactFive.buildPasswordElement(null, 
                                                           onKeyDownFunction, 
                                                           placeHolderText, 
                                                           idValue, 
                                                           paddingRightValue,
                                                           focusValue);
     /* Combine the label with the input element in a div */
-    let divElement = HDLmReactFour.putElementsInDiv(null,
+    let divElement = HDLmReactFive.putElementsInDiv(null,
                                                     [labelElement, breakElement, inputElement]);
     /* Return the div React element to the caller */
     return divElement;
@@ -494,9 +494,8 @@ class HDLmReactFour {
        element to be properly initialized with the current value
        of the table data. Using defaultValue creates what is called
        an uncontrolled component in React. */
-    let ikValue = HDLmManageRules.inputKeyValue;
-    /* ikValue = parseInt(HDLmUtility.uniqueGenerateId().substring(6)); */
-    /* console.log('In HDLmReactFour.buildTdInputTextElement - ikValue = ', ikValue, rowClassName, idValue); */
+    let ikValue = HDLmWebpageOptimizer.inputKeyValue;
+    /* console.log('In HDLmReactFive.buildTdInputTextElement - ikValue = ', ikValue, rowClassName, idValue); */
     /* console.trace(); */
     let inputPropsValue = { "type": "text",
                             "className": rowClassName,
@@ -620,15 +619,15 @@ class HDLmReactFour {
   static buildTrElement(propsValue, tableRowArray, keyValue, rowClassName, onRowClick) {
     /* Create the React table row element */    
     /* console.log(selectedRowId, setSelectedRowId); */
-    /* console.log('In HDLmReactFour.buildTrElement - Entry', keyValue, isSelected); */
+    /* console.log('In HDLmReactFive.buildTrElement - Entry', keyValue, isSelected); */
     /* Set the default properties for the table row. In
        practice, these default properties are only used
        for heading rows. */
-    /* console.log('In HDLmReactFour.buildTrElement - keyValue = ', keyValue); */
+    /* console.log('In HDLmReactFive.buildTrElement - keyValue = ', keyValue); */
     let trPropsValue = null;
     /* Build some properties for most table rows */
     if (rowClassName != null) {    
-      /* console.log('In HDLmReactFour.buildTrElement - Later, className = ', rowClassName); */
+      /* console.log('In HDLmReactFive.buildTrElement - Later, className = ', rowClassName); */
       /* console.log('Building', keyValue,  isSelected); */
       trPropsValue = { key: keyValue,
                        className: rowClassName,

@@ -611,6 +611,49 @@ class HDLmSecurity {
     /* console.log(typeof (apiPromise)); */
     return apiPromise;
   }
+  /* Check the user name and password that the user entered. The user
+     name and password might be right or they might be wrong. The 
+     actual checking is done remotely by our server. This routine 
+     returns a promise that is eventually resolved. The response 
+     text for the promise shows if the user name and password were 
+     correct or not. */
+  static checkUsernamePasswordUpdateMemoryServer(userName, passwordStr) {
+    /* Get the name of the server used to handle some requests */
+    let serverName = HDLmConfigInfo.getServerName(); 
+    let invokeApiStr = HDLmDefines.getString('HDLMINVOKEAPI');
+    let apiName = HDLmDefines.getString('HDLMAPICHECKUSERNAMEPASSWORDUPDATEMEMORY');
+    let urlStr = 'https://' + serverName + '/' + invokeApiStr + '?' + 'Name=' + apiName;
+    /* Pass some JSON with the API request */
+    let clientAppId = HDLmConfigInfo.getUserPoolClientAppId();
+    let apiJson = HDLmSecurity.getJsonInitiateAuth(clientAppId,  
+                                                   userName,
+                                                   passwordStr);
+    let apiJsonLen = apiJson.length;
+    /* Invoke the Cognito API (using the server) and return 
+       the promise to the caller */
+    let apiPromise;
+    /* The callers passes the headers and the JSON */
+    /* Use the fetch API */ 
+    let awsCognitoHostName = HDLmConfigInfo.getAwsCognitoHost();
+    let apiHeaders = HDLmSecurity.getHeadersInitiateAuth(awsCognitoHostName, apiJsonLen); 
+    /* console.log(apiHeaders); */  
+    /* console.log(apiJson); */
+    /* Testing has shows that the headers passed below are not 
+       really needed. The method and body are absolutely needed. */
+    /* console.log(urlStr); */
+    /* console.log(apiHeaders); */
+    /* console.log(apiJson); */
+    apiPromise = fetch(urlStr, { 
+                                 credentials: "include",
+                                 "method": "POST",
+                                 "headers": apiHeaders,
+                                 "body": apiJson
+                               });
+    /* Return the promise to the caller */
+    /* console.log(apiPromise); */
+    /* console.log(typeof (apiPromise)); */
+    return apiPromise;
+  }
   /* Check the verification code that the user entered. The user
      verification code might be right or it might be wrong. The
      actual checking is done remotely. This routine returns a promise
