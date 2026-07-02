@@ -196,6 +196,29 @@ class HDLmString {
     }
     return differences;
   }
+  /* This routine fixes an input JSON string,  
+     as need be. The fixed string is returned
+     to the caller. This code was copied from 
+     stack overflow question 14432165 */ 
+  static fixJsonString(inStr) {
+    /* Make sure the first (and only) argument passed by the caller is a string */
+    if (typeof inStr != 'string') {
+      let errorText = `Input value passed to fixJsonString is not a string`;
+      HDLmAssert(false, errorText);
+    }
+    /* Fix the input JSON string */
+    inStr = inStr.replace(/\\n/g, "\\n")
+                 .replace(/\\'/g, "\\'")
+                 .replace(/\\"/g, '\\"')
+                 .replace(/\\&/g, "\\&")
+                 .replace(/\\r/g, "\\r")
+                 .replace(/\\t/g, "\\t")
+                 .replace(/\\b/g, "\\b")
+                 .replace(/\\f/g, "\\f");
+    /* Remove non-printable and other non-valid JSON characters */ 
+    inStr = inStr.replace(/[\u0000-\u001F]+/g,"");
+    return inStr;
+  }
   /* Get a string from an array. The caller provides the array and
      a separator value. The separator value is added to the output 
      string before all values other than the first. */
@@ -883,6 +906,77 @@ class HDLmString {
       rv.push(tokenVec[i]);
     }
     return rv;
+  }
+  /* This routine converts two hexadecimal JavaScript characters (string 
+     of length 2) to a JavaScript string (of length 1) */
+  static hexToChar(hexStr) {
+    /* Make sure the first (and only) argument passed by the caller 
+       is a string */
+    if (typeof hexStr != 'string') {
+      let errorText = `Input value passed to hexToChar is not a string`;
+      HDLmAssert(false, errorText);
+    }
+    /* Make sure the first (and only) argument passed by the caller has 
+       a length of exactly two */
+    if (hexStr.length !== 2) {
+      let errorText = `Input value passed to hexToChar does not have length 2`;
+      HDLmAssert(false, errorText);
+    }
+    /* Convert the hexadecimal string to a character */
+    const charCode = parseInt(hexStr, 16);
+    const char = String.fromCharCode(charCode);
+    /* Return the character to the caller */    
+    return char;
+  }
+  /* This routine converts a hexadecimal JavaScript string 
+     to a standard JavaScript string and returns the standard
+     string to the caller. */
+  static hexToString(hexStr) {
+    /* Make sure the first (and only) argument passed by the caller is a string */
+    if (typeof hexStr != 'string') {
+      let errorText = `Input value passed to hexToString is not a string`;
+      HDLmAssert(false, errorText);
+    }
+    /* Make sure the first (and only) argument passed by the caller has 
+       an even length */
+    if (hexStr.length % 2 !== 0) {
+      let errorText = `Input value passed to hexToString does not have an even length`;
+      HDLmAssert(false, errorText);
+    }
+    /* Convert the hexadecimal string to a standard string */
+    let outStr = '';
+    for (let i = 0; i < hexStr.length; i += 2) {
+      const hexChar = hexStr.substring(i, i + 2);
+      const charCode = parseInt(hexChar, 16);
+      outStr += String.fromCharCode(charCode);
+    }
+    return outStr;
+  }
+  /* This routine inserts backslash characters, 
+     as need be. The idea is that single backslash
+     characters should be converted to double backslash 
+     characters. */
+  static insertBackslashes(inStr) {
+    /* Make sure the first (and only) argument passed by the caller is a string */
+    if (typeof inStr != 'string') {
+      let errorText = `Input value passed to insertBackslashes is not a string`;
+      HDLmAssert(false, errorText);
+    }
+    /* Convert the input string by inserting backslashes as need be */
+    let outStr = '';
+    let nextChar;
+    for (let i = 0; i < inStr.length; i++) {
+      /* Get the current character */
+      const curChar = inStr[i];
+      /* Get the next character, if it exists */
+      nextChar = i < inStr.length - 1 ? inStr[i + 1] : '';
+      if (curChar === '\n' & nextChar != '\\') {
+        outStr += '\\n';
+      } else {
+        outStr += curChar;
+      }
+    }
+    return outStr;
   }
   /* The function below returns a boolean showing if a character
      is a valid alpha character or not. The caller actually passes 

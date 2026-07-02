@@ -1800,6 +1800,46 @@ class HDLmHtml {
     inStr = inStr.replace(/\u0ed5/g, ')');
     return inStr;
   }
+  /* This routine saves some HTML to a file. The user provides 
+     the HTML to be saved. This routine provides a suggested filename.
+     The user is prompted to save the file with the suggested filename.
+     The user can change the filename if they want to. The file is saved 
+     using the File System Access API. This routine returns an error 
+     message to the caller if an error occurs. Otherwise, this routine
+     returns null to the caller. Note that this routine does not work
+     in all browsers. */
+  static async saveHtml(htmlStr) {
+    if (htmlStr == null) 
+      return 'No HTML to save'; 
+    /* Build a suggested filename using the current local date and time */
+    let now = new Date();
+    let dateStr = now.getFullYear().toString() +
+                  (now.getMonth() + 1).toString().padStart(2, '0') +
+                  now.getDate().toString().padStart(2, '0') + '-' +
+                  now.getHours().toString().padStart(2, '0') +
+                  now.getMinutes().toString().padStart(2, '0') +
+                  now.getSeconds().toString().padStart(2, '0');
+    let suggestedName = 'improved_webpage-' + dateStr + '.html';
+    /* Use the File System Access API to save the file */
+    try {
+      let fileHandle = await window.showSaveFilePicker({
+        suggestedName: suggestedName,
+        types: [{ description: 'HTML Files',
+                  accept: { 'text/html': ['.html'] } }]
+      });
+      let writable = await fileHandle.createWritable();
+      await writable.write(HDLmWebpageImprover.improvedHtml);
+      await writable.close();
+    }
+    catch (errorObj) {
+      if (errorObj.name !== 'AbortError') {
+        console.error(errorObj);
+        return 'An error occurred while saving the HTML file: ' +
+               errorObj.message;
+      }
+    }
+    return null;
+  }
   /* This routine runs asynchronously. That means that it will return a
      promise and return at some unknown point in the future. This routine
      uses another routine to get the current tab. The current tab is used

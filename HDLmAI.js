@@ -20,7 +20,7 @@ const OpenAIChatTemplates = {
                                          "- Create JSON output.\n" +
                                          "- Suggest ways to improve it.\n" +
                                          "- Provide HTML snippets (to be placed in the `<head>` and `<body>` sections) that implement an improvement.\n",
-                              "improvements": "Suggest {quantity} ways to improve this page. For each suggestion, provide:\n" +
+                              "improvements": "Suggest {{quantity}} ways to improve this page. For each suggestion, provide:\n" +
                                               "- What specific change should be made.\n" +
                                               "- Why it will improve sales or engagement.\n" +
                                               "\n" +
@@ -34,7 +34,7 @@ const OpenAIChatTemplates = {
                                               "\n" +
                                               "Each improvement suggestion:\n" +
                                               "- Should start with the word 'Improve'.\n",
-                              "markup": "Change the markup on this page to {improvement}.\n" +
+                              "markup": "Change the markup on this page to {{improvement}}.\n" +
                                         "\n" +
                                         "The markup must:\n" +
                                         "- Never modify any existing markup, instead use new insertions to modify the page.\n" +
@@ -44,11 +44,11 @@ const OpenAIChatTemplates = {
                                         "- Be valid HTML, CSS, or JavaScript.\n" +
                                         "- Never include any comments.\n" +
                                         "- Integrate well with the page's current design and functionality.\n",
-                              "webpageClient": "Focus on the page at {url} and just respond 'OK' after examining it:\n" +
+                              "webpageClient": "Focus on the page at {{url}} and just respond 'OK' after examining it:\n" +
                                                "```HTML\n" +
-                                               "{webpageClient}\n" +
+                                               "{{webpageClient}}\n" +
                                                "```\n",
-                              "webpageServer": "Focus on the page at {url} and just respond 'OK' after examining it.\n",
+                              "webpageServer": "Focus on the page at {{url}} and just respond 'OK' after examining it.\n",
                             };
 /* The next string determines the quantity of improvements
    to request from Open AI */
@@ -168,7 +168,7 @@ const OpenRouterChatTemplatesV1 = {
                                                "- Create JSON output.\n" +
                                                "- Suggest ways to improve it.\n" +
                                                "- Provide HTML snippets (to be placed in the `<head>` and `<body>` sections) that implement an improvement.\n",
-                                    "improvements": "Suggest {quantity} ways to improve this page. For each suggestion, provide:\n" +
+                                    "improvements": "Suggest {{quantity}} ways to improve this page. For each suggestion, provide:\n" +
                                                     "- What specific change should be made.\n" +
                                                     "- Why it will improve sales or engagement.\n" +
                                                     "\n" +
@@ -182,7 +182,7 @@ const OpenRouterChatTemplatesV1 = {
                                                     "\n" +
                                                     "Each improvement suggestion:\n" +
                                                     "- Should start with the word 'Improve'.\n",
-                                    "markup": "Change the markup on this page to {improvement}.\n" +
+                                    "markup": "Change the markup on this page to {{improvement}}.\n" +
                                               "\n" +
                                               "The markup must:\n" +
                                               "- Never modify any existing markup, instead use new insertions to modify the page.\n" +
@@ -192,11 +192,11 @@ const OpenRouterChatTemplatesV1 = {
                                               "- Be valid HTML, CSS, or JavaScript.\n" +
                                               "- Never include any comments.\n" +
                                               "- Integrate well with the page's current design and functionality.\n",
-                                    "webpageClient": "Focus on the page at {url} and just respond 'OK' after examining it:\n" +
+                                    "webpageClient": "Focus on the page at {{url}} and just respond 'OK' after examining it:\n" +
                                                      "```HTML\n" +
-                                                     "{webpageClient}\n" +
+                                                     "{{webpageClient}}\n" +
                                                      "```\n",
-                                    "webpageServer": "Focus on the page at {url} and just respond 'OK' after examining it.\n",
+                                    "webpageServer": "Focus on the page at {{url}} and just respond 'OK' after examining it.\n",
                                   };
 /* The next string determines the quantity of improvements
    to request from Open Router */
@@ -314,7 +314,7 @@ const OpenRouterChatTemplatesV2 = {
                                                "- Create JSON output.\n" +
                                                "- Suggest ways to improve it.\n" +
                                                "- Provide HTML snippets (to be placed in the `<head>` and `<body>` sections) that implement an improvement.\n",
-                                    "improvements": "Suggest {quantity} ways to improve this page. For each suggestion, provide:\n" +
+                                    "improvements": "Suggest {{quantity}} ways to improve this page. For each suggestion, provide:\n" +
                                                     "- What specific change should be made.\n" +
                                                     "- Why it will improve sales or engagement.\n" +
                                                     "- Markup needed to implement the improvement.\n" +
@@ -337,7 +337,7 @@ const OpenRouterChatTemplatesV2 = {
                                                     "- Be valid HTML, CSS, or JavaScript.\n" +
                                                     "- Never include any comments.\n" +
                                                     "- Integrate well with the page's current design and functionality.\n",
-                                    "markup": "Change the markup on this page to {improvement}.\n" +
+                                    "markup": "Change the markup on this page to {{improvement}}.\n" +
                                               "\n" +
                                               "The markup must:\n" +
                                               "- Never modify any existing markup, instead use new insertions to modify the page.\n" +
@@ -347,11 +347,11 @@ const OpenRouterChatTemplatesV2 = {
                                               "- Be valid HTML, CSS, or JavaScript.\n" +
                                               "- Never include any comments.\n" +
                                               "- Integrate well with the page's current design and functionality.\n",
-                                    "webpageClient": "Focus on the page at {url} and just respond 'OK' after examining it:\n" +
+                                    "webpageClient": "Focus on the page at {{url}} and just respond 'OK' after examining it:\n" +
                                                      "```HTML\n" +
-                                                     "{webpageClient}\n" +
+                                                     "{{webpageClient}}\n" +
                                                      "```\n",
-                                    "webpageServer": "Focus on the page at {url} and just respond 'OK' after examining it.\n",
+                                    "webpageServer": "Focus on the page at {{url}} and just respond 'OK' after examining it.\n",
                                   };
 const OpenRouterChatTemplatesOriginalV2 = {
                                     "context": "You are an expert at improving web pages, " + 
@@ -362,7 +362,7 @@ const OpenRouterChatTemplatesOriginalV2 = {
                                                "- Create JSON output.\n" +
                                                "- Suggest ways to improve it.\n" +
                                                "- Provide HTML snippets (to be placed in the `<head>` and `<body>` sections) that implement an improvement.\n",
-                                    "improvements": "Suggest {quantity} ways to improve this page. For each suggestion, provide:\n" +
+                                    "improvements": "Suggest {{quantity}} ways to improve this page. For each suggestion, provide:\n" +
                                                     "- What specific change should be made.\n" +
                                                     "- Why it will improve sales or engagement.\n" +
                                                     "\n" +
@@ -376,7 +376,7 @@ const OpenRouterChatTemplatesOriginalV2 = {
                                                     "\n" +
                                                     "Each improvement suggestion:\n" +
                                                     "- Should start with the word 'Improve'.\n",
-                                    "markup": "Change the markup on this page to {improvement}.\n" +
+                                    "markup": "Change the markup on this page to {{improvement}}.\n" +
                                               "\n" +
                                               "The markup must:\n" +
                                               "- Never modify any existing markup, instead use new insertions to modify the page.\n" +
@@ -386,11 +386,11 @@ const OpenRouterChatTemplatesOriginalV2 = {
                                               "- Be valid HTML, CSS, or JavaScript.\n" +
                                               "- Never include any comments.\n" +
                                               "- Integrate well with the page's current design and functionality.\n",
-                                    "webpageClient": "Focus on the page at {url} and just respond 'OK' after examining it:\n" +
+                                    "webpageClient": "Focus on the page at {{url}} and just respond 'OK' after examining it:\n" +
                                                      "```HTML\n" +
-                                                     "{webpageClient}\n" +
+                                                     "{{webpageClient}}\n" +
                                                      "```\n",
-                                    "webpageServer": "Focus on the page at {url} and just respond 'OK' after examining it.\n",
+                                    "webpageServer": "Focus on the page at {{url}} and just respond 'OK' after examining it.\n",
                                   };
 /* The next string determines the quantity of improvements
    to request from Open Router */
@@ -495,7 +495,7 @@ const OpenRouterChatTemplatesV3 = {
                                                "- Create JSON output.\n" +
                                                "- Suggest ways to improve it.\n" +
                                                "- Provide HTML snippets (to be placed in the `<head>` and `<body>` sections) that implement an improvement.\n",
-                                    "improvements": "Suggest {quantity} ways to improve this page. For each suggestion, provide:\n" +
+                                    "improvements": "Suggest {{quantity}} ways to improve this page. For each suggestion, provide:\n" +
                                                     "- What specific change should be made.\n" +
                                                     "- Why it will improve sales or engagement.\n" +
                                                     "- Markup needed to implement the improvement.\n" +
@@ -518,7 +518,7 @@ const OpenRouterChatTemplatesV3 = {
                                                     "- Be valid HTML, CSS, or JavaScript.\n" +
                                                     "- Never include any comments.\n" +
                                                     "- Integrate well with the page's current design and functionality.\n",
-                                    "markup": "Change the markup on this page to {improvement}.\n" +
+                                    "markup": "Change the markup on this page to {{improvement}}.\n" +
                                               "\n" +
                                               "The markup must:\n" +
                                               "- Never modify any existing markup, instead use new insertions to modify the page.\n" +
@@ -528,11 +528,11 @@ const OpenRouterChatTemplatesV3 = {
                                               "- Be valid HTML, CSS, or JavaScript.\n" +
                                               "- Never include any comments.\n" +
                                               "- Integrate well with the page's current design and functionality.\n",
-                                    "webpageClient": "Focus on the page at {url} and just respond 'OK' after examining it:\n" +
+                                    "webpageClient": "Focus on the page at {{url}} and just respond 'OK' after examining it:\n" +
                                                      "```HTML\n" +
-                                                     "{webpageClient}\n" +
+                                                     "{{webpageClient}}\n" +
                                                      "```\n",
-                                    "webpageServer": "Focus on the page at {url} and just respond 'OK' after examining it.\n",
+                                    "webpageServer": "Focus on the page at {{url}} and just respond 'OK' after examining it.\n",
                                   };
 /* The next string determines the quantity of improvements
    to request from Open Router */
@@ -606,7 +606,7 @@ const OpenRouterChatTemplatesV4 = {
                                                "- Create JSON output.\n" +
                                                "- Suggest ways to improve it.\n" +
                                                "- Provide HTML snippets (to be placed in the `<head>` and `<body>` sections) that implement an improvement.\n",
-                                    "improvements": "Suggest {quantity} ways to improve this page. For each suggestion, provide:\n" +
+                                    "improvements": "Suggest {{quantity}} ways to improve this page. For each suggestion, provide:\n" +
                                                     "- What specific change should be made.\n" +
                                                     "- Why it will improve sales or engagement.\n" +
                                                     "\n" +
@@ -620,7 +620,7 @@ const OpenRouterChatTemplatesV4 = {
                                                     "\n" +
                                                     "Each improvement suggestion:\n" +
                                                     "- Should start with the word 'Improve'.\n",
-                                    "markup": "Change the markup on this page to {improvement}.\n" +
+                                    "markup": "Change the markup on this page to {{improvement}}.\n" +
                                               "\n" +
                                               "The markup must:\n" +
                                               "- Never modify any existing markup, instead use new insertions to modify the page.\n" +
@@ -630,11 +630,11 @@ const OpenRouterChatTemplatesV4 = {
                                               "- Be valid HTML, CSS, or JavaScript.\n" +
                                               "- Never include any comments.\n" +
                                               "- Integrate well with the page's current design and functionality.\n",
-                                    "webpageClient": "Focus on the page at {url} and just respond 'OK' after examining it:\n" +
+                                    "webpageClient": "Focus on the page at {{url}} and just respond 'OK' after examining it:\n" +
                                                      "```HTML\n" +
-                                                     "{webpageClient}\n" +
+                                                     "{{webpageClient}}\n" +
                                                      "```\n",
-                                    "webpageServer": "Focus on the page at {url} and just respond 'OK' after examining it.\n",
+                                    "webpageServer": "Focus on the page at {{url}} and just respond 'OK' after examining it.\n",
                                   };
 /* The next string determines the quantity of improvements
    to request from Open Router */
@@ -1915,81 +1915,240 @@ class HDLmAI {
     let markupContentObj = JSON.parse(markupMessageContent);
     return markupContentObj 
   };
-  /* This routine gets an optimized webpage from Open Router
+  /* This routine gets an improved webpage from Open Router
      Because this routine uses await, it only be used in
-     an async function. */
-  static async openRouterOptimizeWebpageV1(currentUrl,
-                                           originalHtml,
-                                           versionAI,
-                                           chatTemplates, 
-                                           responseFormat,
-                                           responseSchema) {       
+     an async function.
+     
+     This routine invokes the HDLmAI.sendWebSocketsExecuteRequest routine 
+     which runs the HDLmWebSockets.executeAIRequest routine. */
+  static async openRouterImproveWebpageV1(currentUrl,
+                                          originalHtml,
+                                          suggestionText,
+                                          versionAI,
+                                          chatTemplates, 
+                                          responseFormat,
+                                          responseSchema,
+                                          desiredImprovements,
+                                          undesiredImprovements) { 
     /* let targetWebpageContents = await HDLmAI.getWebpage(webpageUrl); */
     /* console.log('Webpage content fetched from ' + webpageUrl); */
     /* console.log(targetWebpageContents); */
     /* Build the various prompts */
+    /*
+    let what1 = 'Added a top-of-page promotional bar with a free shipping threshold ($75+), a discount code (YOGA15) and a live countdown timer.';
+    let what2 = 'Added a trust badges row (Free Shipping, 30-Day Returns, Trusted Since 1999, Wholesale Pricing, Secure Checkout) directly below the navigation.';
+    let what3 = 'Added a social proof bar showing 4.8/5 stars from 12,000+ reviews near the hero.';
+    let what4 = "Added a 'Why 500,000+ Yogis Choose YogaDirect' value-proposition section with four key benefits.";
+    let desiredImprovementsLocal = what1 + ';' + what3;
+    let undesiredImprovementsLocal = what2 + ';' + what4;
+    */
     let contextPrompt = HDLmAI.promptContextBothStr(chatTemplates,
                                                     'context');
     /* Build the Open Router context message */
     let contextMessage = HDLmAI.openRouterBuildMessageV1('system', contextPrompt);    
-    /* let optimizationBothMessage = HDLmAI.openRouterBuildMessageV1('user', contextBothPrompt); */
+    /* Declare and define a value that will be returned to the caller.
+       This object will hold the improved webpage HTML and the list of
+       improvments. It is declared here so that it can be assigned in 
+       the try/catch block below and returned to the caller at the end
+       of this routine. */
+    let improvementContentObj;
+    /* let improvementBothMessage = HDLmAI.openRouterBuildMessageV1('user', contextBothPrompt); */
     /* Use WebSockets for communication with the server. The server executes
        the actual request. This allows the Open Router key to be stored securely 
        on the server and not be exposed to the client. */
-    let optimizationResponse;
+    let improvementResponse;
     let openRouterModel = 'dummyModel';                                                             
     let webpageServerPrompt = HDLmAI.replaceTemplateStrings(chatTemplates, 
                                                             'webpageServer', 
-                                                         /* currentUrl); */
-                                                            originalHtml); 
+                                                            /* currentUrl); */
+                                                            originalHtml,
+                                                            suggestionText, 
+                                                            desiredImprovements,
+                                                            undesiredImprovements); 
     let webpageServerMessage = HDLmAI.openRouterBuildMessageV1('user', webpageServerPrompt);
     let messageServerList = HDLmAI.openRouterBuildMessageListV1(contextMessage,   
                                                                 webpageServerMessage);                                                 
-                                                             /* optimizationBothMessage); */  
+                                                                /* improvementBothMessage); */  
     let bodyServerObj = HDLmAI.openRouterBuildBodyV1(openRouterModel, messageServerList, responseSchema);
-    if (1 == 1)
-      optimizationResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyServerObj, versionAI);      
-    /* Return the webpage optimization response from the caller */
-    let optimizationObj; 
+    if (1 == 1) {
+      /*
+      bodyServerObj['max_completion_tokens'] = 1000;
+      bodyServerObj['max_tokens'] = 1000;
+      */
+      improvementResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyServerObj, versionAI);      
+    }
+    /* Return the webpage improvement response from the caller */
+    let improvementObj; 
     try {
-      /* Parse the optimization response */
-      optimizationObj = JSON.parse(optimizationResponse);    
+      /* Parse the improvement response */
+      /* HDLmUtility.saveUtf8Blob('ImprovementResponse', improvementResponse); */
+      improvementObj = JSON.parse(improvementResponse);  
     } 
     /* Catch any errors that occur during parsing */
     catch (error) {
-      HDLmUtility.logStringInParts('Optimization:', optimizationResponse, 20);
-      console.log('Error parsing Open Router optimization response: ' + error);
-      let errorText = 'Error parsing Open Router optimization response: ' + error;
+      HDLmUtility.logStringInParts('Improvement:', improvementResponse, 20);
+      console.log('Error parsing Open Router improvement response: ' + error);
+      let errorText = 'Error parsing Open Router improvement response: ' + error;
       HDLmAssert(false, errorText);
     }
-    /* Get the choices list from the optimization response */
-    let optimizationChoicesList = optimizationObj['choices'];
-    if (optimizationChoicesList == null) {
-      console.log('Error: No choices found in Open Router optimization response');
-      let errorText = 'No choices found in Open Router optimization response';
+    /* Get the choices list from the improvement response */
+    let improvementChoicesList = improvementObj['choices'];
+    if (improvementChoicesList == null) {
+      console.log('Error: No choices found in Open Router improvement response');
+      let errorText = 'No choices found in Open Router improvement response';
       HDLmAssert(false, errorText);
     }  
     /* get the first choice from the choices list */
-    let optimizationFirstChoice = optimizationChoicesList[0];
+    let improvementFirstChoice = improvementChoicesList[0];
     /* Get the message object from the first choice */
-    let optimizationMessageObj = optimizationFirstChoice['message'];
-    if (optimizationMessageObj == null) {
-      console.log('Error: Message object not built in Open Router optimization response');
-      let errorText = 'Message object not built in Open Router optimization response';
+    let improvementMessageObj = improvementFirstChoice['message'];
+    if (improvementMessageObj == null) {
+      console.log('Error: Message object not built in Open Router improvement response');
+      let errorText = 'Message object not built in Open Router improvement response';
       HDLmAssert(false, errorText);
     }  
     /* Check for refusals in the message object */
-    if (optimizationMessageObj['refusal'] != null) {
-      console.log('Error: Message object has refusal set in Open Router optimization response');
-      let errorText = 'Message object has refusal set in Open Router optimization response';
+    if (improvementMessageObj['refusal'] != null) {
+      console.log('Error: Message object has refusal set in Open Router improvement response');
+      let errorText = 'Message object has refusal set in Open Router improvement response';
       HDLmAssert(false, errorText);
     } 
-    /* Get the content from the message object */
-    let optimizationMessageContent = optimizationMessageObj['content'];
-    let optimizationContentObj = JSON.parse(optimizationMessageContent);
-    /* let optimizationHtml = optimizationContentObj['optimizedHtml']; */
-    /* Return the optimized HTML (in an object) to the caller */
-    return optimizationContentObj;
+    /* Get the content from the message object. The 
+       content is expected to be a JSON string that
+       can be converted to an object */
+    let improvementMessageContent = improvementMessageObj['content'];
+    /* Try to parse the improvement content. The improvement content is 
+       expected to be a JSON string that can be converted to an object. 
+       The improved HTML and the list of improvements are expected to 
+       be in the improvement content. */
+    try {
+      /* Parse the improvement content using an standard JSON parser */
+      /* HDLmUtility.saveUtf8Blob('improvementMessageContent', improvementMessageContent); */
+      improvementContentObj = JSON.parse(improvementMessageContent);   
+    } 
+    /* Catch any errors that occur during parsing */
+    catch (error) {
+      console.log('Error parsing Open Router improvement content: ' + error);
+      let errorText = 'Error parsing Open Router improvement content: ' + error;
+      /* Get the length of the improvement message content */ 
+      let improvementMessageContentLen = improvementMessageContent.length;  
+      /* Check if the improvement message content is too long. 
+        If it is, truncate it for logging purposes. */
+      if (improvementMessageContentLen >= 5000)
+        improvementMessageContent = improvementMessageContent.substring(0, 4999);
+      HDLmUtility.logStringInParts('Content:', improvementMessageContent, 20);
+      /* Display the string in Hexadecimal for debugging purposes */
+      let improvementMessageContentHex = HDLmString.stringToHex(improvementMessageContent);
+      HDLmUtility.logStringInParts('Content (Hex):', improvementMessageContentHex, 20);      
+      HDLmAssert(false, errorText);
+    }
+    /* let improvementHtml = improvementContentObj['improvedHtml']; */
+    /* Return the improved HTML (in an object) to the caller */
+    return improvementContentObj;
+  };
+  /* This routine gets an improved website from Open Router
+     Because this routine uses await, it only be used in
+     an async function. */
+  static async openRouterImproveWebsiteV1(currentUrl,
+                                          suggestionText,
+                                          versionAI,
+                                          chatTemplates, 
+                                          responseFormat,
+                                          responseSchema) {  
+    let contextPrompt = HDLmAI.promptContextBothStr(chatTemplates,
+                                                    'context');
+    /* Build the Open Router context message */
+    let contextMessage = HDLmAI.openRouterBuildMessageV1('system', contextPrompt);    
+    /* Declare and define a value that will be returned to the caller.
+       This object will hold the improved webpage HTML and the list of
+       improvments. It is declared here so that it can be assigned in 
+       the try/catch block below and returned to the caller at the end
+       of this routine. */
+    let improvementContentObj;
+    /* let improvementBothMessage = HDLmAI.openRouterBuildMessageV1('user', contextBothPrompt); */
+    /* Use WebSockets for communication with the server. The server executes
+       the actual request. This allows the Open Router key to be stored securely 
+       on the server and not be exposed to the client. */
+    let improvementResponse;
+    let openRouterModel = 'dummyModel';                                                             
+    let webpageServerPrompt = HDLmAI.replaceTemplateStrings(chatTemplates, 
+                                                            'webpageServer', 
+                                                            currentUrl,
+                                                            suggestionText); 
+    let webpageServerMessage = HDLmAI.openRouterBuildMessageV1('user', webpageServerPrompt);
+    let messageServerList = HDLmAI.openRouterBuildMessageListV1(contextMessage,   
+                                                                webpageServerMessage);                                                 
+                                                                /* improvementBothMessage); */  
+    let bodyServerObj = HDLmAI.openRouterBuildBodyV1(openRouterModel, messageServerList, responseSchema);
+    if (1 == 1) {
+      improvementResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyServerObj, versionAI);      
+    }
+    /* Return the webpage improvement response from the caller */
+    let improvementObj; 
+    try {
+      /* Parse the improvement response */    
+      improvementObj = JSON.parse(improvementResponse);  
+    } 
+    /* Catch any errors that occur during parsing */
+    catch (error) {
+      HDLmUtility.logStringInParts('Improvement:', improvementResponse, 20);
+      console.log('Error parsing Open Router improvement response: ' + error);
+      let errorText = 'Error parsing Open Router improvement response: ' + error;
+      HDLmAssert(false, errorText);
+    }
+    /* Get the choices list from the improvement response */
+    let improvementChoicesList = improvementObj['choices'];
+    if (improvementChoicesList == null) {
+      console.log('Error: No choices found in Open Router improvement response');
+      let errorText = 'No choices found in Open Router improvement response';
+      HDLmAssert(false, errorText);
+    }  
+    /* get the first choice from the choices list */
+    let improvementFirstChoice = improvementChoicesList[0];
+    /* Get the message object from the first choice */
+    let improvementMessageObj = improvementFirstChoice['message'];
+    if (improvementMessageObj == null) {
+      console.log('Error: Message object not built in Open Router improvement response');
+      let errorText = 'Message object not built in Open Router improvement response';
+      HDLmAssert(false, errorText);
+    }  
+    /* Check for refusals in the message object */
+    if (improvementMessageObj['refusal'] != null) {
+      console.log('Error: Message object has refusal set in Open Router improvement response');
+      let errorText = 'Message object has refusal set in Open Router improvement response';
+      HDLmAssert(false, errorText);
+    } 
+    /* Get the content from the message object. The 
+       content is expected to be a JSON string that
+       can be converted to an object */
+    let improvementMessageContent = improvementMessageObj['content'];
+    /* Try to parse the improvement content. The improvement content is 
+       expected to be a JSON string that can be converted to an object. 
+       The improved HTML and the list of improvements are expected to 
+       be in the improvement content. */
+    try {
+      /* Parse the improvement content using an standard JSON parser */     
+      improvementContentObj = JSON.parse(improvementMessageContent);   
+    } 
+    /* Catch any errors that occur during parsing */
+    catch (error) {
+      console.log('Error parsing Open Router improvement content: ' + error);
+      let errorText = 'Error parsing Open Router improvement content: ' + error;
+      /* Get the length of the improvement message content */ 
+      let improvementMessageContentLen = improvementMessageContent.length;  
+      /* Check if the improvement message content is too long. 
+        If it is, truncate it for logging purposes. */
+      if (improvementMessageContentLen >= 5000)
+        improvementMessageContent = improvementMessageContent.substring(0, 4999);
+      HDLmUtility.logStringInParts('Content:', improvementMessageContent, 20);
+      /* Display the string in Hexadecimal for debugging purposes */
+      let improvementMessageContentHex = HDLmString.stringToHex(improvementMessageContent);
+      HDLmUtility.logStringInParts('Content (Hex):', improvementMessageContentHex, 20);      
+      HDLmAssert(false, errorText);
+    }
+    /* let improvementHtml = improvementContentObj['improvedHtml']; */
+    /* Return the improved HTML (in an object) to the caller */
+    return improvementContentObj;
   };
   /* This routine builds the context string that is passed 
      to AI. The context string is used to provide information
@@ -2058,7 +2217,8 @@ class HDLmAI {
     let replacementIndex = 0;
     while (replacementIndex < replacementsLength) {
       let replacement = replacements[replacementIndex];
-      processedText = processedText.replace(/{[^}]*}/, replacement);
+      let replacementcount = (processedText.match(/{{[^}]*}}/g) || []).length;
+      processedText = processedText.replace(/{{[^}]*}}/, replacement);
       replacementIndex++;
     }
     /* Return the processed text to the caller */
@@ -2085,17 +2245,23 @@ class HDLmAI {
       typeStr = 'V3';
     else if (versionAI == 'OpenRouterV4')
       typeStr = 'V4';
-    else if (versionAI == 'OpenRouterWOV1')
-      typeStr = 'WOV1';
+    else if (versionAI == 'openRouterWpiWIV1')
+      typeStr = 'Wpi';
+    else if (versionAI == 'openRouterWpsWIV1')
+      typeStr = 'Wps';
+    else if (versionAI == 'openRouterWsiWIV1')
+      typeStr = 'Wsi';
     /* Set the AI version string based on the AI version passed in */
     if (versionAI == 'OpenAINew' || 
         versionAI == 'OpenAIOld')
       versionStr = 'OpenAI';
-    else if (versionAI == 'OpenRouterV1' || 
-             versionAI == 'OpenRouterV2' ||
-             versionAI == 'OpenRouterV3' ||
-             versionAI == 'OpenRouterV4' ||
-             versionAI == 'OpenRouterWOV1')
+    else if (versionAI == 'OpenRouterV1'      || 
+             versionAI == 'OpenRouterV2'      ||
+             versionAI == 'OpenRouterV3'      ||
+             versionAI == 'OpenRouterV4'      ||
+             versionAI == 'openRouterWpiWIV1' ||
+             versionAI == 'openRouterWpsWIV1' ||
+             versionAI == 'openRouterWsiWIV1')
       versionStr = 'OpenRouter';
     /* Get the start time for the WebSockets call */
     let startTime = Date.now();  

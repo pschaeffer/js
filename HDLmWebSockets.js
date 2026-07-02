@@ -47,9 +47,15 @@ class HDLmWebSockets {
         else if (typeStr == 'old')
           requestType = 'executeOpenAIRequest';
       } 
+      /* Build the request type string based on the version and 
+         type strings */
       else if (versionStr == 'OpenRouter') {
-        if (typeStr == 'WOV1')
-          requestType = 'webpageOptimizer';
+        if (typeStr == 'Wpi')
+          requestType = 'webpageImprover';
+        else if (typeStr == 'Wps')
+          requestType = 'webpageImprover';
+        else if (typeStr == 'Wsi')
+          requestType = 'websiteImprover';
         else if (typeStr == 'V1')
           requestType = 'webpageImprover';
         else if (typeStr == 'V2' ||
@@ -92,31 +98,6 @@ class HDLmWebSockets {
     });
     return newPromise;
   } 
-  /* This method sends the original webpage HTML to the server and
-     waits for the webpage optimizer response. The request body is
-     just the original HTML string. */
-  static sendWebpageOptimizerRequest(originalHtml) {
-    let newPromise = new Promise(function (resolve, reject) {
-      let sendJsonStr = JSON.stringify({});
-      sendJsonStr = HDLmUtility.updateJsonStr(sendJsonStr, 'HDLmRequestType', 'webpageOptimizer');
-      sendJsonStr = HDLmUtility.updateJsonStr(sendJsonStr, 'HDLmBodyStr', originalHtml);
-      let messageCallback = (event) => {
-        try {
-          let currentWebSocket = event.target;
-          if (currentWebSocket != null) {
-            currentWebSocket.close();
-          }
-          resolve(event.data);
-        }
-        catch (errorObj) {
-          let errorText = HDLmError.reportError(errorObj, 'messageCallback');
-          reject(errorText);
-        }
-      };
-      HDLmWebSockets.openWebSocketConnection(messageCallback, sendJsonStr);
-    });
-    return newPromise;
-  }
   /* This method sends a get configuration request to the server. The
      get configuration request retrieves the configuration settings
      for the current application. */
@@ -355,7 +336,7 @@ class HDLmWebSockets {
           messageRequestType.startsWith('getText')         == false &&
           messageRequestType.startsWith('storeTreeNodes')  == false &&
           messageRequestType.startsWith('webpageImprove')  == false &&
-          messageRequestType.startsWith('webpageOptimize') == false) {
+          messageRequestType.startsWith('websiteImprove')  == false) {
         currentWebSocket.close(); 
       }
     }    

@@ -184,7 +184,7 @@ HDLmManageRulesStageTypes.toString = function (enumVl) {
   /* console.log(Object.keys(HDLmManageRulesStageTypes)); */
   return Object.keys(HDLmManageRulesStageTypes).filter(key => (HDLmManageRulesStageTypes[key] == enumVl))[0];
 }
-Object.freeze(HDLmManageRulesStageTypes);
+Object.freeze(HDLmManageRulesStageTypes);  
 /* The enum below defines the types of matches supported by this
    code. Many types of matches are supported at this time. New
    match types may be added in the future. All match types are 
@@ -452,20 +452,45 @@ let HDLmUnReTypes = {
   "actionOff":      23,
 };
 Object.freeze(HDLmUnReTypes);
-/* The enum below defines the stages of webpage optimizer processing. 
-   Webpage optimizer processing takes several stages. They are defined 
-   below. */
-let HDLmWebpageOptimizerStageTypes = {
-  "none":                            0,
-  "setTitle":                        1,
-  "checkServerStatus":               2,
-  "showWebPageUi":                   3,
-  "beforeUnload":                    4,
-  "visibilityChange":                5
+/* The enum below defines the stages of webpage improver processing.
+   Webpage improver processing takes many stages. They are defined below. */
+let HDLmWebpageImproverStageTypes = {
+   "none":              0,
+   "setTitle":          1,
+   "checkServerStatus": 2,
+   "showWebpageUi":     3,
+   "beforeUnload":      4,
+   "visibilityChange":  5
 };
-HDLmWebpageOptimizerStageTypes.toString = function (enumVl) {
-  /* console.log('In HDLmEnums.toString'); */
-  /* console.log(Object.keys(HDLmWebpageOptimizerStageTypes)); */
-  return Object.keys(HDLmWebpageOptimizerStageTypes).filter(key => (HDLmWebpageOptimizerStageTypes[key] == enumVl))[0];
+HDLmWebpageImproverStageTypes.toString = function (enumVl) {
+  return Object.keys(HDLmWebpageImproverStageTypes).filter(key => (HDLmWebpageImproverStageTypes[key] == enumVl))[0];
 }
-Object.freeze(HDLmWebpageOptimizerStageTypes);
+Object.freeze(HDLmWebpageImproverStageTypes);
+/* The enum below defines the stages of webpages improver processing.
+   Webpages improver processing takes many stages. They are defined below. */
+let HDLmWebpagesImproverStageTypes = {
+   "none":              0,
+   "setTitle":          1,
+   "checkServerStatus": 2,
+   "showWebpagesUi":    3,
+   "beforeUnload":      4,
+   "visibilityChange":  5
+};
+HDLmWebpagesImproverStageTypes.toString = function (enumVl) {
+  return Object.keys(HDLmWebpagesImproverStageTypes).filter(key => (HDLmWebpagesImproverStageTypes[key] == enumVl))[0];
+}
+Object.freeze(HDLmWebpagesImproverStageTypes);
+/* The enum below defines the stages of website improver processing.
+   Website improver processing takes many stages. They are defined below. */
+let HDLmWebsiteImproverStageTypes = {
+   "none":              0,
+   "setTitle":          1,
+   "checkServerStatus": 2,
+   "showWebsiteUi":     3,
+   "beforeUnload":      4,
+   "visibilityChange":  5
+};
+HDLmWebsiteImproverStageTypes.toString = function (enumVl) {
+  return Object.keys(HDLmWebsiteImproverStageTypes).filter(key => (HDLmWebsiteImproverStageTypes[key] == enumVl))[0];
+}
+Object.freeze(HDLmWebsiteImproverStageTypes);

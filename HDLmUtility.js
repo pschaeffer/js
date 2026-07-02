@@ -1697,6 +1697,18 @@ class HDLmUtility {
     }
     return [errorDetected, rv];
   }
+  /* This method convert a Blob to a text string and returns
+     the text string to the caller */
+  static async convertBlobToStr(blobStr) {
+    try {
+      const text = await blobStr.text();
+      return text;
+    } 
+    catch (error) {
+      console.error('Error converting Blob to text:', error);
+      return '';
+    }
+  }
   /* This routine breaks a string into an array of substrings.
 	   The array is returned to the caller. The caller passes
 	   the original string and the desired length of each substring.
@@ -1875,6 +1887,11 @@ class HDLmUtility {
   static getJsonFromObject(jsObj) {
     return JSON.stringify(jsObj);
   }
+  /* The method below gets the number of milliseconds since the Unix epoch
+     and returns it to the caller as a number */
+  static getMillis() {
+    return Date.now();
+  }
   /* The method below gets the next number from a list of 
      numbers. If the list is empty, this routine will return
      one. If the list has a gap, this routine will return the
@@ -1987,6 +2004,13 @@ class HDLmUtility {
       return hostName.charAt(9);
     else
       return 'c';
+  }
+  /* The method below always returns a unique file name to the caller.
+     The uniqueness is based on the current time in milliseconds in the
+     unix epoch. */
+  static getUniqueFileName(baseFileName, baseFileType) {
+    let millis = HDLmUtility.getMillis();
+    return `${baseFileName}-${millis}.${baseFileType}`;
   }
   /* Get a UUID and return it as a string to the caller */
   static getUuidStr() {
@@ -3490,6 +3514,26 @@ class HDLmUtility {
     let errorText = '';
     return errorText;
   }
+  /* This method loads a Blob from a file and returns it to the caller */
+  static async loadBlobFromFile() {
+    try {
+      /* Open the file picker to get an array of handles */
+      const [fileHandle] = await window.showOpenFilePicker();      
+      /* 2. Get the File object (which inherits from Blob) */
+      const fileBlob = await fileHandle.getFile();      
+      return fileBlob;      
+    } 
+    catch (error) {
+      if (error.name === 'AbortError') {
+        /* User canceled the file selection. */
+        console.log('User canceled the file selection.');
+      } 
+      else {
+        /* Some other error occurred while accessing the file */
+        console.error('Error accessing the file:', error);
+      }
+    }
+  }
   /* This routine takes a string (possibly very long) and breaks
 	   into parts (substrings). Each part is logged. Logged (in this
      context) means written to the console. */
@@ -3692,7 +3736,102 @@ class HDLmUtility {
       urlStrLen = urlStr.length;
     }
     return urlStr;
-  } 
+  }
+  /* The method below saves the passed string as a text file using the 
+     file system access API */
+  static async saveFileText(suggestedFileName, contentsStr) {
+    /* Check if the caller passed a valid suggested file name */
+    if (typeof(suggestedFileName) != 'string' || 
+        suggestedFileName.trim() == '') {
+      suggestedFileName = 'newTextFile.txt';
+    }
+    /* Check if the caller passed valid contents */
+    if (typeof contentsStr != 'string') {
+      let errorText = `Invalid contents passed to saveFileText`;
+      HDLmAssert(false, errorText);
+    }
+    try {
+      /* Open the system save dialog */
+      const handle = await window.showSaveFilePicker({
+        suggestedName: suggestedFileName,
+        types: [{
+          description: 'Text Files',
+          accept: { 'text/plain': ['.txt'] },
+        }],
+      });      
+      /* Write data to the stream */
+      const writable = await handle.createWritable();
+      await writable.write(contentsStr);
+      await writable.close();
+    } 
+    catch (errorObj) {
+      console.error('Save aborted or failed:', errorObj);
+    }
+  }
+  /* The method below saves the passed string as a UTF-8 text file using the 
+     file system access API */
+  static async saveFileUtf8(suggestedFileName, contentsStr) {
+    /* Check if the caller passed a valid suggested file name */
+    if (typeof(suggestedFileName) != 'string' || 
+        suggestedFileName.trim() == '') {
+      suggestedFileName = 'newUtf8File.txt';
+    }
+    /* Check if the caller passed valid contents */
+    if (typeof contentsStr != 'string') {
+      let errorText = `Invalid contents passed to saveFileUtf8`;
+      HDLmAssert(false, errorText);
+    }
+    try {
+      /* Open the system save dialog */
+      const handle = await window.showSaveFilePicker({
+        suggestedName: suggestedFileName,
+        types: [{
+          description: 'Text Files',
+          accept: { 'text/plain;charset=utf-8;': ['.txt'] },
+        }],
+      });      
+      /* Write data to the stream */
+      const writable = await handle.createWritable();
+      await writable.write(contentsStr);
+      await writable.close();
+    } 
+    catch (errorObj) {
+      console.error('Save aborted or failed:', errorObj);
+    }
+  }
+  /* The method below saves a string as a blob in downloads */ 
+  static async saveFileUtf8Blob(suggestedFileName, contentsStr) {
+    /* Check if the caller passed a valid suggested file name */
+    if (typeof(suggestedFileName) != 'string' || 
+        suggestedFileName.trim() == '') {
+      suggestedFileName = 'newUtf8File.txt';
+    }
+    /* Check if the caller passed valid contents */
+    if (typeof contentsStr != 'string') {
+      let errorText = `Invalid contents passed to saveFileUtf8`;
+      HDLmAssert(false, errorText);
+    }
+    try {
+       /* Create a Blob with a specified UTF-8 content type */
+      const blob = new Blob([contentsStr], { type: 'text/plain;charset=utf-8;' });  
+      /* Create a temporary link element */
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = suggestedFileName;  
+      /* Programmatically trigger the download */
+      link.click();  
+      /* Clean up memory */
+      URL.revokeObjectURL(link.href);      
+    } 
+    catch (errorObj) {
+      console.error('Save aborted or failed:', errorObj);
+    }
+  }
+  /* The method below creates a UTF-8 file with a unique name based on the 
+     suggested file name. The passed string is saved in the file. */
+  static saveUtf8Blob(suggestedFileName, inStr) {
+    HDLmUtility.saveFileUtf8Blob(HDLmUtility.getUniqueFileName(suggestedFileName, 'txt'), inStr);
+  }
   /* The method below sets the error text field in the footer. The error
      text value passed by the caller may, or may not, be empty. The error 
      text field can be cleared by having the caller pass an empty string
