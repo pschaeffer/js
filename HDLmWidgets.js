@@ -2610,6 +2610,7 @@ class HDLmListWidget {
       /* Check all values for the special prefix */
       if (value.startsWith(forceSelectString))
         value = value.substring(forceSelectString.length);
+      /* console.log(`subType: ${subType}, value: ${value}`); */
       /* Check the change attributes value */
       if (subType == 'changeattrs') {
         value = value.trim();
@@ -2753,13 +2754,15 @@ class HDLmListWidget {
         }
         break;
       } 
-      /* Check for a script value. Script (in this content) is a string
+      /* Check for a script value. Script (in this context) is a string
          that contains JavaScript code. */
       if (subType == 'script') {
         value = value.trim();
-        let valueValid = HDLmMod.checkScriptValid(value);
+        /* console.log(`value: ${value}`); */ 
+        let valueValid = HDLmMod.checkJavaScriptValid(value);
+        /* console.log(`valueValid: ${valueValid}`); */
         /* Check for an error in the script. This is a just a syntax
-           check. Run time error can still occur. */
+           check. Run time errors can still occur. */
         if (!valueValid) 
           errorText = 'The JavaScript script is invalid';
         break;
@@ -2917,6 +2920,17 @@ class HDLmListWidget {
         errorText = `Visit value (${value}) is invalid`;
         break;
       }
+      /* Check for a webpage value. Webpage (in this context) is a string that
+         contains HTML (and possibly CSS, links, images, JS, etc.) code. */
+      if (subType == 'webpage') {
+        value = value.trim();
+        let valueValid = HDLmMod.checkWebpageValid(value);
+        /* Check for an error in the webpage content. This is just a syntax
+           check. Run time errors can still occur. */
+        if (!valueValid) 
+          errorText = 'The webpage content (HTML and possibly CSS, links, images, JS, etc.) is invalid';
+        break;
+      }
       /* At this point we need to use default field validation. The default
          field validation routine is external. */
       errorText = HDLmMod.checkFontValue(subType, value.trim());
@@ -3064,6 +3078,9 @@ class HDLmListWidget {
           break;
         case 'visit':
           errorText = HDLmUtility.isVisit(changeValue);
+          break;
+        case 'webpage':
+          errorText = HDLmUtility.isWebpage(changeValue);
           break;
         case 'width':
           errorText = HDLmUtility.isHeight('width', changeValue);
@@ -3223,6 +3240,7 @@ class HDLmListWidget {
        must have some information in them. */
     let errorText;
     /* console.log(this); */
+    /* console.log(`Target Index Row Value: ${targetIndexRowVal}`); */
     if (targetIndexRowVal == 0)
       errorText = listWidgetCurrent.checkInputEmpty(subType, newValue,
                                                     listWidgetCurrent.getCurrentMod());

@@ -15,12 +15,18 @@ class HDLmWebSockets {
      execute AI request executes an AI request on server on 
      behalf of the client. The version might be Open AI or 
      Open Router or another AI service. */
-  static executeAIRequest(bodyObj, versionStr, typeStr) {
+  static executeAIRequest(bodyObj, llmModelStr, versionStr, typeStr) {
     /* Check if a few openands are null or undefined. If any 
        of the openands are null or undefined, then we can not 
        proceed. */
     if (bodyObj == null) {
       let errorText = 'HDLmWebSockets.executeAIRequest: The body object is null or undefined.';
+      HDLmAssert(false, errorText);
+    }
+    /* The LLM model string can be null or not null */ 
+    if (llmModelStr == null &&
+        llmModelStr != null) {
+      let errorText = 'HDLmWebSockets.executeAIRequest: The LLM model string is null or undefined.';
       HDLmAssert(false, errorText);
     }
     if (versionStr == null) {
@@ -50,25 +56,35 @@ class HDLmWebSockets {
       /* Build the request type string based on the version and 
          type strings */
       else if (versionStr == 'OpenRouter') {
-        if (typeStr == 'Wpi')
-          requestType = 'webpageImprover';
-        else if (typeStr == 'Wps')
-          requestType = 'webpageImprover';
+        if (typeStr == 'Wim') {
+          requestType = 'executeOpenRouterRequest';
+          /* The code below is used to test sending requests
+             directly to OpenAI, instead of Open Router */
+          if (HDLmWebSockets.useOpenRouter != true)
+            requestType = 'executeOpenAIRequest';
+        }
+        else if (typeStr == 'Wpi')
+          requestType = 'executeOpenRouterRequest';
+        else if (typeStr == 'Wps') {
+          requestType = 'executeOpenRouterRequest';
+        }
         else if (typeStr == 'Wsi')
-          requestType = 'websiteImprover';
+          requestType = 'executeOpenRouterRequest';
         else if (typeStr == 'V1')
-          requestType = 'webpageImprover';
+          requestType = 'executeOpenRouterRequest';
         else if (typeStr == 'V2' ||
                  typeStr == 'V3')
-          requestType = 'webpageImprover';
+          requestType = 'executeOpenRouterRequest';
         else if (typeStr == 'V4')
-          requestType = 'webpageImprover';
+          requestType = 'executeOpenRouterRequest';
         else
           requestType = 'executeOpenRouterRequest';
       }
       /* Update the JSON string as need be */
       sendJsonStr = HDLmUtility.updateJsonStr(sendJsonStr, 'HDLmRequestType', requestType);
       sendJsonStr = HDLmUtility.updateJsonStr(sendJsonStr, 'HDLmBodyStr', bodyStr);
+      if (llmModelStr != null) 
+        sendJsonStr = HDLmUtility.updateJsonStr(sendJsonStr, 'HDLmLlmModelStr', llmModelStr);
       /* Build the callback function that will be used to handle the
          WebSocket message that is returned by the caller. Note that
          this routine is a closure and get important values from the
@@ -555,3 +571,8 @@ class HDLmWebSockets {
     HDLmWebSockets.sendCurrentRequest(tempPosStr, 'updateTreeNode');
   }
 }
+/* The following field controls whether Open Router is used.
+   If this field is set to true, then Open Router is used. 
+   If this field ise set to false, then requests are sent 
+   directly. */
+HDLmWebSockets.useOpenRouter = true;

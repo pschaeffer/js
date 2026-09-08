@@ -185,6 +185,27 @@ class HDLmImprovements {
     }
     return null;
   }
+  /* Save one generated HTML file to a previously selected directory.
+     The file name is supplied by the caller. */
+  static async saveGeneratedHtmlFile(rootDirectoryHandle, fileName, htmlText) {
+    if (rootDirectoryHandle == null)
+      return 'No directory selected for generated HTML files';
+    if (typeof(fileName) != 'string' || fileName == '')
+      return 'No file name was provided for the generated HTML file';
+    if (typeof(htmlText) != 'string' || htmlText == '')
+      return 'No generated HTML was provided';
+    try {
+      let fileHandle = await rootDirectoryHandle.getFileHandle(fileName, { create: true });
+      let writable = await fileHandle.createWritable();
+      await writable.write(htmlText);
+      await writable.close();
+    }
+    catch (errorObj) {
+      console.error(errorObj);
+      return 'An error occurred while saving a generated HTML file: ' + errorObj.message;
+    }
+    return null;
+  }
   /* Check whether an improvements object exists in localStorage. */
   static testIfImprovementsExist(storageSuffix) {
     let storageKey = 'HDLmImprovements' + storageSuffix;

@@ -15,6 +15,25 @@ class HDLmIndexOne {
   static main() {  
     /* console.log('In HDLmIndexOne.main'); */
     /* console.log(window); */
+    /* The code for building the web page string used for testing 
+       the HTML validation routine follows */
+    /*
+    const webpage = "\<\!DOCTYPE html" + "\n" +
+                    "PUBLIC \"\-\/\/W3C\/\/DTD XHTML 1.0 Strict\/\/EN\"" + "\n" +
+                    "\"http:\/\/www.w3.org/TR/xhtml1/DTD/strict.dtd\"\>" + "\n" +
+                    "\<html\>" + "\n" +
+                    "\<head\>" + "\n" +
+                    "\<meta name=\"verify-v1\" content=\"H2ZIGoQkekouSOmhMrwQYvAXPFBc+V5esb5YKeQsORQ=\"\/\>" + "\n" +
+                    "\<title\>The\<\/title\>" + "\n" +
+                    "\<\/head\>" + "\n" +
+                    "\<body\>" + "\n" +
+                    "\<\/body\>" + "\n" +
+                    "\</html\>";
+    console.log(HDLmHtml.checkWebpageCode(webpage));
+    console.log(HDLmHtml.checkWebpageCode("<p>Hello World</p>"));  
+    console.log(HDLmHtml.checkWebpageCode("<p>Hello World</div>"));  
+    console.log(HDLmHtml.checkWebpageCode("<img src='image.png'"));  
+    */
     /* This routine may been invoked to edit rules or it may have 
        been invoked for some other reason. Check if the path shows 
        that what the user really wants is to edit rules. */

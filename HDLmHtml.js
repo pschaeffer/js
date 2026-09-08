@@ -954,7 +954,7 @@ class HDLmHtml {
      caller passes the string to this routine. This routine returns true
      if the string is valid JavaScript code, and false otherwise. The 
      string passed by the caller can and should contain new line char-
-     acters. The string is check using the Esprima API. Note that 
+     acters. The string is checked using the Esprima API. Note that 
      original string (containing the JavaScript program) is not modified
      in any way. */
   static checkJavaScriptCode(jsCode) {
@@ -1170,6 +1170,33 @@ class HDLmHtml {
     if (propIndex < 0)
       return rv;
     return true;
+  }
+  /* This routine checks if a string is a valid web page or not. A 
+     web page is HTML (possibly including CSS, links, images, JS,
+     etc.) The caller passes the string to this routine. This routine
+     returns true if the string is a valid web page, and false otherwise.
+     The string passed by the caller can and should contain new line char-
+     acters. The string is checked using the DOM parser. Note that 
+     original string (containing the web page) is not modified in any 
+     way. The web page can be quite complete. For example, starting 
+     with '<!DOCTYPE html'. In some cases, the web page may include
+     'bad' characters, such x'A0'. Why is not clear. A 'bad' character 
+     was found in the meta section of the Marvelous Land of OZ index.html
+     page. */
+  static checkWebpageCode(webpageStr) {
+    let rv = false;
+    const parser = new DOMParser();
+    /* Parsing as XML catches structural issues that standard HTML parsing ignores */
+    const doc = parser.parseFromString(webpageStr, 'text/xml');
+    const parserError = doc.querySelector('parsererror');
+    /* Check if a parser error was found. If a parser error was found, 
+       then the web page is not valid. Otherwise, the web page is valid. */
+    if (parserError)
+      rv = false;
+    else
+      rv = true;
+    /* Return the final result to the caller */
+    return rv;
   }
   /* This routine creates a DOM element and returns the element to the caller.
      The caller can manipulate this element as need be. The caller provides
@@ -1828,7 +1855,7 @@ class HDLmHtml {
                   accept: { 'text/html': ['.html'] } }]
       });
       let writable = await fileHandle.createWritable();
-      await writable.write(HDLmWebpageImprover.improvedHtml);
+      await writable.write(htmlStr);
       await writable.close();
     }
     catch (errorObj) {
@@ -1958,5 +1985,119 @@ class HDLmHtml {
     let nodePathName = HDLmDefines.getString('HDLMNODEPATH');
     if (divRightDefElements.length > 0)
       divRightDefElements[0].setAttribute(nodePathName, nodePath.toString());
+  }
+  /* This routine stores a web page rule in the database. 
+     The rule might (or might not) already exist in the 
+     database. If the rule does not exist, it will be added
+     as need be. If the rule already exists, it will be updated 
+     accordingly. Note that a web socket request is used for 
+     this purpose. The web socket request actually handles  
+     an array of rules. This code only handles a one single 
+     rule at a time. */
+  static storeWebpageRule(urlStr, 
+                          webpageStr, 
+                          treeTypeStr = 'mod',
+                          tooltipStr = 'Webpage modification',
+                          findArray = [],
+                          pathreBool = false,
+                          modTypeStr = 'webpage',
+                          parameterInt = 0,
+                          cssselectorStr = '',
+                          commentsStr = '', 
+                          createdDateStr = new Date().toISOString(),
+                          lastModifiedDateStr = new Date().toISOString(),
+                          updatedBool = false,
+                          extraStr = '',
+                          nameStr = '',
+                          nodeidenObj = {},
+                          pathStr = '',
+                          probFloat = 100.0,
+                          usemodeStr = 'prod',
+                          xpathStr = '') {
+    /* Build a URL object from the URL string */
+    let urlObj = new URL(urlStr);
+    /* Get some information from the URL object */
+    let urlHostName = urlObj.hostname;
+    let urlPathName = urlObj.pathname;
+    let companyStr = urlHostName;
+    /* Build the node identifier object for the current web page rule */
+    if (Object.keys(nodeidenObj).length == 0) {
+      let nodeidenAttributesObj = { tag: 'head' }; 
+      let nodeidenCountsObj = { tag: 1 }; 
+      let nodeidenParentObj = {tag: 'html'}; 
+      nodeidenObj = {
+                      type: 'tag',
+                      attributes: nodeidenAttributesObj,
+                      counts: nodeidenCountsObj, 
+                      parent: nodeidenParentObj
+                    };
+    }
+    /* Build the rule name string from the path name */
+    let ruleNameStr = 'Mod' + ' ' + 'Web Page';
+    if (urlPathName != '/')
+      ruleNameStr += ' ' + urlPathName.substring(1);
+    /* If the caller did not provide a name for the rule, 
+       use the generated rule name */
+    if (nameStr == '')
+      nameStr = ruleNameStr;
+    /* If the caller did not provide a path for the rule, 
+       use the generated node path */
+    if (pathStr == '')
+      pathStr = urlPathName;
+    /* Get a bunch of values needed for the node path array */
+    let topStr = HDLmDefines.getString('HDLMTOPNODENAME');
+    let companiesStr = HDLmDefines.getString('HDLMCOMPANIESNODENAME'); 
+    let rulesStr = HDLmDefines.getString('HDLMRULESNODENAME');
+    let divisionStr = HDLmDefines.getString('HDLMDIVISIONNODENAME');
+    let siteStr = HDLmDefines.getString('HDLMSITENODENAME');
+    /* Create the node path array for the current web page rule */
+    let nodePathArray = [topStr, companiesStr, companyStr, rulesStr, divisionStr, siteStr, ruleNameStr];
+    /* Create the web page array for the current web page rule */
+    let webPageArray = [webpageStr];
+    /* Create a rule object for the current web page rule */
+    let ruleObj = {
+                    find: findArray,
+                    webpages: webPageArray,
+                    pathre: pathreBool,
+                    type: modTypeStr,
+                    parameter: parameterInt,
+                    cssselector: cssselectorStr,
+                    comments: commentsStr,
+                    created: createdDateStr,
+                    lastmodified: lastModifiedDateStr,
+                    updated: updatedBool,
+                    extra: extraStr,
+                    name: nameStr,
+                    nodeiden: nodeidenObj,
+                    path: pathStr,
+                    prob: probFloat,
+                    usemode: usemodeStr,
+                    xpath: xpathStr
+                 };
+    /* Create a tree node object for the current web page rule */
+    let treeNodeObj = {
+                        type: treeTypeStr,
+                        tooltip: tooltipStr,
+                        details: ruleObj,
+                        nodePath: nodePathArray
+                      };
+    /* Build the array of tree nodes for the current web page rule */
+    let treeNodesArray = [treeNodeObj];
+    /* Send the tree node array to the server */
+    let valuesObj = {nodes: treeNodesArray};
+    let valuesObjJson = JSON.stringify(valuesObj)
+    let sendPromise = HDLmWebSockets.sendStoreTreeNodesRequest(valuesObjJson);
+    /* console.log(sendPromise); */
+    /* Try to wait on the promise. If the promise is resolved,
+       then check the response. If the promise is rejected, then
+       report an error and return to the caller. */
+    sendPromise.then(function(response) {
+      /* console.log(response); */
+    },
+    function(error) {
+      let errorText = '';
+      errorText = 'Send request (the promise) was rejected';
+      console.log(errorText, error); 
+    });
   }
 }

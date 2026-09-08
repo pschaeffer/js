@@ -2233,6 +2233,101 @@ const HDLmModInfoData =
                          }
                        ]
                      },
+    "webpage":       { "fields":
+                       [
+                         {
+                           "description":   "Modification Name",
+                           "source":        "name",
+                           "fieldtype":     "iotext",
+                           "subtype":       "modificationname"
+                         },
+                         {
+                           "description":   "Modification Path Value",
+                           "source":        "pathvalue",
+                           "fieldtype":     "pathvalue",
+                           "subtype":       "Path Value"
+                         },
+                         {
+                           "description":   "Comments",
+                           "source":        "comments",
+                           "fieldtype":     "comminfo",
+                           "subtype":       "comments"
+                         },
+                         {
+                           "description":   "Extra Information",
+                           "source":        "extra",
+                           "fieldtype":     "extrainfo",
+                           "subtype":       "extra"
+                         },
+                         {
+                           "description":   "Probability",
+                           "source":        "probability",
+                           "fieldtype":     "float",
+                           "subtype":       "probability"
+                         },
+                         {
+                           "description":   "Use Mode",
+                           "source":        "usemode",
+                           "fieldtype":     "usemode",
+                           "subtype":       "usemode"
+                         },
+                         {
+                           "description":   "Created",
+                           "source":        "created",
+                           "fieldtype":     "dateio",
+                           "subtype":       "outputdate"
+                         },
+                         {
+                           "description":   "Last Modified",
+                           "source":        "lastmodified",
+                           "fieldtype":     "dateio",
+                           "subtype":       "outputdate"
+                         },
+                         {
+                           "description":   "CSS Selector",
+                           "source":        "cssselector",
+                           "fieldtype":     "cssinfo",
+                           "subtype":       "cssselector"
+                         },
+                         {
+                           "description":   "XPath Information",
+                           "source":        "xpath",
+                           "fieldtype":     "xpathinfo",
+                           "subtype":       "xpath"
+                         },
+                         {
+                           "description":   "Find Information",
+                           "source":        "find",
+                           "fieldtype":     "findinfo",
+                           "subtype":       "find"
+                         },
+                         {
+                           "description":   "Node Identifier",
+                           "source":        "nodeiden",
+                           "fieldtype":     "nodeiden",
+                           "subtype":       "nodeiden"
+                         },
+                         {
+                           "description":   "Parameter Number",
+                           "source":        "parameter",
+                           "fieldtype":     "ionumber",
+                           "subtype":       "parameter"
+                         },
+                         {
+                           "description":   "Modification Type",
+                           "source":        "type",
+                           "fieldtype":     "typelist",
+                           "subtype":       "editableruletypelist"
+                         },
+                         {
+                           "description":   "New Web Pages",
+                           "source":        "webpages",
+                           "fieldtype":     "textlist",
+                           "subtype":       "webpage",
+                           "datatype":      "array"
+                         }
+                       ]
+                     },                     
     "width":         { "fields":
                        [
                          {
@@ -2519,6 +2614,7 @@ const HDLmModTypeInfo = {
     "textchecked":  { "type": "none",  "extraused": true,  "extrarequired": true,  "parmnumberused": true,  "longname": "checked text" },
     "title":        { "type": "none",  "extraused": false, "extrarequired": false, "parmnumberused": true,  "longname": "title" },
     "visit":        { "type": "none",  "extraused": true,  "extrarequired": false, "parmnumberused": true,  "longname": "visit" },
+    "webpage":      { "type": "none",  "extraused": false, "extrarequired": false, "parmnumberused": true,  "longname": "web page" },
     "width":        { "type": "none",  "extraused": false, "extrarequired": false, "parmnumberused": true,  "longname": "width" }
 };
 /* The possible font family values are listed below */
@@ -2972,7 +3068,7 @@ class HDLmMod {
      valid, then a true value is returned. Otherwise, a false value is
      returned. Note that this routine does not actually execute the
      script. It only checks the syntax of the script. */
-  static checkScriptValid(scriptStr) {
+  static checkJavaScriptValid(scriptStr) {
     /* Assume that the script is valid */
     /* console.log(scriptStr); */
     let rv = true;
@@ -3042,6 +3138,20 @@ class HDLmMod {
       }
       break;
     }
+    return rv;
+  }
+  /* This routine checks if a passed web page (HTML and possibly CSS,
+     links, images, JS, etc.) is valid or not. A boolean value is
+     always returned to the caller. If the web page is valid, then 
+     a true value is returned. Otherwise, a false value is
+     returned. Note that this routine does not actually execute
+     the web page (what would that even mean?). It only checks
+     the syntax of the web page. */
+  static checkWebpageValid(webpageStr) {
+    /* console.log(webpageStr); */
+    let rv;
+    /* Check if the web page is valid */
+    rv = HDLmHtml.checkWebpageCode(webpageStr);
     return rv;
   }
   /* Convert an object to an instance of the HDLmMod class. 
@@ -5033,6 +5143,13 @@ class HDLmMod {
         optKeepSorted = false;
         optPlaceHolderText = "New Visit Value";
         break;
+      case 'webpage':
+        optEditable = true;
+        optEmptyFieldOk = false;
+        optKeepSorted = false;
+        optPlaceHolderText = "New Web Page";
+        optSpellCheck = false;
+        break;   
       case 'width':
         optEditable = false;
         optPlaceHolderText = 'New Width';

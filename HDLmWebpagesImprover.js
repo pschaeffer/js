@@ -12,12 +12,12 @@ const openRouterChatTemplatesWpsWIV1 = {
   'context': 'You are an expert at improving webpages to increase conversion rates and revenue.\n' +
              'Copy everything from the old HTML to the generated HTML by default unless a change is made.\n' +
              'Return complete HTML for each page.\n',
-  'webpageServer': 'Please improve the following HTML to increase conversion rates ' +
+  'webpageServer': 'Please improve the HTML from the passed URL to increase conversion rates ' +
                    'and revenue.\n' +
                    'Return the complete improved HTML.\n' +
                    '\n' +
-                   'HTML:\n' +
-                   '{{html}}\n' +
+                   'URL:\n' +
+                   '{{url}}\n' +
                    'User suggestion: {{suggest}}\n'
 };
 const openRouterResponseFormatTypeJsonObjectWpsWIV1 = { 'type': 'json_object' };

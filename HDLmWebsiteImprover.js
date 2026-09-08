@@ -1,19 +1,25 @@
+/**
+ * HDLmWebsiteImprover short summary.
+ * HDLmWebsiteImprover description.
+ * @version 1.0
+ * @author Peter
+ */
 "use strict";
-let useAIVersionWsiWIV1;
-useAIVersionWsiWIV1 = 'openRouterWsiWIV1';
-const headingWsiWIV1 = { 'pageText': 'Site Revenue Improver' };
-const helpTextWsiWIV1 = {
-  'url':        'Enter URL (of website) to improve',
+let useAIVersionWsiWIV1 = 'openRouterWsiWIV1';
+let headingWsiWIV1 = 'Site Revenue Improver';
+let helpTextWsiWIV1 = {
+  'url': 'Enter URL (of website) to improve',
   'suggestion': 'Suggestion (optional)',
-  'directory':  'Enter a directory where webpages will be saved'
+  'directory': 'Enter a directory where webpages will be saved'
 };
-const suggestionPlaceholderWsiWIV1 = 'Enter a suggestion for the site revenue improver';
-const openRouterChatTemplatesWsiWIV1 = {
-  'context': 'You are an expert at improving websites to increase conversion rates and revenue.\n' +
-             'Copy everything from the old HTML to the generated HTML by default unless a change is made.\n' +
-             'Return complete improved webpages.\n' +
-             'For each improved webpage, return the path and full HTML.\n',
-  'webpageServer': 'Please improve all of the webpages the following URL/website to increase conversion rates ' +
+let suggestionPlaceholderWsiWIV1 = 'Enter a suggestion for the site revenue improver';
+let openRouterChatTemplatesWsiWIV1 = {
+  'context': 'You are an expert at improving websites to increase conversion rates and revenue.' +
+             '\nCopy everything from the old HTML to the generated HTML by default unless a change is made.' +
+             '\nReturn complete improved webpages.' +
+             '\nFor each improved webpage, return the path and full HTML.' +
+             '\n',
+  'webpageServer': 'Please improve all of the webpages of the following URL/website to increase conversion rates ' +
                    'and revenue.\n' +
                    'Return the complete improved website.\n' +
                    '\n' +
@@ -21,8 +27,8 @@ const openRouterChatTemplatesWsiWIV1 = {
                    '{{url}}\n' +
                    'User suggestion: {{suggest}}\n'
 };
-const openRouterResponseFormatTypeJsonObjectWsiWIV1 = { 'type': 'json_object' };
-const openRouterResponseJsonSchemaImproverWsiWIV1 = {
+let openRouterResponseFormatTypeJsonObjectWsiWIV1 = { 'type': 'json_object' };
+let openRouterResponseJsonSchemaImproverWsiWIV1 = {
   'type': 'json_schema',
   'json_schema': {
     'name': 'website_improver_response',
@@ -49,7 +55,7 @@ const openRouterResponseJsonSchemaImproverWsiWIV1 = {
             'type': 'object',
             'properties': {
               'What': { 'type': 'string' },
-              'Why':  { 'type': 'string' }
+              'Why': { 'type': 'string' }
             },
             'required': ['What', 'Why'],
             'additionalProperties': false
@@ -61,34 +67,24 @@ const openRouterResponseJsonSchemaImproverWsiWIV1 = {
     }
   }
 };
-/* The HDLmWebsiteImprover class doesn't actually do anything. However, it
-   does define a set of static methods that are used to improve a website.
-   No instances of this class can ever be created. */
 class HDLmWebsiteImprover {
-  /* This routine adds a Google Analytics tag to a block of HTML.
-     The tag includes a marker string and the current date and GMT
-     time. The modified HTML is returned to the caller. */
   static addGoogleAnalyticsTag(html) {
     if (html == null)
       return html;
     let now = new Date();
-    let dateGmt = now.getUTCFullYear().toString() +
+    let utcDate = now.getUTCFullYear().toString() +
                   (now.getUTCMonth() + 1).toString().padStart(2, '0') +
                   now.getUTCDate().toString().padStart(2, '0');
-    let timeGmt = now.getUTCHours().toString().padStart(2, '0') +
+    let utcTime = now.getUTCHours().toString().padStart(2, '0') +
                   now.getUTCMinutes().toString().padStart(2, '0') +
                   now.getUTCSeconds().toString().padStart(2, '0');
-    let gaTagValue = 'HDLmGAWsiTag-' + dateGmt + '-' + timeGmt;
-    let gaScript = '<script>(function(){var tag="' + gaTagValue +
-                   '";if(typeof gtag==="function"){gtag("event",tag,' +
-                   '{event_category:"HDLmGAWsiTag",event_label:tag});}})();</script>';
+    let gaTagValue = 'HDLmGAWsiTag-' + utcDate + '-' + utcTime;
+    let gaScript = '<script>(function(){var tag="' + gaTagValue + '";if(typeof gtag==="function"){gtag("event",tag,{event_category:"HDLmGAWsiTag",event_label:tag});}})();</script>';
     let bodyClose = html.toLowerCase().indexOf('</body>');
     if (bodyClose >= 0)
       return html.substring(0, bodyClose) + gaScript + html.substring(bodyClose);
     return html + gaScript;
   }
-  /* This routine adds the keyframe style needed by the spinner
-     to the document head. The style is only added once. */
   static addSpinnerStyle() {
     if (document.getElementById('hdlmWebsiteImproverSpinnerStyle') != null)
       return;
@@ -97,8 +93,35 @@ class HDLmWebsiteImprover {
     styleEl.innerHTML = '@keyframes hdlm-wsi-v1-spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}';
     document.head.appendChild(styleEl);
   }
-  /* This routine builds the relative file-system save path from a
-     URL path value. The relative path is returned to the caller. */
+  static buildImprovementsJSON(improvementsArray) {
+    let timestampNow = new Date().toISOString();
+    let jsonObj = {
+      'Version': 1,
+      'Created': timestampNow,
+      'Last Modified': timestampNow,
+      'Improvements': []
+    };
+    if (!Array.isArray(improvementsArray))
+      return jsonObj;
+    for (let i = 0; i < improvementsArray.length; i++) {
+      let item = improvementsArray[i];
+      if (item == null)
+        continue;
+      let improvementObj = {
+        'Version': 1,
+        'Created': timestampNow,
+        'Last Modified': timestampNow,
+        'What': '',
+        'Why': ''
+      };
+      if (typeof(item.What) == 'string')
+        improvementObj.What = item.What;
+      if (typeof(item.Why) == 'string')
+        improvementObj.Why = item.Why;
+      jsonObj.Improvements.push(improvementObj);
+    }
+    return jsonObj;
+  }
   static buildSaveRelativePath(pathValue) {
     if (typeof(pathValue) != 'string' || pathValue == '')
       return 'index.html';
@@ -119,15 +142,10 @@ class HDLmWebsiteImprover {
     if (pathParts.length == 0)
       return 'index.html';
     let lastPart = pathParts[pathParts.length - 1];
-    let hasExtension = lastPart.indexOf('.') >= 0;
-    if (localPath.endsWith('/'))
-      pathParts.push('index.html');
-    else if (hasExtension == false)
+    if (localPath.endsWith('/') || lastPart.indexOf('.') < 0)
       pathParts.push('index.html');
     return pathParts.join('/');
   }
-  /* This routine builds the React UI element tree for the website
-     improver. The React element is returned to the caller. */
   static buildWebUiElement() {
     const [, setRenderValue] = React.useState(1);
     HDLmWebsiteImprover.stateSetFunction = setRenderValue;
@@ -173,9 +191,7 @@ class HDLmWebsiteImprover {
       try {
         let responseObj = await fetch(normalizedUrl);
         if (responseObj.ok == false) {
-          HDLmWebsiteImprover.displayErrorMessage('Failed to access website URL: ' +
-                                                  responseObj.status + ' ' +
-                                                  responseObj.statusText);
+          HDLmWebsiteImprover.displayErrorMessage('Failed to access website URL: ' + responseObj.status + ' ' + responseObj.statusText);
           HDLmWebsiteImprover.forceReRender();
           return;
         }
@@ -197,52 +213,20 @@ class HDLmWebsiteImprover {
         return;
       await HDLmWebsiteImprover.improveWebsiteAndSave();
     }
-    let headingElement = React.createElement('h2', null, headingWsiWIV1['pageText']);
-    let urlInputElement = HDLmReactSeven.buildSingleLineInputWLabel(
-      helpTextWsiWIV1['url'],
-      'https://www.example.com',
-      'urlInputWsiWIV1',
-      urlKeyDown,
-      urlChange,
-      HDLmWebsiteImprover.urlInputCurrentValue,
-      true,
-      { marginTop: '0px' },
-      { marginTop: '0px' },
-      { display: 'block', marginBottom: '0px' });
-    let suggestionElement = HDLmReactSeven.buildTextAreaWLabel(
-      helpTextWsiWIV1['suggestion'],
-      suggestionPlaceholderWsiWIV1,
-      'suggestionInputWsiWIV1',
-      suggestionChange,
-      HDLmWebsiteImprover.suggestionCurrentValue,
-      5,
-      { marginTop: '16px' },
-      { width: '720px', maxWidth: '100%' },
-      { display: 'block', marginBottom: '4px' });
-    let improveDisabled = HDLmWebsiteImprover.urlValidated == false ||
-                          HDLmWebsiteImprover.urlAccessed == false ||
-                          HDLmWebsiteImprover.improvingInProgress;
-    let improveButton = HDLmReactSeven.buildButtonElement(
-      'improveButtonWsiWIV1',
-      'Improve',
-      improveButtonClick,
-      improveDisabled,
-      { marginTop: '20px' });
-    let directoryHelpElement = React.createElement('div',
-                                                   { style: { marginTop: '12px' } },
-                                                   helpTextWsiWIV1['directory']);
+    let headingElement = React.createElement('h2', null, headingWsiWIV1);
+    let urlInputElement = HDLmReactSeven.buildSingleLineInputWLabel(helpTextWsiWIV1['url'], 'https://www.example.com', 'urlInputWsiWIV1', urlKeyDown, urlChange, HDLmWebsiteImprover.urlInputCurrentValue, true, { marginTop: '0px' }, { marginTop: '0px' }, { display: 'block', marginBottom: '0px' });
+    let suggestionElement = HDLmReactSeven.buildTextAreaWLabel(helpTextWsiWIV1['suggestion'], suggestionPlaceholderWsiWIV1, 'suggestionInputWsiWIV1', suggestionChange, HDLmWebsiteImprover.suggestionCurrentValue, 5, { marginTop: '16px' }, { width: '720px', maxWidth: '100%' }, { display: 'block', marginBottom: '4px' });
+    let improveDisabled = HDLmWebsiteImprover.urlValidated == false || HDLmWebsiteImprover.urlAccessed == false || HDLmWebsiteImprover.improvingInProgress;
+    let improveButton = HDLmReactSeven.buildButtonElement('improveButtonWsiWIV1', 'Improve', improveButtonClick, improveDisabled, { marginTop: '20px' });
+    let directoryHelpElement = React.createElement('div', { style: { marginTop: '12px' } }, helpTextWsiWIV1['directory']);
     let spinnerElement = null;
     if (HDLmWebsiteImprover.improvingInProgress)
       spinnerElement = HDLmReactSeven.buildSpinnerElement();
-    let elementsArray = [headingElement, urlInputElement, suggestionElement,
-                         improveButton, directoryHelpElement];
+    let elementsArray = [headingElement, urlInputElement, suggestionElement, improveButton, directoryHelpElement];
     if (spinnerElement != null)
       elementsArray.push(spinnerElement);
     return HDLmReactSeven.putElementsInFragment(elementsArray);
   }
-  /* Check if the server is reachable by sending a server-status message
-     over HTTP GET. This routine returns true if the server is up and
-     false if the server is down. */
   static async checkServerStatus() {
     let requestAJAXAsyncTrue = true;
     let requestType = 'URL';
@@ -254,13 +238,7 @@ class HDLmWebsiteImprover {
     let httpType = 'get';
     let extraInfo = '';
     try {
-      await HDLmAJAX.runAJAX(requestType,
-                             requestAJAXAsyncTrue,
-                             urlStr,
-                             userid,
-                             password,
-                             httpType,
-                             extraInfo);
+      await HDLmAJAX.runAJAX(requestType, requestAJAXAsyncTrue, urlStr, userid, password, httpType, extraInfo);
       return true;
     }
     catch (errorObj) {
@@ -268,9 +246,6 @@ class HDLmWebsiteImprover {
       return false;
     }
   }
-  /* Check if a URL is minimally valid. This routine returns an error
-     text message if the URL is not valid. If the URL is valid, this
-     routine returns an empty string. */
   static checkUrlValid(urlStr) {
     let errorText = '';
     try {
@@ -278,44 +253,34 @@ class HDLmWebsiteImprover {
     }
     catch (errorObj) {
       console.error(errorObj);
-      errorText = errorObj.message;
-      return errorText;
+      return errorObj.message;
     }
     let hostNameStr = HDLmHtml.getHostName(urlStr);
     let typeOfHost = typeof(hostNameStr);
     if (typeOfHost == 'undefined')
       errorText = 'Host name is undefined';
-    if (hostNameStr == null)
+    else if (hostNameStr == null)
       errorText = 'Host name is null';
-    if (typeOfHost != 'string')
+    else if (typeOfHost != 'string')
       errorText = 'Host name is not a string';
-    if (typeOfHost == 'string' && hostNameStr == '')
+    else if (hostNameStr == '')
       errorText = 'Host name is empty';
     return errorText;
   }
-  /* This routine displays an error message to the user */
   static displayErrorMessage(errorMessage) {
     alert(String(errorMessage));
   }
-  /* This routine forces a React re-render of the UI */
   static forceReRender() {
     HDLmWebsiteImprover.inputKeyValue++;
     if (HDLmWebsiteImprover.stateSetFunction != null)
       HDLmWebsiteImprover.stateSetFunction(HDLmWebsiteImprover.inputKeyValue);
   }
-  /* This routine walks the pathParts array and creates or opens
-     the required subdirectory handles under the root handle.
-     The final directory handle is returned to the caller. */
   static async getDirectoryHandleForPath(rootDirectoryHandle, pathParts) {
     let directoryHandle = rootDirectoryHandle;
     for (let i = 0; i < pathParts.length; i++)
       directoryHandle = await directoryHandle.getDirectoryHandle(pathParts[i], { create: true });
     return directoryHandle;
   }
-  /* This routine returns the modified website URL. The protocol prefix
-     and the '://' separator are removed. If the path is '/', an empty
-     string is used for the path. The query string and fragment are
-     also removed. The modified URL is returned to the caller. */
   static getModifiedWebsiteUrl(urlStr) {
     if (typeof(urlStr) != 'string' || urlStr == '')
       return '';
@@ -339,10 +304,6 @@ class HDLmWebsiteImprover {
       pathPart = '';
     return hostPart + pathPart;
   }
-  /* This routine normalizes a website URL. If the URL does not start
-     with a protocol prefix, 'https://' is added. The query string
-     and fragment are removed. The normalized URL is returned to the
-     caller or null is returned if the URL is not valid. */
   static getNormalizedWebsiteUrl(urlValue) {
     if (typeof(urlValue) != 'string')
       return null;
@@ -363,14 +324,10 @@ class HDLmWebsiteImprover {
       return null;
     }
   }
-  /* This routine improves a website and saves the resulting
-     pages to the directory selected by the user. */
   static async improveWebsiteAndSave() {
     if (HDLmWebsiteImprover.improvingInProgress)
       return;
-    if (HDLmWebsiteImprover.urlValidated == false ||
-        HDLmWebsiteImprover.urlAccessed == false ||
-        HDLmWebsiteImprover.originalUrl == null) {
+    if (HDLmWebsiteImprover.urlValidated == false || HDLmWebsiteImprover.urlAccessed == false || HDLmWebsiteImprover.originalUrl == null) {
       HDLmWebsiteImprover.displayErrorMessage('Enter and validate a URL before improving');
       return;
     }
@@ -388,21 +345,14 @@ class HDLmWebsiteImprover {
         HDLmWebsiteImprover.forceReRender();
         return;
       }
-      let rootDirectoryHandle = await showDirectoryPickerFunction.call(window,
-                                                                       { mode: 'readwrite',
-                                                                         startIn: 'documents' });
+      let rootDirectoryHandle = await showDirectoryPickerFunction.call(window, { mode: 'readwrite', startIn: 'documents' });
       let suggestionText = HDLmWebsiteImprover.suggestionCurrentValue;
       if (typeof(suggestionText) != 'string')
         suggestionText = '';
       suggestionText = suggestionText.trim();
       if (suggestionText == suggestionPlaceholderWsiWIV1)
         suggestionText = '';
-      let aiResult = await HDLmAI.openRouterImproveWebsiteV1(HDLmWebsiteImprover.originalUrl,
-                                                              suggestionText,
-                                                              useAIVersionWsiWIV1,
-                                                              openRouterChatTemplatesWsiWIV1,
-                                                              openRouterResponseFormatTypeJsonObjectWsiWIV1,
-                                                              openRouterResponseJsonSchemaImproverWsiWIV1);
+      let aiResult = await HDLmAI.openRouterImproveWebsiteV1(HDLmWebsiteImprover.originalUrl, suggestionText, useAIVersionWsiWIV1, openRouterChatTemplatesWsiWIV1, openRouterResponseFormatTypeJsonObjectWsiWIV1, openRouterResponseJsonSchemaImproverWsiWIV1);
       let improvedSiteArray = [];
       if (aiResult != null && Array.isArray(aiResult.improvedSite))
         improvedSiteArray = aiResult.improvedSite;
@@ -412,57 +362,46 @@ class HDLmWebsiteImprover {
         HDLmWebsiteImprover.forceReRender();
         return;
       }
-      await HDLmWebsiteImprover.saveAllImprovedPages(rootDirectoryHandle, improvedSiteArray);
+      let improvementsArray = [];
+      if (aiResult != null && Array.isArray(aiResult.improvements))
+        improvementsArray = aiResult.improvements;
+      await HDLmWebsiteImprover.saveAllImprovedPages(rootDirectoryHandle, improvedSiteArray, improvementsArray);
     }
     catch (errorObj) {
       console.error(errorObj);
-      HDLmWebsiteImprover.displayErrorMessage('An error occurred while improving the website: ' +
-                                              errorObj.message);
+      HDLmWebsiteImprover.displayErrorMessage('An error occurred while improving the website: ' + errorObj.message);
     }
     HDLmWebsiteImprover.improvingInProgress = false;
     HDLmWebsiteImprover.forceReRender();
   }
-  /* This is the main entry point for the HDLmWebsiteImprover. It
-     checks if the program should run and if so, starts the async
-     main routine. */
   static main() {
     if (HDLmWebsiteImprover.shouldProgramRun(window.location.pathname) == false)
       return;
     HDLmWebsiteImprover.mainAsync();
   }
-  /* This is the async main routine for the HDLmWebsiteImprover.
-     It gets the configuration, sets the production mode, and
-     then starts the stage processing. */
   static async mainAsync() {
     let configsObj = await HDLmConfig.getConfigs();
     HDLmConfig.addConfigs(configsObj);
     let windowLocationHostName = window.location.hostname;
     let localMode;
-    if (windowLocationHostName != null &&
-        windowLocationHostName !== undefined &&
-        windowLocationHostName.indexOf('t') > 0)
+    if (windowLocationHostName != null && windowLocationHostName !== undefined && windowLocationHostName.indexOf('t') > 0)
       localMode = false;
     else
       localMode = true;
     HDLmUtility.setProdMode(localMode);
-    let stage = HDLmWebsiteImproverStageTypes.setTitle;
-    HDLmWebsiteImprover.nextStage(stage, null);
+    HDLmWebsiteImprover.nextStage(HDLmWebsiteImproverStageTypes.setTitle, null);
   }
-  /* This routine handles the stage processing for the website
-     improver. Each stage is handled in turn. The next stage is
-     set at the end of each stage. */
   static async nextStage(stage, varNext) {
     let nextStageLoop = true;
     while (nextStageLoop) {
       if (HDLmUtility.isVscode())
         console.log('In HDLmWebsiteImprover.nextStage while loop ' + stage, varNext);
       switch (stage) {
-        case HDLmWebsiteImproverStageTypes.setTitle: {
+        case HDLmWebsiteImproverStageTypes.setTitle:
           HDLmWebsiteImprover.addSpinnerStyle();
           stage = HDLmWebsiteImproverStageTypes.checkServerStatus;
           break;
-        }
-        case HDLmWebsiteImproverStageTypes.checkServerStatus: {
+        case HDLmWebsiteImproverStageTypes.checkServerStatus:
           let serverUp = await HDLmWebsiteImprover.checkServerStatus();
           if (serverUp == false) {
             HDLmWebsiteImprover.displayErrorMessage('The server is unavailable');
@@ -471,55 +410,42 @@ class HDLmWebsiteImprover {
           }
           stage = HDLmWebsiteImproverStageTypes.showWebsiteUi;
           break;
-        }
-        case HDLmWebsiteImproverStageTypes.showWebsiteUi: {
+        case HDLmWebsiteImproverStageTypes.showWebsiteUi:
           let reactRoot = HDLmReactSeven.getRootContainer('leftAndRightPage');
           reactRoot.render(React.createElement(HDLmWebsiteImprover.buildWebUiElement));
           window.focus();
           setTimeout(function() { window.focus(); }, 0);
           stage = HDLmWebsiteImproverStageTypes.visibilityChange;
           break;
-        }
-        case HDLmWebsiteImproverStageTypes.beforeUnload: {
+        case HDLmWebsiteImproverStageTypes.beforeUnload:
           nextStageLoop = false;
           break;
-        }
-        case HDLmWebsiteImproverStageTypes.visibilityChange: {
+        case HDLmWebsiteImproverStageTypes.visibilityChange:
           HDLmWebsiteImprover.visibilityChangeAdd();
           let visibilityChangeResolveFunction;
           let visibilityChangePromise = new Promise(function(resolve) {
             visibilityChangeResolveFunction = resolve;
           });
           HDLmWebsiteImprover.visibilityChangeResolveFunction = visibilityChangeResolveFunction;
-          visibilityChangePromise.then(function() { nextStageLoop = false; },
-                                       function() { nextStageLoop = false; });
+          visibilityChangePromise.then(function() { nextStageLoop = false; }, function() { nextStageLoop = false; });
           nextStageLoop = false;
           break;
-        }
-        default: {
+        default:
           nextStageLoop = false;
           break;
-        }
       }
     }
   }
-  /* This routine saves all of the improved pages to the directory
-     selected by the user. Subfolders are created as needed to
-     match the website folder tree. */
-  static async saveAllImprovedPages(rootDirectoryHandle, improvedSiteArray) {
+  static async saveAllImprovedPages(rootDirectoryHandle, improvedSiteArray, improvementsArray) {
+    let improvementsJson = HDLmWebsiteImprover.buildImprovementsJSON(improvementsArray);
     for (let i = 0; i < improvedSiteArray.length; i++) {
-      let siteEntry = improvedSiteArray[i];
-      if (siteEntry == null)
+      let item = improvedSiteArray[i];
+      if (item == null)
         continue;
-      let pathValue = '';
-      if (typeof(siteEntry.path) == 'string')
-        pathValue = siteEntry.path;
-      let htmlText = '';
-      if (typeof(siteEntry.html) == 'string')
-        htmlText = siteEntry.html;
+      let pathValue = (typeof(item.path) == 'string') ? item.path : '';
+      let htmlText = (typeof(item.html) == 'string') ? item.html : '';
       if (htmlText == '')
         continue;
-      htmlText = HDLmWebsiteImprover.addGoogleAnalyticsTag(htmlText);
       let relativePath = HDLmWebsiteImprover.buildSaveRelativePath(pathValue);
       let pathParts = relativePath.split('/').filter(function(part) { return part != ''; });
       if (pathParts.length == 0)
@@ -528,17 +454,17 @@ class HDLmWebsiteImprover {
       let directoryParts = pathParts.slice(0, pathParts.length - 1);
       let targetDirectoryHandle = rootDirectoryHandle;
       if (directoryParts.length > 0)
-        targetDirectoryHandle = await HDLmWebsiteImprover.getDirectoryHandleForPath(rootDirectoryHandle,
-                                                                                     directoryParts);
+        targetDirectoryHandle = await HDLmWebsiteImprover.getDirectoryHandleForPath(rootDirectoryHandle, directoryParts);
       let fileHandle = await targetDirectoryHandle.getFileHandle(fileName, { create: true });
       let writableHandle = await fileHandle.createWritable();
-      await writableHandle.write(htmlText);
+      await writableHandle.write(HDLmWebsiteImprover.addGoogleAnalyticsTag(htmlText));
       await writableHandle.close();
     }
+    let improvementsFileHandle = await rootDirectoryHandle.getFileHandle('Improvements.json', { create: true });
+    let improvementsWritableHandle = await improvementsFileHandle.createWritable();
+    await improvementsWritableHandle.write(JSON.stringify(improvementsJson, null, 2));
+    await improvementsWritableHandle.close();
   }
-  /* This routine checks if the website improver program should run.
-     The pathname of the current page is passed to this routine. The
-     routine returns true if the program should run and false if not. */
   static shouldProgramRun(pathnameValue) {
     if (typeof(pathnameValue) != 'string')
       return false;
@@ -549,15 +475,9 @@ class HDLmWebsiteImprover {
       return true;
     return false;
   }
-  /* This routine adds a visibility change event listener to the window */
   static visibilityChangeAdd() {
-    window.addEventListener('visibilitychange',
-                            function(event) { HDLmWebsiteImprover.visibilityChangeDone(event); });
+    window.addEventListener('visibilitychange', function(event) { HDLmWebsiteImprover.visibilityChangeDone(event); });
   }
-  /* This routine is called when the visibility of the browser changes.
-     If the browser is hidden more than once and more hidden events
-     have occurred than visible events, the visibility change promise
-     is resolved. */
   static visibilityChangeDone(event) {
     if (event == null)
       return;
@@ -565,9 +485,7 @@ class HDLmWebsiteImprover {
       HDLmWebsiteImprover.visibilityChangeHiddenCount++;
     if (document.visibilityState === 'visible')
       HDLmWebsiteImprover.visibilityChangeVisibleCount++;
-    if (document.visibilityState === 'hidden' &&
-        HDLmWebsiteImprover.visibilityChangeHiddenCount > 1 &&
-        HDLmWebsiteImprover.visibilityChangeHiddenCount > HDLmWebsiteImprover.visibilityChangeVisibleCount) {
+    if (document.visibilityState === 'hidden' && HDLmWebsiteImprover.visibilityChangeHiddenCount > 1 && HDLmWebsiteImprover.visibilityChangeHiddenCount > HDLmWebsiteImprover.visibilityChangeVisibleCount) {
       if (HDLmWebsiteImprover.visibilityChangeResolveFunction != null)
         HDLmWebsiteImprover.visibilityChangeResolveFunction('The visibility of the browser was hidden');
     }

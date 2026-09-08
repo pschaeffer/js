@@ -3514,6 +3514,46 @@ class HDLmUtility {
     let errorText = '';
     return errorText;
   }
+  /* The method below determines if a web page (HTML, CSS, links, images, JS, 
+     etc.) is valid or not. This method returns an error string, if an error
+     is detected. This method returns an empty string, if no errors are detected. 
+     Note that the caller is responsible for removing any leading and trailing 
+     blanks. This is not a very good check for a valid web page. The other check
+     in HDLmHtml.js is a lot better. */ 
+  static isWebpage(webpageObj) {
+    /* Make sure the argument passed by the caller is an object */
+    if (typeof webpageObj != 'object') {
+      let errorText = `Webpage value passed to isWebpage is not an object`;
+      return errorText;
+    }
+    /* Make sure the argument passed by the caller is an array */
+    if (Array.isArray(webpageObj) != true) {
+      let errorText = `Webpage value passed to isWebpage is not an array`;
+      return errorText;
+    }
+    /* Make sure the argument passed by the caller has a length of two */
+    if (webpageObj.length != 2) {
+      let errorLength = webpageObj.length;
+      let errorText = `Webpage value passed to isWebpage has a wrong length (${errorLength})`;
+      return errorText;
+    }
+    /* Get the first and second strings */
+    let firstValue = webpageObj[0];
+    let secondValue = webpageObj[1];
+    /* Make sure the first value is a string */
+    if (typeof firstValue != 'string') {
+      let errorText = `First array entry in webpage value passed to isWebpage is not a string`;
+      return errorText;
+    }
+    /* Make sure the second value is a string */
+    if (typeof secondValue != 'string') {
+      let errorText = `Second array entry in webpage value passed to isWebpage is not a string`;
+      return errorText;
+    }
+    /* Provide a default return value */
+    let errorText = '';
+    return errorText;
+  }
   /* This method loads a Blob from a file and returns it to the caller */
   static async loadBlobFromFile() {
     try {

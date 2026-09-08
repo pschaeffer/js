@@ -1,7 +1,21 @@
+/**
+ * HDLmReactSeven short summary.
+ * HDLmReactSeven description.
+ * @version 1.0
+ * @author Peter
+ */
 "use strict";
 class HDLmReactSeven {
   static buildButtonElement(idValue, buttonText, buttonRoutine, isDisabled, styleObj) {
-    let baseStyle = { borderRadius: '25px', margin: '2px 4px', padding: '10px 20px', backgroundColor: isDisabled ? '#cccccc' : '#007bff', color: 'white', border: 'none', cursor: isDisabled ? 'not-allowed' : 'pointer' };
+    let baseStyle = {
+      borderRadius: '25px',
+      margin: '2px 4px',
+      padding: '10px 20px',
+      backgroundColor: isDisabled ? '#cccccc' : '#007bff',
+      color: 'white',
+      border: 'none',
+      cursor: isDisabled ? 'not-allowed' : 'pointer'
+    };
     if (styleObj != null)
       baseStyle = Object.assign(baseStyle, styleObj);
     return React.createElement('button', { id: idValue, disabled: isDisabled, style: baseStyle, onClick: buttonRoutine }, buttonText);

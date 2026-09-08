@@ -47,6 +47,7 @@ class HDLmAJAX {
     let resolveFunction; 
     /* Get the name of the server used to handle some requests */
     let serverName = HDLmConfigInfo.getServerName();
+    /* console.log(serverName); */
     /* The function below gains control when an AJAX error occurs.
        the error is reported by failing the current request. */
     function runAJAXError() { 
@@ -61,9 +62,9 @@ class HDLmAJAX {
       /* console.log(this.status); */
       /* Check the status of the request. This event will occur even
          if the status is a 404. */
-      console.log(this.status);
-      console.log(this.HDLmRequestType);
-      console.log(this.responseText);
+      /* console.log(this.status); */
+      /* console.log(this.HDLmRequestType); */
+      /* console.log(this.responseText); */
       if (this.status == 200) {
         /* Resolve the Promise with the response text or a JSON
            object built from the response text */

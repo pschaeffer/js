@@ -81,25 +81,31 @@ class HDLmMain {
        manages rules or we may want to run the standard
        editor code. */  
     if (HDLmUtility.isVscode()) {    
+      if (1 == 1)
+        HDLmBuildRules.main();  
       if (1 == 2)
         HDLmIndexOne.main();  
       if (1 == 2)
         HDLmManageRules.main();  
-      if (1 == 1)
+      if (1 == 2)
         HDLmWebpageImprover.main();
       if (1 == 2)
         HDLmWebpagesImprover.main(); 
       if (1 == 2)
-        HDLmWebsiteImprover.main();     
+        HDLmWebpageImpsImprover.main();
+      if (1 == 2)
+        HDLmWebsiteImprover.main();
     } 
     /* Not running under VSCode. Just run all of the standard
        routines. In practice, only one will actually do anything. 
        Each routine will check the window location pathname and
        determine if it should execute. */
     else {
+      HDLmBuildRules.main();
       HDLmIndexOne.main();   
       HDLmManageRules.main();
       HDLmWebpageImprover.main();
+      HDLmWebpageImpsImprover.main();
       HDLmWebpagesImprover.main();
       HDLmWebsiteImprover.main();
     }

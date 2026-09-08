@@ -741,6 +741,16 @@ const openRouterUrlV4 = "https://openrouter.ai/api/v1";
 /* The HDLmAI class is not used to create any objects.
    However, it does contain code for using AI. */ 
 class HDLmAI {  
+  /* This routine builds an object of some kind. 
+     The object is returned to the caller. */
+  static buildObjectV1(objectKey, objectValue) {
+    /* Build the default (empty) object */
+    let generalObj = {};
+    /* Add value(s) to the object */
+    generalObj[objectKey] = objectValue;
+    /* Return the object to the caller */
+    return generalObj;
+  };
   /* This routine does an asynchronous fetch call to get
      something. The caller passes in the URL to get and 
      the options to use in the fetch call. The response
@@ -1005,7 +1015,7 @@ class HDLmAI {
     /* let webpageClientPrompt = HDLmAI.promptWebpageClientStr(OpenAIChatTemplates,
                                                                'webpageClient', 
                                                                webpageUrl, 
-                                                               targetWebpageContents); */
+                                                               targetWebpageContents); */                                                               
     let improvementsBothPrompt = HDLmAI.replaceTemplateStrings(OpenAIChatTemplates, 
                                                                'improvements', 
                                                                openAIImprovementsQuantity);
@@ -1038,6 +1048,7 @@ class HDLmAI {
     */
     /* Try to get the improvements from Open AI on the server */
     /* let webpageServerContents = HDLmAI.modifyWebpage(targetWebpageContents); */
+    console.log('HDLmAI.openAIGetImprovementsNew: webpageUrl = ' + webpageUrl); 
     let webpageServerPrompt = HDLmAI.replaceTemplateStrings(OpenAIChatTemplates,
                                                             'webpageServer', 
                                                             webpageUrl);   
@@ -1047,7 +1058,7 @@ class HDLmAI {
                                                           improvementsBothMessage);  
     let bodyServerObj = HDLmAI.openAIBuildBody(openAIModel, messageServerList, responseFormat);
     if (1 == 1)
-      improvementsResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyServerObj, versionAI);      
+      improvementsResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyServerObj, null, versionAI);      
     /* Return the improvements response to the caller */
     let improvementsObj; 
     try {
@@ -1134,6 +1145,7 @@ class HDLmAI {
     /* Try to get the markup from Open AI on the server*/
     /* let targetWebpageContents = await HDLmAI.getWebpage(webpageUrl); */
     /* let webpageServerContents = HDLmAI.modifyWebpage(targetWebpageContents); */
+    console.log('HDLmAI.openAIGetMarkup: webpageUrl = ' + webpageUrl); 
     let webpageServerPrompt = HDLmAI.replaceTemplateStrings(OpenAIChatTemplates, 
                                                             'webpageServer', 
                                                             webpageUrl);   
@@ -1143,7 +1155,7 @@ class HDLmAI {
                                                           markupBothMessage);  
     let bodyObjServer = HDLmAI.openAIBuildBody(openAIModel, messageServerList, responseFormat);
     if (1 == 1)
-      markupResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyObjServer, versionAI);      
+      markupResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyObjServer, null, versionAI);    
     /* Return the markup response to the caller */
     let markupObj; 
     try {
@@ -1205,8 +1217,14 @@ class HDLmAI {
      object is used to provide information to Open Router. The 
      body object is used in fetch calls to Open Router services.
      The body object is returned to the caller. */
+  /* https://openrouter.ai/docs/guides/features/server-tools/web-fetch#web-fetch 
+     https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-fetch-tool 
+     web fetch open router parameters example 
+     open router plugins fix json */
   static openRouterBuildBodyV1(openRouterModelStr, 
                                messageList,
+                               pluginsArray,
+                               toolsArray,
                                responseFormat) {
     /* Build the Open Router body object */
     let bodyObj = {};
@@ -1218,6 +1236,18 @@ class HDLmAI {
        need be */
     if (messageList != null)
       bodyObj['messages'] = messageList;
+    /* Add the plugins array to the body object, if 
+       need be */
+    if (pluginsArray != null        && 
+        Array.isArray(pluginsArray) &&
+        pluginsArray.length > 0)
+      bodyObj['plugins'] = pluginsArray;
+    /* Add the tools array to the body object, if 
+       need be */
+    if (toolsArray != null        && 
+        Array.isArray(toolsArray) &&
+        toolsArray.length > 0)
+      bodyObj['tools'] = toolsArray;
     /* Add the response format to the body object, if 
        need be */
     if (responseFormat != null)
@@ -1269,7 +1299,7 @@ class HDLmAI {
     /* let webpageClientPrompt = HDLmAI.promptWebpageClientStr(OpenRouterChatTemplatesV1, 
                                                                'webpageClient', 
                                                                webpageUrl, 
-                                                               targetWebpageContents); */
+                                                               targetWebpageContents); */ 
     let improvementsBothPrompt = HDLmAI.replaceTemplateStrings(OpenRouterChatTemplatesV1,
                                                                'improvements', 
                                                                openRouterImprovementsQuantityV1);
@@ -1285,7 +1315,7 @@ class HDLmAI {
     let responseFormat;
     /* Get the JSON schema improvements response format */
     responseFormat = openRouterResponseJsonSchemaImprovementsV1;
-    /* let bodyClientObj = HDLmAI.openRouterBuildBodyV1(openRouterModelV1, messageClientList, responseFormat); */
+    /* let bodyClientObj = HDLmAI.openRouterModelV1, messageClientList, responseFormat); */
     /* Build the Open Router headers */
     /* let headersObj = HDLmAI.openRouterBuildHeadersObjV1(openRouterApiKeyV1); */
     /* Use WebSockets for communication with the server. The server executes
@@ -1302,6 +1332,7 @@ class HDLmAI {
     */
     /* Try to get the improvements from Open Router on the server */
     /* let webpageServerContents = HDLmAI.modifyWebpage(targetWebpageContents); */
+    console.log('HDLmAI.openRouterGetImprovementsV1: webpageUrl = ' + webpageUrl); 
     let webpageServerPrompt = HDLmAI.replaceTemplateStrings(OpenRouterChatTemplatesV1, 
                                                             'webpageServer', 
                                                             webpageUrl);   
@@ -1309,9 +1340,13 @@ class HDLmAI {
     let messageServerList = HDLmAI.openRouterBuildMessageListV1(contextBothMessage,   
                                                                 webpageServerMessage,                                                    
                                                                 improvementsBothMessage);  
-    let bodyServerObj = HDLmAI.openRouterBuildBodyV1(openRouterModelV1, messageServerList, responseFormat);
+    let bodyServerObj = HDLmAI.openRouterBuildBodyV1(openRouterModelV1, 
+                                                     messageServerList, 
+                                                     null,
+                                                     null,
+                                                     responseFormat);
     if (1 == 1)
-      improvementsResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyServerObj, versionAI);      
+      improvementsResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyServerObj, null, versionAI);      
     /* Return the improvements response to the caller */
     let improvementsObj; 
     try {
@@ -1381,7 +1416,11 @@ class HDLmAI {
     let responseFormat;
     /* Get the JSON schema markup response format */
     responseFormat = openRouterResponseJsonSchemaMarkupV1;
-    /* let bodyClientObj = HDLmAI.openRouterBuildBodyV1(openRouterModelV1, messageClientList, responseFormat); */
+    /* let bodyClientObj = HDLmAI.openRouterBuildBodyV1(openRouterModelV1, 
+                                                        messageClientList,
+                                                        null,
+                                                        null,
+                                                        responseFormat); */
     /* Build the Open Router headers */
     /* let headersObj = HDLmAI.openRouterBuildHeadersObjV1(openRouterApiKeyV1); */
     /* Use WebSockets for communication with the server. The server executes
@@ -1398,6 +1437,7 @@ class HDLmAI {
     /* Try to get the markup from Open AI on the server*/
     /* let targetWebpageContents = await HDLmAI.getWebpage(webpageUrl); */
     /* let webpageServerContents = HDLmAI.modifyWebpage(targetWebpageContents); */
+    console.log('HDLmAI.openRouterGetMarkupV1: webpageUrl = ' + webpageUrl); 
     let webpageServerPrompt = HDLmAI.replaceTemplateStrings(OpenRouterChatTemplatesV1, 
                                                             'webpageServer', 
                                                             webpageUrl);   
@@ -1405,9 +1445,13 @@ class HDLmAI {
     let messageServerList = HDLmAI.openRouterBuildMessageListV1(contextBothMessage,   
                                                                 webpageServerMessage,                                                    
                                                                 markupBothMessage);  
-    let bodyObjServer = HDLmAI.openRouterBuildBodyV1(openRouterModelV1, messageServerList, responseFormat);
+    let bodyObjServer = HDLmAI.openRouterBuildBodyV1(openRouterModelV1, 
+                                                     messageServerList, 
+                                                     null,
+                                                     null,
+                                                     responseFormat);
     if (1 == 1)
-      markupResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyObjServer, versionAI);      
+      markupResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyObjServer, null, versionAI);      
     /* Return the markup response to the caller */
     let markupObj; 
     try {
@@ -1535,6 +1579,7 @@ class HDLmAI {
     */
     /* Try to get the improvements from Open Router on the server */
     /* let webpageServerContents = HDLmAI.modifyWebpage(targetWebpageContents); */
+    console.log('HDLmAI.openRouterGetImprovementsV2: webpageUrl = ' + webpageUrl); 
     let webpageServerPrompt = HDLmAI.replaceTemplateStrings(OpenRouterChatTemplatesV2, 
                                                             'webpageServer', 
                                                             webpageUrl);   
@@ -1543,7 +1588,7 @@ class HDLmAI {
                                                                 webpageServerMessage,                                                    
                                                                 improvementsBothMessage);  
     let bodyServerObj = HDLmAI.openRouterBuildBodyV2(openRouterModelV2, messageServerList, responseFormat); 
-    improvementsResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyServerObj, versionAI);     
+    improvementsResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyServerObj, null, versionAI);     
     /* Return the improvements response to the caller */
     let improvementsObj;
     try {
@@ -1651,6 +1696,7 @@ class HDLmAI {
     */
     /* Try to get the improvements from Open Router on the server */
     /* let webpageServerContents = HDLmAI.modifyWebpage(targetWebpageContents); */
+    console.log('HDLmAI.openRouterGetImprovementsV3: webpageUrl = ' + webpageUrl); 
     let webpageServerPrompt = HDLmAI.replaceTemplateStrings(OpenRouterChatTemplatesV3, 
                                                             'webpageServer', 
                                                             webpageUrl);   
@@ -1659,7 +1705,7 @@ class HDLmAI {
                                                                 webpageServerMessage,                                                    
                                                                 improvementsBothMessage);  
     let bodyServerObj = HDLmAI.openRouterBuildBodyV3(openRouterModelV3, messageServerList, responseFormat); 
-    improvementsResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyServerObj, versionAI);     
+    improvementsResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyServerObj, null, versionAI);     
     /* Return the improvements response to the caller */
     let improvementsObj;
     try {
@@ -1769,6 +1815,7 @@ class HDLmAI {
     */
     /* Try to get the improvements from Open Router on the server */
     /* let webpageServerContents = HDLmAI.modifyWebpage(targetWebpageContents); */
+    console.log('HDLmAI.openRouterGetImprovementsV4: webpageUrl = ' + webpageUrl); 
     let webpageServerPrompt = HDLmAI.replaceTemplateStrings(OpenRouterChatTemplatesV4, 
                                                             'webpageServer', 
                                                             webpageUrl);   
@@ -1778,7 +1825,7 @@ class HDLmAI {
                                                                 improvementsBothMessage);  
     let bodyServerObj = HDLmAI.openRouterBuildBodyV4(openRouterModelV4, messageServerList, responseFormat);
     if (1 == 1)
-      improvementsResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyServerObj, versionAI);      
+      improvementsResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyServerObj, null, versionAI);      
     /* Return the improvements response to the caller */
     let improvementsObj; 
     try {
@@ -1865,6 +1912,7 @@ class HDLmAI {
     /* Try to get the markup from Open AI on the server*/
     /* let targetWebpageContents = await HDLmAI.getWebpage(webpageUrl); */
     /* let webpageServerContents = HDLmAI.modifyWebpage(targetWebpageContents); */
+    console.log('HDLmAI.openRouterGetMarkupV4: webpageUrl = ' + webpageUrl); 
     let webpageServerPrompt = HDLmAI.replaceTemplateStrings(OpenRouterChatTemplatesV4, 
                                                             'webpageServer', 
                                                             webpageUrl);   
@@ -1874,7 +1922,7 @@ class HDLmAI {
                                                           markupBothMessage);  
     let bodyObjServer = HDLmAI.openRouterBuildBodyV4(openRouterModelV4, messageServerList, responseFormat);
     if (1 == 1)
-      markupResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyObjServer, versionAI);      
+      markupResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyObjServer, null, versionAI);      
     /* Return the markup response to the caller */
     let markupObj; 
     try {
@@ -1915,12 +1963,98 @@ class HDLmAI {
     let markupContentObj = JSON.parse(markupMessageContent);
     return markupContentObj 
   };
+  /* This routine builds a Open Router plugin object. 
+     The object is returned to the caller. */
+  static openRouterBuildPluginObjectV1(pluginKey, pluginValue) {
+    /* Build the default (empty) Open Router plugin object */
+    let pluginObj = {};
+    /* Add value(s) to the plugin object */
+    pluginObj[pluginKey] = pluginValue;
+    /* Return the plugin object to the caller */
+    return pluginObj;
+  };
+  /* This routine builds an Open Router plugins array. 
+     The array is returned to the caller. */
+  static openRouterBuildPluginsV1() {
+    /* Build the default (empty) Open Router plugins array */
+    let pluginsArray = [];
+    /* Add values to the plugin response healing object */
+    let pluginObj = HDLmAI.openRouterBuildResponseHealingObjectV1();
+    /* Add the plugin object to the plugins array */
+    pluginsArray.push(pluginObj);
+    /* Return the plugins array to the caller */
+    return pluginsArray;
+  };
+  /* This routine builds an Open Router response healing object.    
+     The object is returned to the caller. */
+  static openRouterBuildResponseHealingObjectV1() {
+    /* Build the response healing object */
+    let responseHealingKey = 'id';
+    let responseHealingValue = 'response-healing';
+    let responseHealingObj = HDLmAI.buildObjectV1(responseHealingKey, responseHealingValue);
+    /* Return the response healing object to the caller */
+    return responseHealingObj;
+  };
+  /* This routine builds an Open Router tools array. 
+     The array is returned to the caller. */
+  static openRouterBuildToolsV1() {
+    /* Build the default (empty) Open Router tools array */
+    let toolsArray = [];
+    /* Add values to the fetch tool object */
+    let toolName = 'openrouter:web_fetch';
+    let toolObj = HDLmAI.openRouterBuildWebFetchToolV1(toolName);
+    /* Add the fetch tool to the tools array */
+    toolsArray.push(toolObj);
+    /* Return the tools array to the caller */
+    return toolsArray;
+  };
+  /* This routine builds an Open Router web fetch parameters object. 
+     The object is returned to the caller. */
+  static openRouterBuildWebFetchParametersV1(engine,
+                                             maxUses, 
+                                             maxContentTokens, 
+                                             allowedDomains, 
+                                             blockedDomains) {
+    /* Build the default (empty) Open Router web fetch parameters object */
+    let fetchParams = {};
+    /* Add each of the parameter to the fetch parameters object, if it is not null */
+    if (engine != null)
+      fetchParams['engine'] = engine;
+    if (maxUses != null)
+      fetchParams['max_uses'] = maxUses;
+    if (maxContentTokens != null)
+      fetchParams['max_content_tokens'] = maxContentTokens;
+    if (allowedDomains != null)
+      fetchParams['allowed_domains'] = allowedDomains;
+    if (blockedDomains != null)
+      fetchParams['blocked_domains'] = blockedDomains;
+    /* Return the fetch parameters object to the caller */
+    return fetchParams;
+  };
+  /* This routine builds an Open Router web fetch tool object. 
+     The object is returned to the caller. */
+  static openRouterBuildWebFetchToolV1(toolName) {
+    /* Build the default (empty) Open Router web fetch tool object */
+    let fetchTool = {};
+    /* Add values to the fetch tool object */
+    fetchTool['type'] = toolName;
+    fetchTool['parameters'] = HDLmAI.openRouterBuildWebFetchParametersV1(null, 
+                                                                         null, 
+                                                                         100000, 
+                                                                         null, 
+                                                                         null);
+    /* Return the fetch tool object to the caller */
+    return fetchTool;
+  };
   /* This routine gets an improved webpage from Open Router
      Because this routine uses await, it only be used in
      an async function.
      
-     This routine invokes the HDLmAI.sendWebSocketsExecuteRequest routine 
-     which runs the HDLmWebSockets.executeAIRequest routine. */
+     This routine invokes the HDLmAI.sendWebSocketsExecuteRequest
+     routine which runs the HDLmWebSockets.executeAIRequest routine.
+     
+     This routine may (or may not) retry the inbound request using 
+     a 'fallback' AI model. */
   static async openRouterImproveWebpageV1(currentUrl,
                                           originalHtml,
                                           suggestionText,
@@ -1930,6 +2064,133 @@ class HDLmAI {
                                           responseSchema,
                                           desiredImprovements,
                                           undesiredImprovements) { 
+    /* Set the AI model to a null string. This gets the default 
+       AI model. */
+    let llmModelStr = null;
+    /* 
+    llmModelStr = 'moonshotai/kimi-k3';
+    llmModelStr = 'meta/muse-spark-1.1';
+    llmModelStr = '~anthropic/claude-fable-latest'; 
+    llmModelStr = '~openai/gpt-latest';
+    llmModelStr = '~anthropic/claude-sonnet-latest';
+    llmModelStr = '~anthropic/claude-opus-latest';
+    llmModelStr = '~deepseek/deepseek-v4-pro'; 
+    llmModelStr = '~x-ai/grok-latest';
+    llmModelStr = '~nvidia/nemotron-3-embed-1b:free';
+    llmModelStr = '~nvidia/nemotron-3-ultra-550b-a55b:free';
+    llmModelStr = 'openai/gpt-5.6-luna-pro';
+    llmModelStr = 'moonshotai/kimi-k3';
+    llmModelStr = 'meta/muse-spark-1.1';
+    llmModelStr = '~anthropic/claude-fable-latest'; 
+    llmModelStr = '~openai/gpt-latest';
+    llmModelStr = '~anthropic/claude-sonnet-latest';
+    llmModelStr = '~anthropic/claude-opus-latest';
+    llmModelStr = '~deepseek/deepseek-v4-pro'; 
+    llmModelStr = '~x-ai/grok-latest';
+    llmModelStr = '~nvidia/nemotron-3-embed-1b:free';
+    llmModelStr = '~nvidia/nemotron-3-ultra-550b-a55b:free';
+    llmModelStr = 'openai/gpt-5.6-luna-pro';
+    llmModelStr = 'deepseek/deepseek-v4-pro'; 
+    llmModelStr = 'nvidia/nemotron-3-embed-1b:free';
+    llmModelStr = 'anthropic/claude-fable-latest'; 
+    llmModelStr = '~anthropic/claude-fable-latest'; 
+    llmModelStr = '~anthropic/claude-sonnet-latest';
+    llmModelStr = '~anthropic/claude-opus-latest';
+    llmModelStr = '~anthropic/claude-sonnet-latest';
+    llmModelStr = '~openai/gpt-latest';
+    llmModelStr = 'anthropic/claude-opus-5';
+    llmModelStr = 'gpt-5.6-luna-pro';
+    /* The line below was used for testing with a specific GPT model. 
+       These tests did not use Open Router. */
+    /* 
+    llmModelStr = 'gpt-5.6';
+    */
+    llmModelStr = '~openai/gpt-latest';
+    llmModelStr = 'gpt-5.6-sol-pro';
+    llmModelStr = 'openai/gpt-5.6-sol-pro';
+    llmModelStr = 'anthropic/claude-opus-5';
+    llmModelStr = 'anthropic/claude-fable-5';
+    llmModelStr = 'gpt-5.6-sol-pro';
+    llmModelStr = 'gpt-5.6-luna-pro';
+    llmModelStr = 'gpt-5.6';
+    llmModelStr = 'gpt-latest';
+    llmModelStr = 'gpt-5.6-sol-pro';
+    llmModelStr = 'gpt-5.6-luna-pro';
+    llmModelStr = 'gpt-5.6';
+    llmModelStr = 'gpt-latest';
+    llmModelStr = 'openai/gpt-5.6-sol-pro';
+    llmModelStr = 'openai/gpt-5.6-luna-pro';
+    llmModelStr = 'openai/gpt-5.6';
+    llmModelStr = 'openai/gpt-latest';
+    llmModelStr = '~openai/gpt-5.6-sol-pro';
+    llmModelStr = '~openai/gpt-5.6-luna-pro';
+    llmModelStr = '~openai/gpt-5.6';
+    llmModelStr = '~openai/gpt-latest';
+    llmModelStr = 'gpt-5.6';
+    llmModelStr = 'anthropic/claude-opus-5';
+    llmModelStr = 'meta/muse-spark-1.2';
+    llmModelStr = 'meta-llama/llama-4-maverick';
+    llmModelStr = 'meta-llama/llama-4-scout';
+    llmModelStr = 'meta-llama/llama-4-maverick';
+    llmModelStr = 'anthropic/claude-fable-5';
+    let aiResult = {};
+    let retryCount = 0;
+    while (true) {
+      aiResult = await HDLmAILow.openRouterImproveWebpageV1(llmModelStr, 
+                                                            currentUrl,
+                                                            originalHtml,
+                                                            suggestionText,
+                                                            versionAI,
+                                                            chatTemplates, 
+                                                            responseFormat,
+                                                            responseSchema,
+                                                            desiredImprovements,
+                                                            undesiredImprovements);    
+      /* Check if the function returned a null value and if so, retry
+         in some cases */ 
+      if (aiResult == null) {
+        retryCount++;
+        if (retryCount <= 10) {
+          continue;
+        } 
+      }
+      /* If the request was refused by the AI model and the 
+         model has not been set to a fallback, then retry 
+         with the fallback model */
+      if (aiResult.hasOwnProperty('refusal') &&
+          aiResult.refusal == true           &&
+          llmModelStr == null) {
+        llmModelStr = 'fallback';
+        aiResult = await HDLmAILow.openRouterImproveWebpageV1(llmModelStr, 
+                                                              currentUrl,
+                                                              originalHtml,
+                                                              suggestionText,
+                                                              versionAI,
+                                                              chatTemplates, 
+                                                              responseFormat,
+                                                              responseSchema,
+                                                              desiredImprovements,
+                                                              undesiredImprovements);  
+      }
+      break;
+    }
+    return aiResult;
+  };
+  /* This routine gets an improved webpage from Open Router
+     Because this routine uses await, it only be used in
+     an async function.
+     
+     This routine invokes the HDLmAI.sendWebSocketsExecuteRequest routine 
+     which runs the HDLmWebSockets.executeAIRequest routine. */
+  static async openRouterImproveWebpageV1NotUsed(currentUrl,
+                                                 originalHtml,
+                                                 suggestionText,
+                                                 versionAI,
+                                                 chatTemplates, 
+                                                 responseFormat,
+                                                 responseSchema,
+                                                 desiredImprovements,
+                                                 undesiredImprovements) { 
     /* let targetWebpageContents = await HDLmAI.getWebpage(webpageUrl); */
     /* console.log('Webpage content fetched from ' + webpageUrl); */
     /* console.log(targetWebpageContents); */
@@ -1941,7 +2202,7 @@ class HDLmAI {
     let what4 = "Added a 'Why 500,000+ Yogis Choose YogaDirect' value-proposition section with four key benefits.";
     let desiredImprovementsLocal = what1 + ';' + what3;
     let undesiredImprovementsLocal = what2 + ';' + what4;
-    */
+    */  
     let contextPrompt = HDLmAI.promptContextBothStr(chatTemplates,
                                                     'context');
     /* Build the Open Router context message */
@@ -1957,10 +2218,11 @@ class HDLmAI {
        the actual request. This allows the Open Router key to be stored securely 
        on the server and not be exposed to the client. */
     let improvementResponse;
-    let openRouterModel = 'dummyModel';                                                             
+    let openRouterModel = 'dummyModel';        
+    console.log('HDLmAI.openRouterImproveWebpageV1NotUsed: currentUrl = ' + currentUrl);
     let webpageServerPrompt = HDLmAI.replaceTemplateStrings(chatTemplates, 
                                                             'webpageServer', 
-                                                            /* currentUrl); */
+                                                            /* currentUrl */
                                                             originalHtml,
                                                             suggestionText, 
                                                             desiredImprovements,
@@ -1969,13 +2231,17 @@ class HDLmAI {
     let messageServerList = HDLmAI.openRouterBuildMessageListV1(contextMessage,   
                                                                 webpageServerMessage);                                                 
                                                                 /* improvementBothMessage); */  
-    let bodyServerObj = HDLmAI.openRouterBuildBodyV1(openRouterModel, messageServerList, responseSchema);
+    let bodyServerObj = HDLmAI.openRouterBuildBodyV1(openRouterModel, 
+                                                     messageServerList, 
+                                                     null,
+                                                     null,
+                                                     responseSchema);
     if (1 == 1) {
       /*
       bodyServerObj['max_completion_tokens'] = 1000;
       bodyServerObj['max_tokens'] = 1000;
       */
-      improvementResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyServerObj, versionAI);      
+      improvementResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyServerObj, null, versionAI);      
     }
     /* Return the webpage improvement response from the caller */
     let improvementObj; 
@@ -2034,8 +2300,8 @@ class HDLmAI {
       let improvementMessageContentLen = improvementMessageContent.length;  
       /* Check if the improvement message content is too long. 
         If it is, truncate it for logging purposes. */
-      if (improvementMessageContentLen >= 5000)
-        improvementMessageContent = improvementMessageContent.substring(0, 4999);
+      if (improvementMessageContentLen >= 10000)
+        improvementMessageContent = improvementMessageContent.substring(0, 10000);
       HDLmUtility.logStringInParts('Content:', improvementMessageContent, 20);
       /* Display the string in Hexadecimal for debugging purposes */
       let improvementMessageContentHex = HDLmString.stringToHex(improvementMessageContent);
@@ -2055,96 +2321,40 @@ class HDLmAI {
                                           chatTemplates, 
                                           responseFormat,
                                           responseSchema) {  
-    let contextPrompt = HDLmAI.promptContextBothStr(chatTemplates,
-                                                    'context');
-    /* Build the Open Router context message */
-    let contextMessage = HDLmAI.openRouterBuildMessageV1('system', contextPrompt);    
-    /* Declare and define a value that will be returned to the caller.
-       This object will hold the improved webpage HTML and the list of
-       improvments. It is declared here so that it can be assigned in 
-       the try/catch block below and returned to the caller at the end
-       of this routine. */
-    let improvementContentObj;
-    /* let improvementBothMessage = HDLmAI.openRouterBuildMessageV1('user', contextBothPrompt); */
-    /* Use WebSockets for communication with the server. The server executes
-       the actual request. This allows the Open Router key to be stored securely 
-       on the server and not be exposed to the client. */
-    let improvementResponse;
-    let openRouterModel = 'dummyModel';                                                             
-    let webpageServerPrompt = HDLmAI.replaceTemplateStrings(chatTemplates, 
-                                                            'webpageServer', 
-                                                            currentUrl,
-                                                            suggestionText); 
-    let webpageServerMessage = HDLmAI.openRouterBuildMessageV1('user', webpageServerPrompt);
-    let messageServerList = HDLmAI.openRouterBuildMessageListV1(contextMessage,   
-                                                                webpageServerMessage);                                                 
-                                                                /* improvementBothMessage); */  
-    let bodyServerObj = HDLmAI.openRouterBuildBodyV1(openRouterModel, messageServerList, responseSchema);
-    if (1 == 1) {
-      improvementResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyServerObj, versionAI);      
-    }
-    /* Return the webpage improvement response from the caller */
-    let improvementObj; 
-    try {
-      /* Parse the improvement response */    
-      improvementObj = JSON.parse(improvementResponse);  
-    } 
-    /* Catch any errors that occur during parsing */
-    catch (error) {
-      HDLmUtility.logStringInParts('Improvement:', improvementResponse, 20);
-      console.log('Error parsing Open Router improvement response: ' + error);
-      let errorText = 'Error parsing Open Router improvement response: ' + error;
-      HDLmAssert(false, errorText);
-    }
-    /* Get the choices list from the improvement response */
-    let improvementChoicesList = improvementObj['choices'];
-    if (improvementChoicesList == null) {
-      console.log('Error: No choices found in Open Router improvement response');
-      let errorText = 'No choices found in Open Router improvement response';
-      HDLmAssert(false, errorText);
-    }  
-    /* get the first choice from the choices list */
-    let improvementFirstChoice = improvementChoicesList[0];
-    /* Get the message object from the first choice */
-    let improvementMessageObj = improvementFirstChoice['message'];
-    if (improvementMessageObj == null) {
-      console.log('Error: Message object not built in Open Router improvement response');
-      let errorText = 'Message object not built in Open Router improvement response';
-      HDLmAssert(false, errorText);
-    }  
-    /* Check for refusals in the message object */
-    if (improvementMessageObj['refusal'] != null) {
-      console.log('Error: Message object has refusal set in Open Router improvement response');
-      let errorText = 'Message object has refusal set in Open Router improvement response';
-      HDLmAssert(false, errorText);
-    } 
-    /* Get the content from the message object. The 
-       content is expected to be a JSON string that
-       can be converted to an object */
-    let improvementMessageContent = improvementMessageObj['content'];
-    /* Try to parse the improvement content. The improvement content is 
-       expected to be a JSON string that can be converted to an object. 
-       The improved HTML and the list of improvements are expected to 
-       be in the improvement content. */
-    try {
-      /* Parse the improvement content using an standard JSON parser */     
-      improvementContentObj = JSON.parse(improvementMessageContent);   
-    } 
-    /* Catch any errors that occur during parsing */
-    catch (error) {
-      console.log('Error parsing Open Router improvement content: ' + error);
-      let errorText = 'Error parsing Open Router improvement content: ' + error;
-      /* Get the length of the improvement message content */ 
-      let improvementMessageContentLen = improvementMessageContent.length;  
-      /* Check if the improvement message content is too long. 
-        If it is, truncate it for logging purposes. */
-      if (improvementMessageContentLen >= 5000)
-        improvementMessageContent = improvementMessageContent.substring(0, 4999);
-      HDLmUtility.logStringInParts('Content:', improvementMessageContent, 20);
-      /* Display the string in Hexadecimal for debugging purposes */
-      let improvementMessageContentHex = HDLmString.stringToHex(improvementMessageContent);
-      HDLmUtility.logStringInParts('Content (Hex):', improvementMessageContentHex, 20);      
-      HDLmAssert(false, errorText);
+    /* Set the AI model to a null string. This gets the default 
+       AI model. */
+    let llmModelStr = null;
+    llmModelStr = 'anthropic/claude-fable-5';
+    llmModelStr = 'anthropic/claude-opus-5';
+    /* Set the initial retry count to zero. This is used to 
+       limit the number of retries in case of errors. */
+    let retryCount = 0;   
+    let improvementContentObj;    
+    /* This is the main retry loop */ 
+    while (true) {      
+      /* Invoke the low-level routine to get the improved website from Open Router */                   
+      improvementContentObj = await HDLmAILow.openRouterImproveWebsiteV1(llmModelStr,
+                                                                         currentUrl,
+                                                                         suggestionText,
+                                                                         versionAI,
+                                                                         chatTemplates, 
+                                                                         responseFormat,
+                                                                         responseSchema);    
+                                                                       
+      /* Check if the function returned a null value and if so, retry
+         in some cases */ 
+      if (improvementContentObj == null) {
+        retryCount++;
+        if (retryCount <= 10) {
+          continue;
+        }
+        /* The maximum number of retries has been reachedr */ 
+        else 
+          break;
+      }
+      /* If the request worked, just leave the loop */ 
+      else
+        break;
     }
     /* let improvementHtml = improvementContentObj['improvedHtml']; */
     /* Return the improved HTML (in an object) to the caller */
@@ -2176,6 +2386,7 @@ class HDLmAI {
     if (HDLmAI.webpageClientPrompt != null)
       return HDLmAI.webpageClientPrompt;
     /* Get the clientwebpage prompt string */
+    console.log('HDLmAI.promptWebpageClientStr: webpageUrl = ' + webpageUrl);
     let webpageClientPromptStr = HDLmAI.replaceTemplateStrings(templateStructure,
                                                                promptNameStr, 
                                                                webpageUrl, 
@@ -2227,7 +2438,7 @@ class HDLmAI {
   /* This routine sends a WebSockets execute request to the main
      WebSockets routine. The headers and body objects are passed
      in. The response from the server is returned to the caller. */
-  static async sendWebSocketsExecuteRequest(bodyObj, versionAI) {
+  static async sendWebSocketsExecuteRequest(bodyObj, llmModelStr, versionAI) {
     /* Declare and define a few local variables */
     let typeStr;
     let webSocketsResponse = null;
@@ -2245,6 +2456,8 @@ class HDLmAI {
       typeStr = 'V3';
     else if (versionAI == 'OpenRouterV4')
       typeStr = 'V4';
+    else if (versionAI == 'openRouterWimWIV1')
+      typeStr = 'Wim';
     else if (versionAI == 'openRouterWpiWIV1')
       typeStr = 'Wpi';
     else if (versionAI == 'openRouterWpsWIV1')
@@ -2259,6 +2472,7 @@ class HDLmAI {
              versionAI == 'OpenRouterV2'      ||
              versionAI == 'OpenRouterV3'      ||
              versionAI == 'OpenRouterV4'      ||
+             versionAI == 'openRouterWimWIV1' ||
              versionAI == 'openRouterWpiWIV1' ||
              versionAI == 'openRouterWpsWIV1' ||
              versionAI == 'openRouterWsiWIV1')
@@ -2267,7 +2481,7 @@ class HDLmAI {
     let startTime = Date.now();  
     /* Send the WebSockets execute request */
     /* console.log(`In HDLmAI.sendWebSocketsExecuteRequest: Sending WebSockets request for ${versionStr} ${typeStr}`); */
-    webSocketsResponse = await HDLmWebSockets.executeAIRequest(bodyObj, versionStr, typeStr);
+    webSocketsResponse = await HDLmWebSockets.executeAIRequest(bodyObj, llmModelStr, versionStr, typeStr);
     /* Get the end time for the WebSockets call */
     let endTime = Date.now();
     let webSocketsDuration = endTime - startTime;

@@ -32,13 +32,13 @@ const openRouterChatTemplatesWpiWIV1 = {
              'Do not use hash or hashCode.\n' +
              'Mark the changed HTML for each improvement by adding a class with that exact HDLmClass-prefixed hash code.\n' +
              'Return the complete improved HTML and a list of improvements.\n',
-  'webpageServer': 'Please improve the following HTML to increase conversion rates ' +
+  'webpageServer': 'Please improve the HTML from the passed URL to increase conversion rates ' +
                    'and revenue.\n' +
                    'Return the complete improved HTML and a list ' +
                    'of improvements made, each with a What field and a Why field and a Hash field.\n' +
                    '\n' +
-                   'HTML:\n' +
-                   '{{html}}\n' +
+                   'URL:\n' +
+                   '{{url}}\n' +
                    'User suggestion: {{suggest}}\n' +
                    'Desired changes: ({{desired}})\n' +
                    'Undesired changes: ({{undesired}})\n'

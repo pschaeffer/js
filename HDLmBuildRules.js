@@ -1098,7 +1098,65 @@ class HDLmBuildRules {
                           '     "Script Mod CC Variant 13"' +
                           '  ]' +
                           '}'
-    return addTreeNodeString10;
+    /* The HTML below use the HTML5 doctype, not earlier versions
+       that were considerably more complex. */
+    let addTreeNodeString14 = '';
+    addTreeNodeString14 = '' +
+                          '{' +
+                          '  "type": "mod",' +
+                          '  "tooltip": "Webpage modification",' +
+                          '  "details": {' +
+                          '    "find": [],' +
+                          '    "webpages": ' +
+                          '    ["' +
+                          '\<\!DOCTYPE html\>\\n' +
+                          '\<html\>\\n' +
+                          '\<head\>\\n' +
+                          '\<meta name=\\"verify-v1\\" content=\\"H2ZIGoQkekouSOmhMrwQYvAXPFBc+V5esb5YKeQsORQ=\\"\/\>\\n' +
+                          '\<title\>TMLOO\<\/title\>\\n'  +
+                          '\<\/head\>\\n' + 
+                          '\<body\>\\n' + 
+                          '\<\/body\>\\n'  +
+                          '\<\/html\>' +
+                          '    "],' +
+                          '    "pathre": false,' +
+                          '    "type": "webpage",' +
+                          '    "parameter": 0,' +
+                          '    "cssselector": "",' +
+                          '    "comments": "",' +
+                          '    "created": "2026-09-05T09:08:10.434Z",' +
+                          '    "lastmodified": "2026-09-05T09:08:10.434Z",' +
+                          '    "updated": false,' +
+                          '    "extra": "",' +
+                          '    "name": "Webpage Variant 1",' +
+                          '    "nodeiden": {' +
+                          '      "type": "tag",' +
+                          '      "attributes": {' +
+                          '        "tag": "head"' +
+                          '       },' +
+                          '      "counts": {' +
+                          '        "tag": 1' +
+                          '       },' +
+                          '      "parent": {' +
+                          '        "tag": "html"' +
+                          '      }' +
+                          '    },' +
+                          '    "path": "//.*/",' +
+                          '    "prob": 100.0,' +
+                          '    "usemode": "prod",' +
+                          '    "xpath": ""' +
+                          '  },' +
+                          '  "nodePath": [' +
+                          '     "Top",' +
+                          '     "Companies",' +
+                          '     "www.themarvelouslandofoz.com",' +
+                          '     "Rules",' +
+                          '     "example.com",' +
+                          '     "example.com",' +
+                          '     "Webpage Variant 1"' +
+                          '  ]' +
+                          '}'                      
+    return addTreeNodeString14;
   }
   /* Build a JavaScript array with the new rules in it. For
      now the new rules are hard-coded below. */
@@ -1624,8 +1682,10 @@ class HDLmBuildRules {
     }
     */
     let addTreeNodeObj = JSON.parse(addTreeNodeStr);
+    let webpageStr = addTreeNodeObj.details.webpages[0];
+    HDLmHtml.storeWebpageRule('https://www.themarvelouslandofoz.com/', webpageStr);
     /* let sendPromise = HDLmWebSockets.sendAddTreeNodeRequestTest1(addTreeNodeStr); */
-    if (1 == 1)
+    if (1 == 2)
       HDLmWebSockets.sendAddTreeNodeRequest(addTreeNodeObj);
     if (windowlocationPathName.toLowerCase() == '/buildrules')
       buildRules = true;
