@@ -1986,6 +1986,34 @@ class HDLmHtml {
     if (divRightDefElements.length > 0)
       divRightDefElements[0].setAttribute(nodePathName, nodePath.toString());
   }
+   /* This routine stores a rule in the database. The rule 
+      might (or might not) already exist in the database. 
+      If the rule does not exist, it will be added as need
+      be. If the rule already exists, it will be updated 
+      accordingly. Note that a web socket request is used for 
+      this purpose. The web socket request actually handles  
+      an array of rules. This code only handles a one single 
+      rule at a time. */
+  static storeRule(treeNodeObj) {
+    /* Build the array of tree nodes for the current web page rule */
+    let treeNodesArray = [treeNodeObj];
+    /* Send the tree node array to the server */
+    let valuesObj = {nodes: treeNodesArray};
+    let valuesObjJson = JSON.stringify(valuesObj)
+    let sendPromise = HDLmWebSockets.sendStoreTreeNodesRequest(valuesObjJson);
+    /* console.log(sendPromise); */
+    /* Try to wait on the promise. If the promise is resolved,
+       then check the response. If the promise is rejected, then
+       report an error and return to the caller. */
+    sendPromise.then(function(response) {
+      /* console.log(response); */
+    },
+    function(error) {
+      let errorText = '';
+      errorText = 'Send request (the promise) was rejected';
+      console.log(errorText, error); 
+    });
+  }
   /* This routine stores a web page rule in the database. 
      The rule might (or might not) already exist in the 
      database. If the rule does not exist, it will be added
@@ -1994,26 +2022,28 @@ class HDLmHtml {
      this purpose. The web socket request actually handles  
      an array of rules. This code only handles a one single 
      rule at a time. */
-  static storeWebpageRule(urlStr, 
-                          webpageStr, 
-                          treeTypeStr = 'mod',
-                          tooltipStr = 'Webpage modification',
-                          findArray = [],
-                          pathreBool = false,
-                          modTypeStr = 'webpage',
-                          parameterInt = 0,
-                          cssselectorStr = '',
-                          commentsStr = '', 
-                          createdDateStr = new Date().toISOString(),
-                          lastModifiedDateStr = new Date().toISOString(),
-                          updatedBool = false,
-                          extraStr = '',
-                          nameStr = '',
-                          nodeidenObj = {},
-                          pathStr = '',
-                          probFloat = 100.0,
-                          usemodeStr = 'prod',
-                          xpathStr = '') {
+  static storeWebpageRule({
+                            urlStr, 
+                            webpageStr, 
+                            treeTypeStr = 'mod',
+                            tooltipStr = 'Webpage modification',
+                            findArray = [],
+                            pathreBool = false,
+                            modTypeStr = 'webpage',
+                            parameterInt = 0,
+                            cssselectorStr = '',
+                            commentsStr = '', 
+                            createdDateStr = new Date().toISOString(),
+                            lastModifiedDateStr = new Date().toISOString(),
+                            updatedBool = false,
+                            extraStr = '',
+                            nameStr = '',
+                            nodeidenObj = {},
+                            pathStr = '',
+                            probFloat = 100.0,
+                            usemodeStr = 'prod',
+                            xpathStr = ''
+                          } = {}) {
     /* Build a URL object from the URL string */
     let urlObj = new URL(urlStr);
     /* Get some information from the URL object */
@@ -2044,7 +2074,7 @@ class HDLmHtml {
        use the generated node path */
     if (pathStr == '')
       pathStr = urlPathName;
-    /* Get a bunch of values needed for the node path array */
+    /* Get a bunch of values needed for the node path array */5
     let topStr = HDLmDefines.getString('HDLMTOPNODENAME');
     let companiesStr = HDLmDefines.getString('HDLMCOMPANIESNODENAME'); 
     let rulesStr = HDLmDefines.getString('HDLMRULESNODENAME');
@@ -2081,23 +2111,7 @@ class HDLmHtml {
                         details: ruleObj,
                         nodePath: nodePathArray
                       };
-    /* Build the array of tree nodes for the current web page rule */
-    let treeNodesArray = [treeNodeObj];
-    /* Send the tree node array to the server */
-    let valuesObj = {nodes: treeNodesArray};
-    let valuesObjJson = JSON.stringify(valuesObj)
-    let sendPromise = HDLmWebSockets.sendStoreTreeNodesRequest(valuesObjJson);
-    /* console.log(sendPromise); */
-    /* Try to wait on the promise. If the promise is resolved,
-       then check the response. If the promise is rejected, then
-       report an error and return to the caller. */
-    sendPromise.then(function(response) {
-      /* console.log(response); */
-    },
-    function(error) {
-      let errorText = '';
-      errorText = 'Send request (the promise) was rejected';
-      console.log(errorText, error); 
-    });
+    /* Store the tree node object */
+    HDLmHtml.storeRule(treeNodeObj); 
   }
 }

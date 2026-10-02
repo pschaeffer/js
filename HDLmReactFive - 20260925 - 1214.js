@@ -34,10 +34,8 @@ class HDLmReactFive {
   }
   static spinner() {
     return React.createElement('span', {
-      'aria-label': 'Improving webpage',
-      'role': 'status',
       style: {
-        display: 'block',
+        display: 'inline-block',
         margin: '20px 8px',
         border: '5px solid #ddd',
         borderTopColor: '#2673c9',
@@ -61,12 +59,8 @@ class HDLmReactFive {
         React.createElement('th', null),
         React.createElement('th', null)));
     let rows = items.map(function(item, index) {
-      let radioName = 'wpi-improvement-' + JSON.stringify([item.Hash || '', item.What || '', item.Why || '']);
-      return React.createElement('tr', {
-        key: radioName,
-        tabIndex: 0,
-        onKeyDown: function(event) { if (event.key === 'Delete') handlers.delete(index); }
-      },
+      let radioName = 'improvement-' + index;
+      return React.createElement('tr', { key: index },
         React.createElement('td', null, React.createElement('input', {
           type: 'radio',
           name: radioName,
@@ -82,12 +76,12 @@ class HDLmReactFive {
         React.createElement('td', null, React.createElement('input', {
           type: 'radio',
           name: radioName,
-          checked: false,
           onChange: function() { handlers.delete(index); }
         })),
         React.createElement('td', {
           tabIndex: 0,
           onClick: function() { handlers.click(item.Hash || ''); },
+          onKeyDown: function(event) { if (event.key === 'Delete') handlers.delete(index); },
           style: { textAlign: 'left', verticalAlign: 'top' }
         },
         React.createElement('div', null, 'What: ' + (item.What || '')),

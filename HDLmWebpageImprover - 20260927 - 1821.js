@@ -91,26 +91,11 @@ class HDLmWebpageImprover {
     let date = now.getUTCFullYear().toString() + (now.getUTCMonth() + 1).toString().padStart(2, '0') + now.getUTCDate().toString().padStart(2, '0');
     let time = now.getUTCHours().toString().padStart(2, '0') + now.getUTCMinutes().toString().padStart(2, '0') + now.getUTCSeconds().toString().padStart(2, '0');
     let tag = 'HDLmGAWpiTag-' + date + '-' + time;
-    let script = '<script>\n' +
-           '(function(){\n' +
-           'var tag="' + tag + '";\n' +
-           'if(typeof gtag==="function"){\n' +
-           'gtag("event",tag,{event_category:"HDLmGAWpiTag",event_label:tag});\n' +
-           '}\n' +
-           '})();\n' +
-           '</script>';
+    let script = '<script>(function(){var tag="' + tag + '";if(typeof gtag==="function"){gtag("event",tag,{event_category:"HDLmGAWpiTag",event_label:tag});}})();</script>';
     let bodyEnd = html.toLowerCase().indexOf('</body>');
     if (bodyEnd < 0)
       return html + script;
     return html.substring(0, bodyEnd) + script + html.substring(bodyEnd);
-  }
-  static addSpinnerStyle() {
-    if (document.getElementById('hdlmWebpageImproverSpinnerStyle') != null)
-      return;
-    let styleElement = document.createElement('style');
-    styleElement.id = 'hdlmWebpageImproverSpinnerStyle';
-    styleElement.textContent = '@keyframes hdlm-wpi-spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}';
-    document.head.appendChild(styleElement);
   }
   static addStylesAndMessageHandler(html, items) {
     let styles = '';
@@ -120,21 +105,7 @@ class HDLmWebpageImprover {
       let name = 'hdlm-wpi-' + item.Hash;
       styles += '<style id="' + name + '">.' + item.Hash + '{animation:' + name + ' 0.6s step-start infinite;outline:4px solid orange;}@keyframes ' + name + '{50%{outline:none;}}</style>';
     }
-    let script = '<script>\n' +
-           '(function(){\n' +
-           'document.querySelectorAll("style[id^=\\"hdlm-wpi-\\"]").forEach(function(styleNode){\n' +
-           'styleNode.disabled=true;\n' +
-           '});\n' +
-           'window.addEventListener("message",function(event){\n' +
-           'var parts=String(event.data).split(" ");\n' +
-           'if(parts.length<2)return;\n' +
-           'var styleNode=document.getElementById("hdlm-wpi-"+parts[0]);\n' +
-           'if(!styleNode)return;\n' +
-           'if(parts[1]==="hilite")styleNode.disabled=false;\n' +
-           'else if(parts[1]==="normal")styleNode.disabled=true;\n' +
-           '});\n' +
-           '})();\n' +
-           '</script>';
+    let script = '<script>(function(){document.querySelectorAll("style[id^=\\"hdlm-wpi-\\"]").forEach(function(styleNode){styleNode.disabled=true;});window.addEventListener("message",function(event){var parts=String(event.data).split(" ");var styleNode=document.getElementById("hdlm-wpi-"+parts[0]);if(styleNode)styleNode.disabled=parts[1]!=="hilite";});})();</script>';
     let headEnd = html.toLowerCase().indexOf('</head>');
     if (headEnd < 0)
       return html;
@@ -160,13 +131,7 @@ class HDLmWebpageImprover {
       HDLmWebpageImprover.refresh();
     };
     let url = HDLmReactFive.input(helpTextWpiWIV1.url, 'wpi-url', HDLmWebpageImprover.url, function(event) {
-      HDLmWebpageImprover.url = event.target.value;
-      HDLmWebpageImprover.urlAccessed = false;
-      HDLmWebpageImprover.originalHtml = '';
-      HDLmWebpageImprover.originalUrl = '';
-      HDLmWebpageImprover.modifiedUrl = '';
-      HDLmWebpageImprover.improvedHtml = '';
-      HDLmWebpageImprover.refresh();
+      update('url', event.target.value);
     }, function(event) {
       if (event.key === 'Enter')
         HDLmWebpageImprover.loadUrl();
@@ -185,24 +150,26 @@ class HDLmWebpageImprover {
       url,
       suggestion,
       HDLmReactFive.checkbox('wpi-rule', 'Create a rule for the updated page', HDLmWebpageImprover.createRule, event => update('createRule', event.target.checked)),
-      HDLmReactFive.button('wpi-improve', helpTextWpiWIV1.improve, HDLmWebpageImprover.improve, !HDLmWebpageImprover.urlAccessed || HDLmWebpageImprover.busy || HDLmWebpageImprover.urlLoading),
-      HDLmReactFive.button('wpi-save-html', helpTextWpiWIV1.saveHtml, HDLmWebpageImprover.saveHtml, !HDLmWebpageImprover.improvedHtml),
-      HDLmReactFive.button('wpi-save-improvements', helpTextWpiWIV1.saveImprovements, HDLmWebpageImprover.saveImprovements, false),
+      HDLmReactFive.button('wpi-improve', helpTextWpiWIV1.improve, HDLmWebpageImprover.improve, !HDLmWebpageImprover.originalHtml || HDLmWebpageImprover.busy),
+      HDLmReactFive.button('wpi-save-html', helpTextWpiWIV1.saveHtml, () => HDLmHtml.saveHtml(HDLmWebpageImprover.improvedHtml), !HDLmWebpageImprover.improvedHtml),
+      HDLmReactFive.button('wpi-save-improvements', helpTextWpiWIV1.saveImprovements, () => HDLmImprovements.saveImprovements(HDLmWebpageImprover.storage()), false),
       HDLmReactFive.button('wpi-load-improvements', helpTextWpiWIV1.loadImprovements, HDLmWebpageImprover.loadImprovements, false),
       HDLmWebpageImprover.busy ? HDLmReactFive.spinner() : null,
       table);
   }
-  static async checkServerStatus() {
+  static checkServerStatus() {
     let serverName = HDLmConfigInfo.getServerName();
     let statusName = HDLmDefines.getString('HDLMGETSSVALUE');
     let url = 'https://' + serverName + '/' + statusName;
     try {
-      let serverResponse = await HDLmAJAX.runAJAX('URL', true, url, '', '', 'get', '');
-      return true;
+      return HDLmAJAX.runAJAX('URL', true, url, '', '', 'get', '').then(() => true).catch(() => {
+        HDLmWebpageImprover.displayErrorMessage('The server status request failed');
+        return false;
+      });
     }
     catch (error) {
       HDLmWebpageImprover.displayErrorMessage('The server status request failed');
-      return false;
+      return Promise.resolve(false);
     }
   }
   static deleteImprovement(index) {
@@ -230,136 +197,80 @@ class HDLmWebpageImprover {
       return '';
     }
   }
-  static highlight(hashValue) {
-    if (!HDLmWebpageImprover.thirdTab || HDLmWebpageImprover.thirdTab.closed)
-      return;
-    let targetTab = HDLmWebpageImprover.thirdTab;
-    targetTab.postMessage(hashValue + ' hilite');
-    setTimeout(function() {
-      if (!targetTab.closed)
-        targetTab.postMessage(hashValue + ' normal');
-    }, 30000);
-  }
-  static async improve() {
-    if (HDLmWebpageImprover.busy || !HDLmWebpageImprover.urlAccessed)
+  static improve() {
+    if (HDLmWebpageImprover.busy)
       return;
     HDLmWebpageImprover.busy = true;
     HDLmWebpageImprover.refresh();
-    let existingOuter = HDLmWebpageImprover.storage();
-    let existingImprovements = existingOuter.Improvements;
-    let desired = existingImprovements.filter(item => item.Wanted === true).map(item => item.What).join(';');
-    let undesired = existingImprovements.filter(item => item.Wanted === false).map(item => item.What).join(';');
+    let outer = HDLmWebpageImprover.storage();
+    let improvements = outer.Improvements;
+    let desired = improvements.filter(item => item.Wanted === true).map(item => item.What).join(';');
+    let undesired = improvements.filter(item => item.Wanted === false).map(item => item.What).join(';');
     let suggestion = HDLmWebpageImprover.suggestion.trim();
-    try {
-      let result = await HDLmAI.openRouterImproveWebpageV1(HDLmWebpageImprover.originalUrl,
-                                                            HDLmWebpageImprover.originalHtml,
-                                                            suggestion,
-                                                            useAIVersionWpiWIV1,
-                                                            openRouterChatTemplatesWpiWIV1,
-                                                            openRouterResponseFormatTypeJsonObjectWpiWIV1,
-                                                            openRouterResponseJsonSchemaImproverWpiWIV1,
-                                                            desired,
-                                                            undesired);
-      if (result == null || typeof result.improvedHtml != 'string')
-        throw new Error('The webpage improver did not return generated HTML');
-      let basedHtml = HDLmWebpageImprover.addBaseUrl(result.improvedHtml, HDLmWebpageImprover.originalUrl);
-      HDLmWebpageImprover.improvedHtml = HDLmWebpageImprover.addGoogleAnalyticsTag(basedHtml);
-      let storedOuter = HDLmWebpageImprover.storage();
-      if (desired != '')
-        storedOuter.Improvements = [];
-      let returnedImprovements = Array.isArray(result.improvements) ? result.improvements : [];
-      for (let improvement of returnedImprovements)
-        storedOuter = HDLmImprovements.possiblyAddImprovement(storedOuter, improvement.Why, improvement.What, improvement.Hash);
-      let modifiedTimestamp = new Date().toISOString();
-      for (let storedImprovement of storedOuter.Improvements) {
-        let returnedImprovement = returnedImprovements.some(function(improvement) {
-          return improvement.What == storedImprovement.What && improvement.Why == storedImprovement.Why && improvement.Hash == storedImprovement.Hash;
-        });
-        if (desired != '' || returnedImprovement) {
-          storedImprovement.Wanted = true;
-          storedImprovement['Last Modified'] = modifiedTimestamp;
-        }
-      }
-      storedOuter['Last Modified'] = modifiedTimestamp;
-      HDLmImprovements.putImprovements(storedOuter, HDLmWebpageImprover.modifiedUrl);
-      HDLmWebpageImprover.items = storedOuter.Improvements;
+    if (suggestion == suggestionPlaceholderWpiWIV1)
+      suggestion = '';
+    HDLmAI.openRouterImproveWebpageV1(HDLmWebpageImprover.originalUrl, 
+                                      HDLmWebpageImprover.originalHtml, 
+                                      suggestion, 
+                                      useAIVersionWpiWIV1, 
+                                      openRouterChatTemplatesWpiWIV1, 
+                                      openRouterResponseFormatTypeJsonObjectWpiWIV1, 
+                                      openRouterResponseJsonSchemaImproverWpiWIV1, 
+                                      desired, 
+                                      undesired).then(result => {
+      HDLmWebpageImprover.improvedHtml = HDLmWebpageImprover.addGoogleAnalyticsTag(HDLmWebpageImprover.addBaseUrl(result.improvedHtml, HDLmWebpageImprover.originalUrl));
+      HDLmWebpageImprover.items = (result.improvements || []).map(HDLmWebpageImprover.buildImprovement);
+      HDLmImprovements.putImprovements(HDLmWebpageImprover.storage(), HDLmWebpageImprover.modifiedUrl);
       HDLmWebpageImprover.thirdTab = window.open('', '_blank');
-      if (HDLmWebpageImprover.thirdTab != null) {
+      if (HDLmWebpageImprover.thirdTab) {
         HDLmWebpageImprover.thirdTab.document.open();
         HDLmWebpageImprover.thirdTab.document.write(HDLmWebpageImprover.addStylesAndMessageHandler(HDLmWebpageImprover.improvedHtml, HDLmWebpageImprover.items));
         HDLmWebpageImprover.thirdTab.document.close();
       }
       HDLmWebpageImprover.busy = false;
-      HDLmWebpageImprover.refresh();
       if (HDLmWebpageImprover.createRule)
         HDLmHtml.storeWebpageRule({ urlStr: HDLmWebpageImprover.originalUrl, webpageStr: HDLmWebpageImprover.improvedHtml });
-    }
-    catch (error) {
+      HDLmWebpageImprover.refresh();
+    }).catch(error => {
       HDLmWebpageImprover.busy = false;
       HDLmWebpageImprover.displayErrorMessage(error.message);
       HDLmWebpageImprover.refresh();
-    }
+    });
   }
-  static async loadImprovements() {
-    let loaded = await HDLmImprovements.loadImprovements();
-    if (loaded == null)
-      return;
-    let outer = HDLmWebpageImprover.storage();
-    for (let improvement of loaded.Improvements || [])
-      outer = HDLmImprovements.possiblyAddImprovement(outer, improvement.Why, improvement.What, improvement.Hash);
-    HDLmImprovements.putImprovements(outer, HDLmWebpageImprover.modifiedUrl);
-    HDLmWebpageImprover.items = outer.Improvements;
-    HDLmWebpageImprover.refresh();
+  static loadImprovements() {
+    HDLmImprovements.loadImprovements().then(loaded => {
+      if (!loaded)
+        return;
+      let outer = HDLmWebpageImprover.storage();
+      for (let item of loaded.Improvements || [])
+        outer = HDLmImprovements.possiblyAddImprovement(outer, item.Why, item.What, item.Hash);
+      HDLmImprovements.putImprovements(outer, HDLmWebpageImprover.modifiedUrl);
+      HDLmWebpageImprover.items = outer.Improvements;
+      HDLmWebpageImprover.refresh();
+    });
   }
-  static async loadUrl() {
-    if (HDLmWebpageImprover.urlLoading)
-      return;
-    HDLmWebpageImprover.urlLoading = true;
-    HDLmWebpageImprover.urlAccessed = false;
-    HDLmWebpageImprover.originalHtml = '';
-    HDLmWebpageImprover.improvedHtml = '';
+  static loadUrl() {
     let value = HDLmWebpageImprover.url.trim();
-    if (value == '') {
-      HDLmWebpageImprover.urlLoading = false;
-      HDLmWebpageImprover.displayErrorMessage('Please enter a URL to improve');
-      HDLmWebpageImprover.refresh();
-      return;
-    }
-    if (/^[a-z][a-z0-9+.-]*:\/\//i.test(value) && !/^https?:\/\//i.test(value)) {
-      HDLmWebpageImprover.urlLoading = false;
-      HDLmWebpageImprover.displayErrorMessage('The URL must use HTTP or HTTPS');
-      HDLmWebpageImprover.refresh();
-      return;
-    }
-    let normalized = /^https?:\/\//i.test(value) ? value : 'https://' + value;
+    let normalized = value.indexOf('://') < 0 ? 'https://' + value : value;
     try {
-      let parsedUrl = new URL(normalized);
-      if (!['http:', 'https:'].includes(parsedUrl.protocol) || parsedUrl.hostname == '')
-        throw new Error('The URL must use HTTP or HTTPS');
+      new URL(normalized);
     }
     catch (error) {
-      HDLmWebpageImprover.urlLoading = false;
-      HDLmWebpageImprover.displayErrorMessage(error.message || 'The URL is not valid');
-      HDLmWebpageImprover.refresh();
+      HDLmWebpageImprover.displayErrorMessage('The URL is not valid');
       return;
     }
-    try {
-      let response = await fetch(normalized);
+    fetch(normalized).then(response => {
       if (!response.ok)
-        throw new Error('The URL could not be accessed (HTTP ' + response.status + ')');
-      let html = await response.text();
+        throw new Error('The URL could not be accessed');
+      return response.text();
+    }).then(html => {
       HDLmWebpageImprover.originalUrl = normalized;
       HDLmWebpageImprover.originalHtml = html;
       HDLmWebpageImprover.modifiedUrl = HDLmWebpageImprover.getModifiedWebsiteUrl(normalized);
       HDLmWebpageImprover.items = HDLmWebpageImprover.storage().Improvements;
       HDLmWebpageImprover.secondTab = window.open(normalized, '_blank');
-      HDLmWebpageImprover.urlAccessed = true;
-    }
-    catch (error) {
-      HDLmWebpageImprover.displayErrorMessage(error.message);
-    }
-    HDLmWebpageImprover.urlLoading = false;
-    HDLmWebpageImprover.refresh();
+      HDLmWebpageImprover.refresh();
+    }).catch(error => HDLmWebpageImprover.displayErrorMessage(error.message));
   }
   static main() {
     if (HDLmWebpageImprover.shouldProgramRun(window.location.pathname))
@@ -371,27 +282,16 @@ class HDLmWebpageImprover {
     if (stage == HDLmWebpageImproverStageTypes.checkServerStatus)
       return HDLmWebpageImprover.checkServerStatus().then(up => up ? HDLmWebpageImprover.nextStage(HDLmWebpageImproverStageTypes.showWebpageUi) : null);
     if (stage == HDLmWebpageImproverStageTypes.showWebpageUi) {
-      HDLmWebpageImprover.addSpinnerStyle();
       HDLmReactFive.root('leftAndRightPage').render(React.createElement(HDLmWebpageImprover.buildUi));
       window.focus();
       return HDLmWebpageImprover.nextStage(HDLmWebpageImproverStageTypes.visibilityChange);
     }
     if (stage == HDLmWebpageImproverStageTypes.visibilityChange)
-      document.addEventListener('visibilitychange', HDLmWebpageImprover.visibilityChange);
+      window.addEventListener('visibilitychange', HDLmWebpageImprover.visibilityChange);
   }
   static refresh() {
     if (HDLmWebpageImprover.setRender)
       HDLmWebpageImprover.setRender(Date.now());
-  }
-  static async saveHtml() {
-    let error = await HDLmHtml.saveHtml(HDLmWebpageImprover.improvedHtml);
-    if (error != null)
-      HDLmWebpageImprover.displayErrorMessage(error);
-  }
-  static async saveImprovements() {
-    let error = await HDLmImprovements.saveImprovements(HDLmWebpageImprover.storage());
-    if (error != null)
-      HDLmWebpageImprover.displayErrorMessage(error);
   }
   static setWanted(index, wantedValue) {
     let outer = HDLmWebpageImprover.storage();
@@ -417,9 +317,18 @@ class HDLmWebpageImprover {
       Improvements: []
     };
   }
-  static visibilityChange() {
-    if (document.visibilityState == 'visible')
+  static visibilityChange(event) {
+    if (event != null && document.visibilityState == 'hidden')
       HDLmWebpageImprover.refresh();
+  }
+  static highlight(hashValue) {
+    if (!HDLmWebpageImprover.thirdTab || HDLmWebpageImprover.thirdTab.closed)
+      return;
+    HDLmWebpageImprover.thirdTab.postMessage(hashValue + ' hilite');
+    setTimeout(function() {
+      if (HDLmWebpageImprover.thirdTab && !HDLmWebpageImprover.thirdTab.closed)
+        HDLmWebpageImprover.thirdTab.postMessage(hashValue + ' normal');
+    }, 30000);
   }
 }
 HDLmWebpageImprover.busy = false;
@@ -434,5 +343,3 @@ HDLmWebpageImprover.setRender = null;
 HDLmWebpageImprover.suggestion = '';
 HDLmWebpageImprover.thirdTab = null;
 HDLmWebpageImprover.url = '';
-HDLmWebpageImprover.urlAccessed = false;
-HDLmWebpageImprover.urlLoading = false;

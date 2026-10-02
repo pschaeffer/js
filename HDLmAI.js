@@ -2133,6 +2133,11 @@ class HDLmAI {
     llmModelStr = 'meta-llama/llama-4-scout';
     llmModelStr = 'meta-llama/llama-4-maverick';
     llmModelStr = 'anthropic/claude-fable-5';
+    llmModelStr = 'anthropic/claude-opus-5';
+    llmModelStr = 'anthropic/claude-opus-5.5';
+    llmModelStr = 'anthropic/claude-opus-5';
+    llmModelStr = 'anthropic/claude-fable-5';
+    llmModelStr = 'anthropic/claude-opus-5';
     let aiResult = {};
     let retryCount = 0;
     while (true) {

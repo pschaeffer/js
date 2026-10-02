@@ -231,7 +231,7 @@ class HDLmWebsiteImprover {
     let requestAJAXAsyncTrue = true;
     let requestType = 'URL';
     let serverName = HDLmConfigInfo.getServerName();
-    let serverStatusStr = HDLmDefines.getString('HDLMSERVERSTATUS');
+    let serverStatusStr = HDLmDefines.getString('HDLMGETSSVALUE');
     let urlStr = 'https://' + serverName + '/' + serverStatusStr;
     let userid = '';
     let password = '';

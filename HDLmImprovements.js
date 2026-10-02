@@ -11,22 +11,6 @@
    provides static helpers for storing, loading, and editing webpage
    improvement JSON objects. */
 class HDLmImprovements {
-  /* Normalize and return an outer improvements object. This helper keeps
-     required keys present and typed. */
-  static buildOuterObject(outerObj) {
-    let nowIso = new Date().toISOString();
-    if (outerObj == null)
-      outerObj = {};
-    if (outerObj['Version'] == null)
-      outerObj['Version'] = 1;
-    if (typeof(outerObj['Created']) != 'string' || outerObj['Created'] == '')
-      outerObj['Created'] = nowIso;
-    if (typeof(outerObj['Last Modified']) != 'string' || outerObj['Last Modified'] == '')
-      outerObj['Last Modified'] = nowIso;
-    if (!Array.isArray(outerObj['Improvements']))
-      outerObj['Improvements'] = [];
-    return outerObj;
-  }
   /* Normalize one nested improvement object and return it. */
   static buildImprovementObject(improvementObj) {
     let nowIso = new Date().toISOString();
@@ -48,6 +32,22 @@ class HDLmImprovements {
       improvementObj['Hash'] = '';
     return improvementObj;
   }
+  /* Normalize and return an outer improvements object. This helper keeps
+     required keys present and typed. */
+  static buildOuterObject(outerObj) {
+    let nowIso = new Date().toISOString();
+    if (outerObj == null)
+      outerObj = {};
+    if (outerObj['Version'] == null)
+      outerObj['Version'] = 1;
+    if (typeof(outerObj['Created']) != 'string' || outerObj['Created'] == '')
+      outerObj['Created'] = nowIso;
+    if (typeof(outerObj['Last Modified']) != 'string' || outerObj['Last Modified'] == '')
+      outerObj['Last Modified'] = nowIso;
+    if (!Array.isArray(outerObj['Improvements']))
+      outerObj['Improvements'] = [];
+    return outerObj;
+  }
   /* Return the number of improvements in an outer improvements object. */
   static countImprovements(outerObj) {
     if (outerObj == null)
@@ -62,12 +62,30 @@ class HDLmImprovements {
     if (outerObj == null)
       return null;
     outerObj = HDLmImprovements.buildOuterObject(outerObj);
-    if (typeof(index) != 'number' || index < 0) {
-      HDLmError.buildError('Error', 'Delete improvement', 33, 'Improvement index is too low');
+    if (typeof(index) != 'number') {
+      let errorMsg = `Improvement index (${typeof(index)}) is not a number`;
+      HDLmError.buildError('Error', 'Delete improvement', 33, errorMsg);
       return outerObj;
     }
-    if (index >= outerObj['Improvements'].length) {
-      HDLmError.buildError('Error', 'Delete improvement', 33, 'Improvement index is too high');
+    if (index < 0) {
+      let errorMsg = `Improvement index (${index}) is too low`;
+      HDLmError.buildError('Error', 'Delete improvement', 33, errorMsg);
+      return outerObj;
+    }
+    /* An improvement index of zero is considered valid */
+    if (index == 0 && index != 0) {
+      let errorMsg = `Improvement index (${index}) is zero`;
+      HDLmError.buildError('Error', 'Delete improvement', 33, errorMsg);
+      return outerObj;
+    }
+    if (index > outerObj['Improvements'].length) {
+      let errorMsg = `Improvement index (${index}) is too high`;
+      HDLmError.buildError('Error', 'Delete improvement', 33, errorMsg);
+      return outerObj;
+    }
+    if (outerObj['Improvements'].length == 0) {
+      let errorMsg = `No improvements were passed to this routine`;
+      HDLmError.buildError('Error', 'Delete improvement', 33, errorMsg);
       return outerObj;
     }
     outerObj['Improvements'].splice(index, 1);

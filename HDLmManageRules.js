@@ -1589,15 +1589,15 @@ class HDLmManageRules {
     return [null, localCompanyName];
   }
   /* Check if the server is reachable by sending a
-     server-status message over HTTP GET. This routine
+     HDLmGetSS message over HTTP GET. This routine
      returns true if the server is up and false if
      the server is down. */
   static async checkServerStatus() {
     let requestAJAXAsyncTrue = true;
     let requestType = 'URL';
     let serverName = HDLmConfigInfo.getServerName();
-    let serverStatusStr = HDLmDefines.getString('HDLMSERVERSTATUS');
-    let urlStr = 'https://' + serverName + '/' + serverStatusStr;
+    let serverGetSSStr = HDLmDefines.getString('HDLMGETSSVALUE');
+    let urlStr = 'https://' + serverName + '/' + serverGetSSStr;
     let userid = '';
     let password = '';
     let httpType = 'get';

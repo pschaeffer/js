@@ -517,7 +517,7 @@ class HDLmWebpageImpsImprover {
     let requestAJAXAsyncTrue = true;
     let requestType = 'URL';
     let serverName = HDLmConfigInfo.getServerName();
-    let serverStatusStr = HDLmDefines.getString('HDLMSERVERSTATUS');
+    let serverStatusStr = HDLmDefines.getString('HDLMGETSSVALUE');
     let urlStr = 'https://' + serverName + '/' + serverStatusStr;
     let userid = '';
     let password = '';
@@ -535,7 +535,7 @@ class HDLmWebpageImpsImprover {
     }
     catch (errorObj) {
       console.error(errorObj);
-      HDLmWebpageImpsImprover.displayErrorMessage('The server-status request failed');
+      HDLmWebpageImpsImprover.displayErrorMessage('The server status request failed');
       return false;
     }
   }

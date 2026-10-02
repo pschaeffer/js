@@ -89,9 +89,9 @@ class HDLmAJAX {
     if (requestType == 'URL' &&
         URL.startsWith('https://' + serverName + '/' + invokeApiStr + '?'))
       bypassProxy = true;
-    let serverStatusStr = HDLmDefines.getString('HDLMSERVERSTATUS');
+    let getSSStr = HDLmDefines.getString('HDLMGETSSVALUE');
     if (requestType == 'URL' &&
-        URL.startsWith('https://' + serverName + '/' + serverStatusStr))
+        URL.startsWith('https://' + serverName + '/' + getSSStr))
       bypassProxy = true;
     /* We may be running in an Electron JS environment or the extension
        window environment. In either of these environments, we don't need 

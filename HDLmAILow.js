@@ -58,8 +58,8 @@ class HDLmAILow {
     console.log('HDLmAILow.openRouterImproveWebpageV1: currentUrl = ' + currentUrl);              
     let webpageServerPrompt = HDLmAI.replaceTemplateStrings(chatTemplates, 
                                                             'webpageServer', 
-                                                            currentUrl,
-                                                            /* originalHtml, */
+                                                            /* currentUrl, */
+                                                            originalHtml,
                                                             suggestionText, 
                                                             desiredImprovements,
                                                             undesiredImprovements); 
@@ -82,10 +82,14 @@ class HDLmAILow {
       pluginsArray = null;
       toolsArray = null;
     }
-    /* The code below removes the plugins array in all cases. 
+    /* The code below removes the plugins array in some cases. 
        The plugins array can only be used with Open Router. */
     if (1 == 2)
       pluginsArray = null;
+    /* The code below removes the tools array in some cases. 
+       The tools array can only be used with Open Router. */
+    if (1 == 2)
+      toolsArray = null;
     let bodyServerObj = HDLmAI.openRouterBuildBodyV1(openRouterModel, 
                                                      messageServerList, 
                                                      pluginsArray,
@@ -96,6 +100,7 @@ class HDLmAILow {
       bodyServerObj['max_completion_tokens'] = 1000;
       bodyServerObj['max_tokens'] = 1000;
       */
+      /* HDLmUtility.saveJsonToLocalStorage('HDLmWebpageBodyJson', bodyServerObj) */
       improvementResponse = await HDLmAI.sendWebSocketsExecuteRequest(bodyServerObj, 
                                                                       llmModelStr, 
                                                                       versionAI);      

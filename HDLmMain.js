@@ -81,13 +81,13 @@ class HDLmMain {
        manages rules or we may want to run the standard
        editor code. */  
     if (HDLmUtility.isVscode()) {    
-      if (1 == 1)
+      if (1 == 2)
         HDLmBuildRules.main();  
       if (1 == 2)
         HDLmIndexOne.main();  
       if (1 == 2)
         HDLmManageRules.main();  
-      if (1 == 2)
+      if (1 == 1)
         HDLmWebpageImprover.main();
       if (1 == 2)
         HDLmWebpagesImprover.main(); 

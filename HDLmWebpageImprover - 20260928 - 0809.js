@@ -197,7 +197,7 @@ class HDLmWebpageImprover {
     let statusName = HDLmDefines.getString('HDLMGETSSVALUE');
     let url = 'https://' + serverName + '/' + statusName;
     try {
-      let serverResponse = await HDLmAJAX.runAJAX('URL', true, url, '', '', 'get', '');
+      await HDLmAJAX.runAJAX('URL', true, url, '', '', 'get', '');
       return true;
     }
     catch (error) {

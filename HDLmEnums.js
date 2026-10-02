@@ -184,7 +184,7 @@ HDLmManageRulesStageTypes.toString = function (enumVl) {
   /* console.log(Object.keys(HDLmManageRulesStageTypes)); */
   return Object.keys(HDLmManageRulesStageTypes).filter(key => (HDLmManageRulesStageTypes[key] == enumVl))[0];
 }
-Object.freeze(HDLmManageRulesStageTypes);  
+Object.freeze(HDLmManageRulesStageTypes);
 /* The enum below defines the types of matches supported by this
    code. Many types of matches are supported at this time. New
    match types may be added in the future. All match types are 

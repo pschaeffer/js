@@ -88,6 +88,7 @@ class HDLmReactFive {
         React.createElement('td', {
           tabIndex: 0,
           onClick: function() { handlers.click(item.Hash || ''); },
+          onKeyDown: function(event) { if (event.key === 'Delete') handlers.delete(index); },
           style: { textAlign: 'left', verticalAlign: 'top' }
         },
         React.createElement('div', null, 'What: ' + (item.What || '')),

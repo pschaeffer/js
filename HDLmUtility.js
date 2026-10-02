@@ -2144,6 +2144,28 @@ class HDLmUtility {
     }
     return false;
   }
+  /* This method checks if a JavaScript object is empty. It returns
+     true if the object has no own properties, and false otherwise.
+     This approach was suggested by Google. */
+  static isEmptyObject(obj) {
+    /* Make sure the argument passed by the caller is not null */ 
+    if  (obj == null) {
+      let errorText = `Value passed to isEmptyObject is null`;
+      HDLmAssert(false, errorText);
+    }
+    /* Make sure the argument passed by the caller is an object */ 
+    if (typeof obj != 'object') {
+      let errorText = `Value passed to isEmptyObject is not an object`;
+      HDLmAssert(false, errorText);
+    }
+    /* Check if the object has any own properties */
+    for (const prop in obj) {
+      if (Object.hasOwn(obj, prop)) {
+        return false;
+      }
+    }
+    return true;
+  }
   /* The method below determines if an HTML font string is valid or 
      not. This method returns an error string, if an error is detected. 
      This method returns an empty string, if no errors are detected. Note 
@@ -3866,6 +3888,44 @@ class HDLmUtility {
     catch (errorObj) {
       console.error('Save aborted or failed:', errorObj);
     }
+  }
+  /* The method below saves a JSON object in local storage under a
+     specified key. The object is serialized to a JSON string before
+     being stored. The caller provide the key (a string). The current 
+     date and time are always added to the key under which the object
+     will be stored. The caller also provides the JSON object to be 
+     stored. The JSON object is serialized to a string before being
+     stored. */
+  static saveJsonToLocalStorage(key, jsonObj) {
+    if (typeof key != 'string' || key.trim() == '') {
+      let errorText = `Invalid key passed to saveJsonToLocalStorage`;
+      HDLmAssert(false, errorText);
+    }
+    if (typeof jsonObj != 'object') {
+      let errorText = `Invalid JSON object passed to saveJsonToLocalStorage`;
+      HDLmAssert(false, errorText);
+    }
+    const uniqueKey = `${key}_${new Date().toISOString()}`;
+    localStorage.setItem(uniqueKey, JSON.stringify(jsonObj));
+  }
+  /* The method below saves a JSON object in session storage under a
+     specified key. The object is serialized to a JSON string before
+     being stored. The caller provide the key (a string). The current 
+     date and time are always added to the key under which the object
+     will be stored. The caller also provides the JSON object to be 
+     stored. The JSON object is serialized to a string before being
+     stored. */
+  static saveJsonToSessionStorage(key, jsonObj) {
+    if (typeof key != 'string' || key.trim() == '') {
+      let errorText = `Invalid key passed to saveJsonToSessionStorage`;
+      HDLmAssert(false, errorText);
+    }
+    if (typeof jsonObj != 'object') {
+      let errorText = `Invalid JSON object passed to saveJsonToSessionStorage`;
+      HDLmAssert(false, errorText);
+    }
+    const uniqueKey = `${key}_${new Date().toISOString()}`;
+    sessionStorage.setItem(uniqueKey, JSON.stringify(jsonObj));
   }
   /* The method below creates a UTF-8 file with a unique name based on the 
      suggested file name. The passed string is saved in the file. */

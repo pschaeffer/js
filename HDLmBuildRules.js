@@ -1683,7 +1683,7 @@ class HDLmBuildRules {
     */
     let addTreeNodeObj = JSON.parse(addTreeNodeStr);
     let webpageStr = addTreeNodeObj.details.webpages[0];
-    HDLmHtml.storeWebpageRule('https://www.themarvelouslandofoz.com/', webpageStr);
+    HDLmHtml.storeWebpageRule({ urlStr: 'https://www.themarvelouslandofoz.com/', webpageStr: webpageStr });
     /* let sendPromise = HDLmWebSockets.sendAddTreeNodeRequestTest1(addTreeNodeStr); */
     if (1 == 2)
       HDLmWebSockets.sendAddTreeNodeRequest(addTreeNodeObj);
